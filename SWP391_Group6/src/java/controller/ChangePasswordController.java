@@ -78,11 +78,12 @@ public class ChangePasswordController extends HttpServlet {
         Account a = adc.getAccount(username, oldPassword);
         if (a == null) {
             request.setAttribute("err", "Unable to change password. Please try again");
+            request.getRequestDispatcher("WEB-INF/view/user/changepassword.jsp").forward(request, response);
         } else {
             adc.updatePasswordByUsername(newPassword, username);
             request.setAttribute("success", "Change password successfully!");
+            request.getRequestDispatcher("WEB-INF/view/user/profile.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("WEB-INF/view/user/profile.jsp").forward(request, response);
     }
 
     /**
