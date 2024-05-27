@@ -19,7 +19,7 @@
             <div class="title-text">
                 <div class="title login">
                     <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
-                    Forgot Form
+                    <p style="font-weight: lighter; font-size: 15px">If you've forgotten your password, enter your account and email</p>
                     <p style="color: red; font-weight: lighter; font-size: 15px">${requestScope.err}</p>
                 </div>
             </div>
