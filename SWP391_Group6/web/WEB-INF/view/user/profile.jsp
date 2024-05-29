@@ -44,14 +44,14 @@
             <div class="title-text">
                 <div class="title login">
                     <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; height: 40%; border-radius: 50%"><br></a>
-                    <p style="color: black">Profile</p>
+                    <p style="color: black">Profile</p><br>
                     <p style="color: red; font-weight: lighter; font-size: 20px">${requestScope.err}</p>
                     <p style="color: green; font-weight: lighter; font-size: 20px">${requestScope.success}</p>
                 </div>
                 <!--            <div class="title signup">
                                 Signup Form
                             </div>-->
-            </div>
+            </div><br>
             <div class="form-container">
                 <div class="form-inner">
                     <form action="profile" class="signup" method="post" enctype="multipart/form-data">
@@ -75,6 +75,7 @@
                                         <option value="Male" <c:if test="${sessionScope.user.gender == true}">selected</c:if>>Male</option>
                                         <option value="Female" <c:if test="${sessionScope.user.gender == false}">selected</c:if>>Female</option>
                                         </select>
+
                                     </div>
                                 </div>
 

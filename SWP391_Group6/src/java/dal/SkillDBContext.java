@@ -18,7 +18,7 @@ public class SkillDBContext extends DBContext<Skill>{
     public ArrayList<Skill> listAll() {
         ArrayList<Skill> skills = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM Skill s ORDER BY s.skillname";
+            String sql = "SELECT * FROM Skill";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){

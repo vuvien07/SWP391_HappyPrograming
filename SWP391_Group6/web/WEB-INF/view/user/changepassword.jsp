@@ -20,7 +20,6 @@
                 <div class="title login">
                     <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
                     <p style="color: #000000; font-weight: lighter; font-size: 20px">Please enter your user name and password</p>
-                    <p style="color: red; font-weight: lighter; font-size: 20px">${requestScope.err}</p>
                 </div>
             </div>
             <div class="form-container">
