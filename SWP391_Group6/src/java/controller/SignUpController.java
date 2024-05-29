@@ -120,42 +120,39 @@ public class SignUpController extends HttpServlet {
                 String email = (String) session.getAttribute("email");
                 String role = (String) session.getAttribute("role");
                 Account newAcc = new Account();
-                ArrayList<Account> accounts = adc.listAll();
-                int accountSize = accounts.size() + 1;
-                newAcc.setId(accountSize);
                 newAcc.setUsername(username);
                 newAcc.setEmail(email);
                 newAcc.setPassword(password);
                 newAcc.setStatus(true);
                 if (role.equals("Mentee")) {
-                    ArrayList<User> mentees = udc.listAll();
+                    newAcc.setRoleid(2);
+                    adc.insert(newAcc);
                     User newMen = new User();
-                    int userSize = mentees.size() + 1;
-                    newMen.setId(userSize);
                     newMen.setName(name);
                     newMen.setGender("Male".equals(gender));
                     newMen.setPhone(phone);
                     newMen.setAddress(addess);
                     newMen.setDateOfBirth(java.sql.Date.valueOf(dob));
-                    newMen.setAccount(newAcc);
-                    newAcc.setRole(role);
+                    Account account = adc.getAccount(username, password);
+                    if (account != null) {
+                        newMen.setAccount(account);
+                        udc.insert(newMen);
+                    }
+                } else {
+                    newAcc.setRoleid(1);
                     adc.insert(newAcc);
-                    udc.insert(newMen);
-                }else{
-                    newAcc.setRole(role);
-                    ArrayList<Mentor> mentors = mdc.listAll();
-                    int mentorSize = mentors.size() + 1;
                     Mentor newMentor = new Mentor();
-                    newMentor.setId(mentorSize);
                     newMentor.setName(name);
                     newMentor.setGender("Male".equals(gender));
                     newMentor.setPhone(phone);
                     newMentor.setAddress(addess);
                     newMentor.setDateOfBirth(java.sql.Date.valueOf(dob));
                     newMentor.setStatus(false);
-                    newMentor.setAccount(newAcc);
-                    adc.insert(newAcc);
-                    mdc.insertDefault(newMentor);
+                    Account account = adc.getAccount(username, password);
+                    if (account != null) {
+                       newMentor.setAccount(account);
+                       mdc.insertDefault(newMentor);
+                    }
                 }
                 session.removeAttribute("status");
                 request.setAttribute("success", "Sign up sucessfully! You can login to our system");

@@ -4,12 +4,14 @@
  */
 package controller;
 
+import controller.authorization.BaseAuthController;
 import dal.AccountDBContext;
 import dal.UserDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ import model.User;
  * @author Admin
  */
 @MultipartConfig
-public class ProfileController extends HttpServlet {
+public class ProfileController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,13 +60,16 @@ public class ProfileController extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
+     * @param account
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
+        request.setAttribute("ksk", this);
         request.getRequestDispatcher("WEB-INF/view/user/profile.jsp").forward(request, response);
+        
     }
 
     /**
@@ -72,11 +77,12 @@ public class ProfileController extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
+     * @param acc
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account acc)
             throws ServletException, IOException {
         try {
             AccountDBContext adc = new AccountDBContext();

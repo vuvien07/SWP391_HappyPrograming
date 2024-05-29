@@ -4,15 +4,19 @@
  */
 package util;
 
+import com.oracle.wls.shaded.org.apache.bcel.generic.F2D;
 import jakarta.mail.Authenticator;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
+import java.io.*;
+import java.util.Set;
 
 /**
  *
@@ -55,9 +59,26 @@ public class Util {
             msg.setSentDate(new Date());
             msg.setText(content, "UTF-8");
             Transport.send(msg);
-            System.out.println("Email sent successfully!");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
+    public static String getRequestValue(HttpServletRequest request, String key){
+        return request.getParameter(key);
+    }
+    
+    public static void setRequestAttribute(HttpServletRequest request, String key, Object value){
+        request.setAttribute(key, value);
+    }
+    
+    public static Object getSessionValue(HttpServletRequest request, String key){
+        return request.getSession().getAttribute(key);
+    }
+    
+    public static void setSessionAttribute(HttpServletRequest request, String key, Object value){
+        request.getSession().setAttribute(key, value);
+    }
+    
+    
 }

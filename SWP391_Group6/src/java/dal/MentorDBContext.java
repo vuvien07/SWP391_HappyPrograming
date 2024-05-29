@@ -49,16 +49,15 @@ public class MentorDBContext extends DBContext<Mentor>{
     public void insertDefault(Mentor entity){
         try{
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO Mentor(id, [name], gender, phone, [address], dateofbirth, [status], accid) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Mentor([name], gender, phone, [address], dateofbirth, [status], accid) VALUES(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, entity.getId());
-            ps.setString(2, entity.getName());
-            ps.setBoolean(3, entity.isGender());
-            ps.setString(4, entity.getPhone());
-            ps.setString(5, entity.getAddress());
-            ps.setDate(6, (Date) entity.getDateOfBirth());
-            ps.setBoolean(7, entity.isStatus());
-            ps.setInt(8, entity.getAccount().getId());
+            ps.setString(1, entity.getName());
+            ps.setBoolean(2, entity.isGender());
+            ps.setString(3, entity.getPhone());
+            ps.setString(4, entity.getAddress());
+            ps.setDate(5, (Date) entity.getDateOfBirth());
+            ps.setBoolean(6, entity.isStatus());
+            ps.setInt(7, entity.getAccount().getId());
             ps.executeUpdate();
             connection.commit();
         }catch (SQLException e) {

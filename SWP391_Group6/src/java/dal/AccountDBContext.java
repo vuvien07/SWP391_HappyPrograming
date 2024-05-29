@@ -36,14 +36,13 @@ public class AccountDBContext extends DBContext<Account> {
     public void insert(Account entity) {
         try {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO Account VALUES(?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Account(username, [password], roleid, email, [status]) VALUES(?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, entity.getId());
-            ps.setString(2, entity.getUsername());
-            ps.setString(3, entity.getPassword());
-            ps.setString(4, entity.getRole());
-            ps.setString(5, entity.getEmail());
-            ps.setBoolean(6, entity.isStatus());
+            ps.setString(1, entity.getUsername());
+            ps.setString(2, entity.getPassword());
+            ps.setInt(3, entity.getRoleid());
+            ps.setString(4, entity.getEmail());
+            ps.setBoolean(5, entity.isStatus());
 
             ps.executeUpdate();
             connection.commit();
@@ -129,8 +128,7 @@ public class AccountDBContext extends DBContext<Account> {
 
     public Account getAccount(String username, String password) {
         try {
-            String sql = "SELECT a.accid, a.username, a.password, a.email FROM Account a WHERE a.username = ? AND a.password = ?";
-
+            String sql = "SELECT a.accid, a.username, a.email FROM Account a WHERE a.username = ? AND a.[password] = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
             ps.setString(2, password);
@@ -139,7 +137,6 @@ public class AccountDBContext extends DBContext<Account> {
                 Account a = new Account();
                 a.setId(rs.getInt("accid"));
                 a.setUsername(rs.getString("username"));
-                a.setPassword(rs.getString("password"));
                 a.setEmail(rs.getString("email"));
                 return a;
             }
