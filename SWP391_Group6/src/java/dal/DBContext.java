@@ -32,7 +32,9 @@ public abstract class DBContext<T> {
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("Vu Non VCL");
     }
+    
 
     public abstract ArrayList<T> listAll();
 
