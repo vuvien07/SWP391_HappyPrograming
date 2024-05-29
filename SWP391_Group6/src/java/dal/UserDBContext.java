@@ -39,14 +39,15 @@ public class UserDBContext extends DBContext<User> {
     public void insert(User entity) {
         try {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO [User]([Name], Gender, Phone, [Address], DateOfBirth, accid) VALUES(?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO [User](userid, Name, Gender, Phone, Address, DateOfBirth, accid) VALUES(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, entity.getName());
-            ps.setBoolean(2, entity.isGender());
-            ps.setString(3, entity.getPhone());
-            ps.setString(4, entity.getAddress());
-            ps.setDate(5, (Date) entity.getDateOfBirth());
-            ps.setInt(6, entity.getAccount().getId());
+            ps.setInt(1, entity.getId());
+            ps.setString(2, entity.getName());
+            ps.setBoolean(3, entity.isGender());
+            ps.setString(4, entity.getPhone());
+            ps.setString(5, entity.getAddress());
+            ps.setDate(6, (Date) entity.getDateOfBirth());
+            ps.setInt(7, entity.getAccount().getId());
             ps.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
