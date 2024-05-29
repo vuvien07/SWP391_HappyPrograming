@@ -34,6 +34,7 @@ public class LoginController extends HttpServlet {
                     rememberMe = cooky.getValue();
                 }
             }
+            System.out.println("commit");
         }
         request.setAttribute("user", username);
         request.setAttribute("pass", password);
