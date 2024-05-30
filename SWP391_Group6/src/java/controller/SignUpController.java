@@ -4,6 +4,7 @@
  */
 package controller;
 
+import service.SignUpService;
 import dao.AccountDAO;
 import dao.MentorDAO;
 import dao.UserDAO;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import model.Account;
 import model.Mentor;
 import model.User;
+import util.UserDataDetail;
 
 /**
  *
@@ -79,9 +81,8 @@ public class SignUpController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String status = (String) request.getSession().getAttribute("status");
-        AccountDAO adc = new AccountDAO();
-        UserDAO udc = new UserDAO();
-        MentorDAO mdc = new MentorDAO();
+        SignUpService sus = new SignUpService();
+        UserDataDetail userDataDetail = new UserDataDetail();
         try {
             if (status == null) {
                 String fullname = request.getParameter("name");
@@ -93,67 +94,26 @@ public class SignUpController extends HttpServlet {
                 String dob = request.getParameter("dob");
                 String gender = request.getParameter("gender");
                 String role = request.getParameter("role");
-                Account a = adc.checkAccountExist(username, email);
+                Account a = sus.getAccountDAO().checkAccountExist(username, email);
                 if (a != null) {
                     request.setAttribute("err", "Username or email are existed. Please try again!");
                     request.getRequestDispatcher("WEB-INF/view/user/signup.jsp").forward(request, response);
                     return;
                 }
-                session.setAttribute("name", fullname);
-                session.setAttribute("username", username);
-                session.setAttribute("pass", password);
-                session.setAttribute("phone", phone);
-                session.setAttribute("address", address);
-                session.setAttribute("dob", dob);
-                session.setAttribute("gender", gender);
-                session.setAttribute("role", role);
-                request.getSession().setAttribute("email", email);
+                userDataDetail.putAttribute("name", fullname);
+                userDataDetail.putAttribute("username", username);
+                userDataDetail.putAttribute("pass", password);
+                userDataDetail.putAttribute("phone", phone);
+                userDataDetail.putAttribute("address", address);
+                userDataDetail.putAttribute("dob", dob);
+                userDataDetail.putAttribute("gender", gender);
+                userDataDetail.putAttribute("role", role);
+                userDataDetail.putAttribute("email", email);
+                session.setAttribute("userDataDetail", userDataDetail);
                 response.sendRedirect("verify");
             } else {
-                String name = (String) session.getAttribute("name");
-                String username = (String) session.getAttribute("username");
-                String password = (String) session.getAttribute("pass");
-                String phone = (String) session.getAttribute("phone");
-                String addess = (String) session.getAttribute("address");
-                String dob = (String) session.getAttribute("dob");
-                String gender = (String) session.getAttribute("gender");
-                String email = (String) session.getAttribute("email");
-                String role = (String) session.getAttribute("role");
-                Account newAcc = new Account();
-                newAcc.setUsername(username);
-                newAcc.setEmail(email);
-                newAcc.setPassword(password);
-                newAcc.setStatus(true);
-                if (role.equals("Mentee")) {
-                    newAcc.setRoleid(2);
-                    adc.insert(newAcc);
-                    User newMen = new User();
-                    newMen.setName(name);
-                    newMen.setGender("Male".equals(gender));
-                    newMen.setPhone(phone);
-                    newMen.setAddress(addess);
-                    newMen.setDateOfBirth(java.sql.Date.valueOf(dob));
-                    Account account = adc.getAccount(username, password);
-                    if (account != null) {
-                        newMen.setAccount(account);
-                        udc.insert(newMen);
-                    }
-                } else {
-                    newAcc.setRoleid(1);
-                    adc.insert(newAcc);
-                    Mentor newMentor = new Mentor();
-                    newMentor.setName(name);
-                    newMentor.setGender("Male".equals(gender));
-                    newMentor.setPhone(phone);
-                    newMentor.setAddress(addess);
-                    newMentor.setDateOfBirth(java.sql.Date.valueOf(dob));
-                    newMentor.setStatus(false);
-                    Account account = adc.getAccount(username, password);
-                    if (account != null) {
-                       newMentor.setAccount(account);
-                       mdc.insertDefault(newMentor);
-                    }
-                }
+                UserDataDetail userDataDetail1 = (UserDataDetail) session.getAttribute("userDataDetail");
+                sus.registerUser(userDataDetail1);
                 session.removeAttribute("status");
                 request.setAttribute("success", "Sign up sucessfully! You can login to our system");
                 request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
