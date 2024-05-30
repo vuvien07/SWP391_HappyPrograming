@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
+<!--    <head>
         <title>Happy Programing Group 6</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,16 +35,13 @@
         <style>
             .search-form .form-group {
                 border: 1px solid #ccc;
-
                 border-radius: 20px;
-
                 overflow: hidden;
 
             }
 
             .search-form .form-control {
                 border: none;
-
                 box-shadow: none;
 
             }
@@ -82,10 +79,10 @@
                 </a>
             </div>
         </nav>
-        <!-- END nav -->
+         END nav 
 
         <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/work-3.jpg');">
-            <!--        <div class="overlay"></div>-->
+                    <div class="overlay"></div>
             <div class="container">
                 <div class="row no-gutters slider-text align-items-end justify-content-center">
                     <div class="col-md-9 ftco-animate pb-5 text-center">
@@ -94,7 +91,8 @@
                 </div>
             </div>
 
-        </section>
+        </section>-->
+<%@ include file="component/header.jsp" %>
 
         <section class="ftco-section bg-light">
             <div class="container">
@@ -195,7 +193,7 @@
                 </div>
         </section>
 
-        <footer class="ftco-footer ftco-no-pt">
+<!--        <footer class="ftco-footer ftco-no-pt">
             <div class="container">
                 <div class="row mb-5">
                     <div class="col-md pt-5">
@@ -255,17 +253,19 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
 
-                        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p> Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. 
                             Copyright &copy;
                             <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
                             is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
                                                                                               target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                             Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. 
                         </p>
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer>-->
+
+<%@ include file="component/footer.jsp" %>
 
         <!-- loader -->
         <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
