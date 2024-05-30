@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dal;
+package dao;
 
 import java.util.ArrayList;
 import model.Account;
@@ -12,7 +12,7 @@ import java.sql.*;
  *
  * @author Admin
  */
-public class AccountDBContext extends DBContext<Account> {
+public class AccountDAO extends DAO<Account> {
 
     @Override
     public ArrayList<Account> listAll() {

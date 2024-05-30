@@ -4,9 +4,9 @@
  */
 package controller;
 
-import dal.AccountDBContext;
-import dal.MentorDBContext;
-import dal.UserDBContext;
+import dao.AccountDAO;
+import dao.MentorDAO;
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -79,9 +79,9 @@ public class SignUpController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String status = (String) request.getSession().getAttribute("status");
-        AccountDBContext adc = new AccountDBContext();
-        UserDBContext udc = new UserDBContext();
-        MentorDBContext mdc = new MentorDBContext();
+        AccountDAO adc = new AccountDAO();
+        UserDAO udc = new UserDAO();
+        MentorDAO mdc = new MentorDAO();
         try {
             if (status == null) {
                 String fullname = request.getParameter("name");

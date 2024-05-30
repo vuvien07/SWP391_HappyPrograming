@@ -4,8 +4,8 @@
  */
 package controller;
 
-import dal.AccountDBContext;
-import dal.UserDBContext;
+import dao.AccountDAO;
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -96,7 +96,7 @@ public class LoginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-        AccountDBContext dao = new AccountDBContext();
+        AccountDAO dao = new AccountDAO();
         //tim xem co acc phu hop username vs pass ng dung nhap k
         Account account = dao.getAccount(username, password);
         //acc==null ==> tk hoac mk sai ==> set ve loi==> login.jsp
@@ -121,7 +121,7 @@ public class LoginController extends HttpServlet {
             response.addCookie(c_user);
             response.addCookie(c_pass);
             response.addCookie(c_remember);
-            UserDBContext udc = new UserDBContext();
+            UserDAO udc = new UserDAO();
             request.getSession().setAttribute("user", udc.getUserById(account.getId()));
             request.getSession().setAttribute("account", account);
             response.sendRedirect("home");

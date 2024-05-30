@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dal;
+package dao;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import model.Mentor;
  *
  * @author Admin
  */
-public class MentorDBContext extends DBContext<Mentor>{
+public class MentorDAO extends DAO<Mentor>{
 
     @Override
     public ArrayList<Mentor> listAll() {

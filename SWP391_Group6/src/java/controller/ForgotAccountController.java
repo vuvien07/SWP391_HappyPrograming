@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.AccountDBContext;
+import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -73,7 +73,7 @@ public class ForgotAccountController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AccountDBContext adc = new AccountDBContext();
+        AccountDAO adc = new AccountDAO();
         try {
             String username = request.getParameter("username");
             String email = request.getParameter("email");

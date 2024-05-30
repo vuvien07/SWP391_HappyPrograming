@@ -5,8 +5,8 @@
 package controller;
 
 import controller.authorization.BaseAuthController;
-import dal.AccountDBContext;
-import dal.UserDBContext;
+import dao.AccountDAO;
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -85,8 +85,8 @@ public class ProfileController extends BaseAuthController {
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account acc)
             throws ServletException, IOException {
         try {
-            AccountDBContext adc = new AccountDBContext();
-            UserDBContext udc = new UserDBContext();
+            AccountDAO adc = new AccountDAO();
+            UserDAO udc = new UserDAO();
             
             Part fPart = request.getPart("avatar");
             Account updateAcc = new Account();

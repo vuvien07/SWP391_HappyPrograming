@@ -4,7 +4,7 @@
  */
 package controller.authorization;
 
-import dal.RoleDBContext;
+import dao.RoleDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public abstract class BaseAuthController extends HttpServlet {
 
     private boolean isAuthenticated(HttpServletRequest req) {
         Account account = getAuthentication(req);
-        RoleDBContext rdc = new RoleDBContext();
+        RoleDAO rdc = new RoleDAO();
         return account != null && rdc.getRoleByUsernameAndUrl(account.getUsername(), req.getServletPath()) != null;
     }
 

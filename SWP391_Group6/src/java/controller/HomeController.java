@@ -5,7 +5,7 @@
 
 package controller;
 
-import dal.SkillDBContext;
+import dao.SkillDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -56,7 +56,7 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        SkillDBContext sdc = new SkillDBContext();
+        SkillDAO sdc = new SkillDAO();
         ArrayList<Skill> skills = sdc.listAll();
         request.getSession().setAttribute("skills", skills);
         request.getRequestDispatcher("home.jsp").forward(request, response);

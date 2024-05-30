@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.AccountDBContext;
+import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -71,7 +71,7 @@ public class ChangePasswordController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AccountDBContext adc = new AccountDBContext();
+        AccountDAO adc = new AccountDAO();
         String username = request.getParameter("username");
         String oldPassword = request.getParameter("old-password");
         String newPassword = request.getParameter("pass");
