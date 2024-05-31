@@ -16,7 +16,7 @@ import model.User;
  *
  * @author Admin
  */
-public class UserDAO extends DAO<User> {
+public class UserDAO extends DBContext<User> {
 
     @Override
     public ArrayList<User> listAll() {

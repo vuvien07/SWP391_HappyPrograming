@@ -4,7 +4,6 @@
  */
 package util;
 
-import com.oracle.wls.shaded.org.apache.bcel.generic.F2D;
 import jakarta.mail.Authenticator;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
@@ -15,8 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
-import java.io.*;
-import java.util.Set;
 
 /**
  *
@@ -79,6 +76,5 @@ public class Util {
     public static void setSessionAttribute(HttpServletRequest request, String key, Object value){
         request.getSession().setAttribute(key, value);
     }
-    
     
 }

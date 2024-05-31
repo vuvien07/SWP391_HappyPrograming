@@ -12,7 +12,7 @@ import java.sql.*;
  *
  * @author Admin
  */
-public class SkillDAO extends DAO<Skill>{
+public class SkillDAO extends DBContext<Skill>{
 
     @Override
     public ArrayList<Skill> listAll() {

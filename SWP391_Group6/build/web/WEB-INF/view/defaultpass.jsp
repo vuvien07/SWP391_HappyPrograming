@@ -26,7 +26,7 @@
             <div class="form-container">
                 <p style="color: red">${requestScope.error}</p>
                 <div class="form-inner">
-                    <form action="defaultpass" class="login" method="post">
+                    <form action="forgot" class="login" method="post">
                         <div class="field">
                             <input type="text" name="de-pass"  placeholder="Default pass" required>
                         </div>
@@ -34,6 +34,7 @@
                             <div class="btn-layer"></div>
                             <input type="submit" value="Enter">
                         </div>
+                        <input type="hidden" name="status" value="Progress">
                     </form>
                 </div>
             </div>

@@ -12,7 +12,7 @@ import java.sql.*;
  *
  * @author Admin
  */
-public class RoleDAO extends DAO<Role> {
+public class RoleDAO extends DBContext<Role> {
 
     @Override
     public ArrayList<Role> listAll() {

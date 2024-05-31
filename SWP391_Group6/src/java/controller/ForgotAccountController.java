@@ -4,7 +4,6 @@
  */
 package controller;
 
-import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,8 +11,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Account;
-import util.Util;
+import service.ForgotPasswordService;
+import util.UserDataDetail;
 
 /**
  *
@@ -73,32 +72,23 @@ public class ForgotAccountController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AccountDAO adc = new AccountDAO();
+        ForgotPasswordService forgotPasswordService = new ForgotPasswordService();
+        UserDataDetail udd = new UserDataDetail();
         try {
-            String username = request.getParameter("username");
-            String email = request.getParameter("email");
             HttpSession session = request.getSession();
-            Account a = adc.getAccountByUsernameAndEmail(username, email);
-            if(a == null){
-                request.setAttribute("err", "Unable to find your account! Please try again");
-                request.getRequestDispatcher("WEB-INF/view/forgotpassword.jsp").forward(request, response);
-            }else{
-                String defaultPassword = (String) session.getAttribute("defaultPass");
-                if(defaultPassword != null){
-                    request.setAttribute("err", "Default pass is sent to your email. Please check your mail and click <a href = 'defaultpass'>here</a> to enter");
-                    request.getRequestDispatcher("WEB-INF/view/forgotpassword.jsp").forward(request, response);
-                    return;
-                }
-                String str = "abcdefgfijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
-                String defaultPass = Util.generatePassword(str, 8);
-                String text = "Your default password is: " + defaultPass + ".Default password has been set in the session and session timeout is set to 1 minute.";
-                Util.sendEmail(email, text);
-                session.setAttribute("defaultPass", defaultPass);
-                session.setMaxInactiveInterval(60);
-                session.setAttribute("email", email);
-                session.setAttribute("username", username);
-                request.getRequestDispatcher("WEB-INF/view/defaultpass.jsp").forward(request, response);
+            String status = request.getParameter("status");
+            if (status == null) {
+                String username = request.getParameter("username");
+                String email = request.getParameter("email");
+                udd.putAttribute("username", username);
+                udd.putAttribute("email", email);
+                forgotPasswordService.processForgotPasswordRequest(request, response, session, udd);
+            } else if (status.equals("Progress")) {
+                forgotPasswordService.processProgressStatus(request, response);
+            } else {
+                forgotPasswordService.processResetPassword(request, response);
             }
+
         } catch (ServletException | IOException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occured. Please try again later!");
         }
@@ -114,5 +104,5 @@ public class ForgotAccountController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
+

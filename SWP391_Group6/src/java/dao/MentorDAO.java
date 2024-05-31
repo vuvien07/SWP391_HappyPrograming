@@ -12,7 +12,7 @@ import model.Mentor;
  *
  * @author Admin
  */
-public class MentorDAO extends DAO<Mentor>{
+public class MentorDAO extends DBContext<Mentor>{
 
     @Override
     public ArrayList<Mentor> listAll() {

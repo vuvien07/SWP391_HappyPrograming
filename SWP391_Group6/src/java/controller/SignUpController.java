@@ -5,9 +5,6 @@
 package controller;
 
 import service.SignUpService;
-import dao.AccountDAO;
-import dao.MentorDAO;
-import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,10 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
-import model.Account;
-import model.Mentor;
-import model.User;
 import util.UserDataDetail;
 
 /**
@@ -80,7 +73,7 @@ public class SignUpController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String status = (String) request.getSession().getAttribute("status");
+        String status = request.getParameter("status");
         SignUpService sus = new SignUpService();
         UserDataDetail userDataDetail = new UserDataDetail();
         try {
@@ -94,12 +87,7 @@ public class SignUpController extends HttpServlet {
                 String dob = request.getParameter("dob");
                 String gender = request.getParameter("gender");
                 String role = request.getParameter("role");
-                Account a = sus.getAccountDAO().checkAccountExist(username, email);
-                if (a != null) {
-                    request.setAttribute("err", "Username or email are existed. Please try again!");
-                    request.getRequestDispatcher("WEB-INF/view/user/signup.jsp").forward(request, response);
-                    return;
-                }
+
                 userDataDetail.putAttribute("name", fullname);
                 userDataDetail.putAttribute("username", username);
                 userDataDetail.putAttribute("pass", password);
@@ -109,14 +97,17 @@ public class SignUpController extends HttpServlet {
                 userDataDetail.putAttribute("gender", gender);
                 userDataDetail.putAttribute("role", role);
                 userDataDetail.putAttribute("email", email);
-                session.setAttribute("userDataDetail", userDataDetail);
-                response.sendRedirect("verify");
+                sus.processSendEmail(request, response, userDataDetail);
             } else {
-                UserDataDetail userDataDetail1 = (UserDataDetail) session.getAttribute("userDataDetail");
-                sus.registerUser(userDataDetail1);
-                session.removeAttribute("status");
-                request.setAttribute("success", "Sign up sucessfully! You can login to our system");
-                request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
+                if (sus.isVerifyEmail(request, response)) {
+                    UserDataDetail userDataDetail1 = (UserDataDetail) session.getAttribute("userDataDetail");
+                    sus.registerUser(userDataDetail1);
+                    session.invalidate();
+                    request.setAttribute("success", "Sign up sucessfully! You can login to our system");
+                    request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
+                }
             }
         } catch (ServletException | IOException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occured. Please try again later!");

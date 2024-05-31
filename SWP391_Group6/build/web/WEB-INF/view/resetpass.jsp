@@ -26,7 +26,7 @@
             <div class="form-container">
                 <p style="color: red">${requestScope.error}</p>
                 <div class="form-inner">
-                    <form action="resetpass" class="login" method="post" onsubmit="return submitForm()">
+                    <form action="forgot" class="login" method="post" onsubmit="return submitForm()">
                         <div class="field">
                             <input type="password" name="pass" pattern="^\S{8}$" 
                                            title="Password must be 8 characters long and cannot contain spaces" placeholder="Password" required>
@@ -39,6 +39,7 @@
                             <div class="btn-layer"></div>
                             <input type="submit" value="Enter">
                         </div>
+                        <input type="hidden" name="status" value="Done">
                     </form>
                 </div>
             </div>

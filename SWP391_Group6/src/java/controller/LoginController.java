@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
+import service.LoginService;
+import util.UserDataDetail;
 
 /**
  *
@@ -96,31 +98,21 @@ public class LoginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-        AccountDAO dao = new AccountDAO();
+        
+        LoginService loginService = new LoginService();
+        UserDataDetail udd = new UserDataDetail();
         //tim xem co acc phu hop username vs pass ng dung nhap k
-        Account account = dao.getAccount(username, password);
+        Account account = loginService.getAccount(username, password);
         //acc==null ==> tk hoac mk sai ==> set ve loi==> login.jsp
         //nguoc lai dang nhap thanh cong ==> home.jsp
+        udd.putAttribute("username", username);
+        udd.putAttribute("password", password);
+        udd.putAttribute("rememberMe", rememberMe);
         if (account == null) {
             request.setAttribute("error", "Invalid username or password. Please try again");
             request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
         } else {
-            Cookie c_user = new Cookie("username", username);
-            Cookie c_pass = new Cookie("password", password);
-            Cookie c_remember = new Cookie("rememberMe", rememberMe);
-            if (rememberMe != null) {
-
-                c_user.setMaxAge(3600 * 24 * 7);
-                c_pass.setMaxAge(3600 * 24 * 7);
-                c_remember.setMaxAge(3600 * 24 * 7);
-            } else {
-                c_user.setMaxAge(0);
-                c_pass.setMaxAge(0);
-                c_remember.setMaxAge(0);
-            }
-            response.addCookie(c_user);
-            response.addCookie(c_pass);
-            response.addCookie(c_remember);
+            loginService.saveCookie(response, udd);
             UserDAO udc = new UserDAO();
             request.getSession().setAttribute("user", udc.getUserById(account.getId()));
             request.getSession().setAttribute("account", account);

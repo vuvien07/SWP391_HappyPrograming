@@ -12,7 +12,7 @@ import java.sql.*;
  *
  * @author Admin
  */
-public class AccountDAO extends DAO<Account> {
+public class AccountDAO extends DBContext<Account> {
 
     @Override
     public ArrayList<Account> listAll() {
@@ -108,22 +108,19 @@ public class AccountDAO extends DAO<Account> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public Account checkAccountExist(String username, String email) {
+    public boolean checkAccountExist(String username, String email) {
         try {
             String sql = "SELECT * FROM Account a WHERE a.username = ? OR a.email = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
             ps.setString(2, email);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Account a = new Account();
-                a.setId(rs.getInt("accid"));
-                a.setUsername(rs.getString("username"));
-                return a;
+            if (rs.next()) {
+               return true;
             }
         } catch (SQLException e) {
         }
-        return null;
+        return false;
     }
 
     public Account getAccount(String username, String password) {

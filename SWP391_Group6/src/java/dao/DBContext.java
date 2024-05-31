@@ -18,11 +18,11 @@ import model.User;
  * @author Admin
  * @param <T>
  */
-public abstract class DAO<T> {
+public abstract class DBContext<T> {
 
     protected Connection connection;
 
-    public DAO() {
+    public DBContext() {
         try {
             String user = "sa";
             String pass = "sa123";
@@ -30,7 +30,7 @@ public abstract class DAO<T> {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

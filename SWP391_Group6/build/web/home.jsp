@@ -84,7 +84,7 @@
         </nav>
         <!-- END nav -->
 
-        <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/work-3.jpg');">
+        <section class="hero-wrap hero-wrap-2" style="background-image: url('assets/images/work-3.jpg');">
             <!--        <div class="overlay"></div>-->
             <div class="container">
                 <div class="row no-gutters slider-text align-items-end justify-content-center">
@@ -252,7 +252,7 @@
                             <c:forEach var="c" items="${sessionScope.skills}">
                                 <div class="col-md-6 d-flex align-items-stretch ftco-animate">
                                     <div class="project-wrap">
-                                        <a href="#" class="img" style="background-image: url(resources/images/work-5.jpg);">
+                                        <a href="#" class="img" style="background-image: url(assets/images/work-5.jpg);">
                                             <span class="price">${c.skillname}</span>
                                         </a>
                                         <div class="text p-4">

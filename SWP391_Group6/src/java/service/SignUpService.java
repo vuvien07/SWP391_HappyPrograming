@@ -7,10 +7,15 @@ package service;
 import dao.AccountDAO;
 import dao.MentorDAO;
 import dao.UserDAO;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import model.Account;
 import model.Mentor;
 import model.User;
 import util.UserDataDetail;
+import util.Util;
 
 /**
  *
@@ -28,16 +33,29 @@ public class SignUpService {
         mentorDAO = new MentorDAO();
     }
 
-    public AccountDAO getAccountDAO() {
-        return accountDAO;
+    public void processSendEmail(HttpServletRequest request, HttpServletResponse response, UserDataDetail userDataDetail) throws ServletException, IOException {
+        String username = (String) userDataDetail.getAttribute("username");
+        String email = (String) userDataDetail.getAttribute("email");
+        if (accountDAO.checkAccountExist(username, email)) {
+            request.setAttribute("err", "Username or email are existed. Please try again!");
+            request.getRequestDispatcher("WEB-INF/view/user/signup.jsp").forward(request, response);
+            return;
+        }
+        String pass = Util.generatePassword("0123456789", 6);
+        Util.sendEmail((String) userDataDetail.getAttribute("email"), "Your passcode confirm is: " + pass);
+        request.getSession().setAttribute("userDataDetail", userDataDetail);
+        request.getSession().setAttribute("passcode", pass);
+        request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
     }
 
-    public UserDAO getUserDAO() {
-        return userDAO;
-    }
-
-    public MentorDAO getMentorDAO() {
-        return mentorDAO;
+    public boolean isVerifyEmail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String passcode = (String) request.getSession().getAttribute("passcode");
+        String passconfirm = request.getParameter("passconfirm");
+        if (!passconfirm.equals(passcode)) {
+            request.setAttribute("err", "passcode doesn't match!");
+            return false;
+        }
+        return true;
     }
 
     public void registerUser(UserDataDetail userDataDetail) {
@@ -77,4 +95,5 @@ public class SignUpService {
             }
         }
     }
+
 }
