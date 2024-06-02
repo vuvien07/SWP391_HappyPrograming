@@ -7,7 +7,6 @@ package controller;
 import dal.AccountDBContext;
 import dal.UserDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
@@ -34,7 +33,7 @@ public class LoginController extends HttpServlet {
                     rememberMe = cooky.getValue();
                 }
             }
-            System.out.println("commit");
+          
         }
         request.setAttribute("user", username);
         request.setAttribute("pass", password);

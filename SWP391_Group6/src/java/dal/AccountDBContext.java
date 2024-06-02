@@ -106,7 +106,7 @@ public class AccountDBContext extends DBContext<Account> {
 
     @Override
     public void delete(Account entity) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     public Account checkAccountExist(String username, String email) {

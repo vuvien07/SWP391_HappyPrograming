@@ -3,13 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/SWP391_HappyPrograming-main/SWP391_Group6/src/java/controller/ChangePasswordController.java</file>
-            <file>file:/E:/SWP391_HappyPrograming-main/SWP391_Group6/src/java/controller/LogoutController.java</file>
-            <file>file:/E:/SWP391_HappyPrograming-main/SWP391_Group6/src/java/dal/AccountDBContext.java</file>
-            <file>file:/E:/SWP391_HappyPrograming-main/SWP391_Group6/src/java/dal/DBContext.java</file>
-            <file>file:/E:/SWP391_HappyPrograming-main/SWP391_Group6/web/WEB-INF/view/user/login.jsp</file>
-            <file>file:/E:/SWP391_HappyPrograming-main/SWP391_Group6/src/java/controller/HomeController.java</file>
-            <file>file:/E:/SWP391_HappyPrograming-main/SWP391_Group6/src/java/controller/LoginController.java</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/ManageSkillController.java</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/web/home.jsp</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/web/WEB-INF/view/admin/skills.jsp</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/web/WEB-INF/view/admin/dashboard.jsp</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/src/java/dal/SkillDBContext.java</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/web/WEB-INF/view/admin/LeftDashboard.jsp</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/DashboardController.java</file>
+            <file>file:/F:/CloneV2/SWP391_HappyPrograming/SWP391_Group6/web/WEB-INF/view/admin/header.jsp</file>
         </group>
     </open-files>
 </project-private>

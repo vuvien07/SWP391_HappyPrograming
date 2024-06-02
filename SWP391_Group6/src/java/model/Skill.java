@@ -1,21 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package model;
 
-import java.util.List;
+//import java.util.List;
 
-/**
- *
- * @author Admin
- */
 public class Skill {
     private int id;
     private String skillname;
     private boolean status;
     private String description;
-    private List<Mentor_Skill> mentorSkills;
+    private String image; 
+//    private List<Mentor_Skill> mentorSkills;
+
+    public Skill() {
+    }
+
+    public Skill(int id, String skillname, boolean status, String description, String image) {
+        this.id = id;
+        this.skillname = skillname;
+        this.status = status;
+        this.description = description;
+        this.image = image;
+//        this.mentorSkills = mentorSkills;
+    }
+    
 
     public int getId() {
         return id;
@@ -49,13 +56,19 @@ public class Skill {
         this.description = description;
     }
 
-    public List<Mentor_Skill> getMentorSkills() {
-        return mentorSkills;
+    public String getImage() {
+        return image;
     }
 
-    public void setMentorSkills(List<Mentor_Skill> mentorSkills) {
-        this.mentorSkills = mentorSkills;
+    public void setImage(String image) {
+        this.image = image;
     }
-    
-    
+
+//    public List<Mentor_Skill> getMentorSkills() {
+//        return mentorSkills;
+//    }
+//
+//    public void setMentorSkills(List<Mentor_Skill> mentorSkills) {
+//        this.mentorSkills = mentorSkills;
+//    }
 }
