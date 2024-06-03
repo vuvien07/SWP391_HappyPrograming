@@ -11,9 +11,12 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import model.Skill;
 
 /**
  *
@@ -77,4 +80,21 @@ public class Util {
         request.getSession().setAttribute(key, value);
     }
     
+    public static List<Object> listByPage(List<Object> objects, String xPage, int numPerPage) {
+        List<Object> results = new ArrayList<>();
+        int size = objects.size(), page;
+        int num = (size % numPerPage == 0) ? (size / numPerPage) : ((size / (numPerPage + 1)) + 1);
+        if (xPage == null) {
+            page = 1;
+        }else{
+            page = Integer.parseInt(xPage);
+        }
+        int start, end = 0;
+        start = (page - 1) * numPerPage;
+        end = Math.min(page * numPerPage, size);
+        for (int i = start; i < end; i++) {
+            results.add(objects.get(i));
+        }
+        return results;
+    }
 }

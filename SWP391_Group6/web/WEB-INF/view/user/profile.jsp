@@ -43,7 +43,7 @@
         <div class="wrapper">
             <div class="title-text">
                 <div class="title login">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; height: 40%; border-radius: 50%"><br></a>
+                    <a href="home"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; height: 40%; border-radius: 50%"><br></a>
                     <p style="color: black">Profile</p><br>
                     <p style="color: red; font-weight: lighter; font-size: 20px">${requestScope.err}</p>
                     <p style="color: green; font-weight: lighter; font-size: 20px">${requestScope.success}</p>

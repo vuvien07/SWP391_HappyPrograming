@@ -18,7 +18,7 @@
     </servlet>
     <servlet>
         <servlet-name>ProfileController</servlet-name>
-        <servlet-class>controller.ProfileController</servlet-class>
+        <servlet-class>controller.user.ProfileController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutController</servlet-name>
@@ -47,6 +47,42 @@
     <servlet>
         <servlet-name>ChangePasswordController</servlet-name>
         <servlet-class>controller.ChangePasswordController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListMentorController</servlet-name>
+        <servlet-class>controller.ListMentorController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestController</servlet-name>
+        <servlet-class>controller.user.RequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListRequestController</servlet-name>
+        <servlet-class>controller.user.ListRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateRequestController</servlet-name>
+        <servlet-class>controller.user.UpdateRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashboardController</servlet-name>
+        <servlet-class>controller.admin.DashboardController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageSkillController</servlet-name>
+        <servlet-class>controller.admin.ManageSkillController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSkillController</servlet-name>
+        <servlet-class>controller.admin.UpdateSkillController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditSkillController</servlet-name>
+        <servlet-class>controller.admin.EditSkillController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ScheduleController</servlet-name>
+        <servlet-class>controller.mentor.ScheduleController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -95,6 +131,42 @@
     <servlet-mapping>
         <servlet-name>ChangePasswordController</servlet-name>
         <url-pattern>/changepass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListMentorController</servlet-name>
+        <url-pattern>/list_mentor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestController</servlet-name>
+        <url-pattern>/request</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListRequestController</servlet-name>
+        <url-pattern>/list_request</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateRequestController</servlet-name>
+        <url-pattern>/update_request</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSkillController</servlet-name>
+        <url-pattern>/skills</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSkillController</servlet-name>
+        <url-pattern>/updateskill</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditSkillController</servlet-name>
+        <url-pattern>/editskill</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScheduleController</servlet-name>
+        <url-pattern>/schedule</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home.jsp</welcome-file>

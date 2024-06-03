@@ -12,7 +12,7 @@ import model.Mentor;
  *
  * @author Admin
  */
-public class MentorDAO extends DBContext<Mentor>{
+public class MentorDAO extends DBContext<Mentor> {
 
     @Override
     public ArrayList<Mentor> listAll() {
@@ -45,9 +45,9 @@ public class MentorDAO extends DBContext<Mentor>{
     public void delete(Mentor entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    public void insertDefault(Mentor entity){
-        try{
+
+    public void insertDefault(Mentor entity) {
+        try {
             connection.setAutoCommit(false);
             String sql = "INSERT INTO Mentor([name], gender, phone, [address], dateofbirth, [status], accid) VALUES(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -60,7 +60,7 @@ public class MentorDAO extends DBContext<Mentor>{
             ps.setInt(7, entity.getAccount().getId());
             ps.executeUpdate();
             connection.commit();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException e1) {
@@ -72,5 +72,25 @@ public class MentorDAO extends DBContext<Mentor>{
             }
         }
     }
-    
+
+    public ArrayList<Mentor> listBySkill(int id) {
+        ArrayList<Mentor> mentors = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Mentor m JOIN Mentor_Skill mt ON m.id = mt.mentorid JOIN Skill s ON s.id = mt.skillid\n"
+                    + "WHERE s.id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Mentor m = new Mentor();
+                m.setId(rs.getInt("id"));
+                m.setName(rs.getString("name"));
+                mentors.add(m);
+            }
+        } catch (SQLException e) {
+
+        }
+        return mentors;
+    }
+
 }
