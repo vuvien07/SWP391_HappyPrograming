@@ -61,6 +61,8 @@
             <main>
                 <div class="container pt-4">          
                     <section class="mb-4">
+
+
                         <div class="card">
                             <div class="row" style="">
                                 <div class="col-lg-4" style="text-align: center; margin-top: 20px; margin-bottom: 20px;padding-top: 20px">
@@ -71,18 +73,37 @@
 
                                 <div class="col-lg-6" style="text-align: center; margin-top: 20px; margin-bottom: 20px;padding-top: 20px;">
                                     <form action="skills" method="post" style="display: flex; justify-content: center">
-                                        <input name="valueSearch" value="${requestScope.searchValue != null ? requestScope.searchValue : ""}"  type="text" placeholder="Search skill name" style="width: 60%; padding: 4px 10px; border-radius: 15px">
+                                        <input name="valueSearch" value="${requestScope.searchValue != null ? requestScope.searchValue : ""}" type="text" placeholder="Search skill name" style="width: 60%; padding: 4px 10px; border-radius: 15px">
                                     <button type="submit" style="border-radius: 50%; width: 40px; font-size: 18px; margin-left: 10px"><i class="fa fa-search"></i></button>
                                 </form>
                             </div>
                             <div class="col-lg-2">
-                                <a href="#addEmployeeModal" style="height: 40px; margin-top: 36px;" class="buttonadd btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i></a>
+                                <a href="createskill" style="height: 40px; margin-top: 36px;" class="buttonadd btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i></a>
                             </div>
                         </div>
-
                     </div>
+                    <%
+                    String mess = request.getParameter("mess");
+                     if (mess != null && !mess.isEmpty()) {
+                    %>
+                    <div class="alert alert-success" role="alert" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+                        <%= mess %>
+                    </div>
+                    <% } %>
+                    <%
+                    String ale = request.getParameter("ale");
+                    if (ale != null && !ale.isEmpty()) {
+                    %>
+                    <div class="alert alert-danger" role="alert" style="background-color: #f8d7da; border-color: #f5c6cb; color: #721c24;">
+                        <%= ale %>
+                    </div>
+                    <% } %>
+
+
 
                     <div class="card-body">
+
+
                         <div class="table-responsive">
                             <table class="table table-hover text-nowrap">
                                 <thead>
@@ -105,16 +126,9 @@
                                             <td class="text_page"><img src="resources/images/${s.image}" alt="${s.skillname}" width="50" height="50"/></td>
                                             <td class="text_page" style="padding: 10px 2px 14px; text-align: center;">
                                                 <a href="updateskill?sid=${s.id}"><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
-                                                <a href="hideskill?sid=${s.id}">
-                                                    <button type="button" class="btn btn-secondary" id="hideButton">
-                                                        <i class="fa-solid fa-eye-slash"></i>
-                                                    </button>
-
-                                                </a>
                                             </td> 
                                         </tr>
                                     </c:forEach>
-
                                 </tbody>
                             </table>
 
@@ -147,26 +161,10 @@
                                     </c:if>
                                 </ul>
                             </div>
-
-
-
                         </div>
                     </div>
+                </section>
             </div>
-        </section>
-
-    </div>
-
-
-</main>
-<script type="text/javascript">
-    <% String message = (String)request.getAttribute("mess"); %>
-    <% if(message != null && !message.isEmpty()) { %>
-    alert("<%= message %>");
-    <% } %>
-
-
-</script>
-
-</body>
+        </main>
+    </body>
 </html>

@@ -116,6 +116,41 @@ public class SkillDBContext extends DBContext<Skill> {
             e.printStackTrace();
         }
     }
+       
+       
+       public boolean checkSkillExist(String skillName) {
+        String sql = "SELECT COUNT(*) AS count FROM Skill WHERE skillname = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, skillName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count") > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+       
+      public void addSkill(String skillName, String description, String image) {
+    String sql = "INSERT INTO [dbo].[Skill] ([skillname], [status], [description], [image]) VALUES (?, 1, ?, ?)";
+    
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setString(1, skillName);
+        st.setString(2, description);
+        st.setString(3, image);
+        
+        st.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
+       
+       
 
     @Override
     public void insert(Skill entity) {

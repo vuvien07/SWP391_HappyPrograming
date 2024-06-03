@@ -13,7 +13,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
         <style>
             img {
                 width: 200px;
@@ -52,7 +51,7 @@
             <div id="editSkillModal">
                 <div class="modal-dialog" style="width: 100%">
                     <div class="modal-content">
-                        <form id="form" action="editskill" method="post" enctype="multipart/form-data">
+                        <form id="form" action="editskill" method="post">
                             <div class="modal-header">						
                                 <h4 class="modal-title">Edit Skill</h4>
                                 <a href="skills">
@@ -72,14 +71,15 @@
                                     <label>Status</label>
                                     <input type="checkbox" name="status" ${detail.status ? 'checked' : ''}>
                                 </div>
+
                                 <div class="form-group" style="display: flex; align-items: center; justify-content: space-between">
                                     <label style="margin-right: 20px">Image</label>
                                     <div>
                                         <c:forEach var="img" items="${detail.image}">
-                                            <img style="width: 200px; height: auto; margin-right: 10px;" src="${img}">
+                                            <img style="width: 200px; height: auto; margin-right: 10px;" src="resources/images/${img}">
                                         </c:forEach>
                                     </div>
-                                    <input id="imageInput" name="image" type="file" multiple>
+                                    <input id="imageInput" name="image" type="file" enctype="multipart/form-data">
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
@@ -94,9 +94,6 @@
                 </div>
             </div>
         </div>
-                                    <script src="${pageContext.request.contextPath}/resources/js/main_2.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/clickevents.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/calender.js"></script>
 
     </body>
 </html>
