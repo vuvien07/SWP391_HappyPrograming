@@ -7,6 +7,7 @@ package dal;
 import java.util.ArrayList;
 import model.Skill;
 import java.sql.*;
+import java.util.List;
 
 /**
  *
@@ -29,6 +30,26 @@ public class SkillDBContext extends DBContext<Skill>{
                 skills.add(skill);
             }
         } catch (SQLException e) {
+        }
+        return skills;
+    }
+    
+        public List<Skill> search(String keyword) {
+        List<Skill> skills = new ArrayList<>();
+        try {
+            String sql = "select * from Skill where skillname like ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            ps.setString(1, "%" + keyword + "%");
+            
+            while (rs.next()) {
+                Skill skill = new Skill();
+                skill.setId(rs.getInt(1));
+                skill.setSkillname(rs.getString(2));
+                skill.setDescription(rs.getString(4));
+                skills.add(skill);
+            }
+        } catch (Exception e) {
         }
         return skills;
     }

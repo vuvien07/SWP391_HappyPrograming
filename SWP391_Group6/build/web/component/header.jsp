@@ -11,20 +11,20 @@
 
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/${pageContext.request.contextPath}/assets/css/font-awesome.min.css">
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/animate.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/animate.css">
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.theme.default.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/magnific-popup.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/magnific-popup.css">
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-datepicker.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery.timepicker.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-datepicker.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jquery.timepicker.css">
 
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flaticon.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/flaticon.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <style>
@@ -79,7 +79,7 @@
         </nav>
         <!-- END nav -->
         
-                <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/work-3.jpg');">
+                <section class="hero-wrap hero-wrap-2" style="background-image: url('assets/images/work-3.jpg');">
             <!--        <div class="overlay"></div>-->
             <div class="container">
                 <div class="row no-gutters slider-text align-items-end justify-content-center">
