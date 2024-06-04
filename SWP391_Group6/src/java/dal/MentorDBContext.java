@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.Mentor;
+import model.MentorCV;
 
 /**
  *
@@ -59,11 +60,11 @@ public class MentorDBContext extends DBContext<Mentor> {
     public ArrayList<Mentor> getInfoMentor() {
         ArrayList<Mentor> mentors = new ArrayList<>();
         try {
-                    String sql = """
-            SELECT m.id, m.name, u.phone 
-            FROM Mentor m 
-            JOIN [HappyPrograming].[dbo].[User] u ON m.accid = u.userid
-            WHERE m.status = 0""";
+            String sql = """
+             SELECT m.id, m.name, m.phone 
+                        FROM Mentor m 
+                        JOIN [HappyPrograming].[dbo].[Mentor_CV] c ON m.cvid = c.cvid
+                        WHERE c.status = 1""";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -79,29 +80,126 @@ public class MentorDBContext extends DBContext<Mentor> {
         return mentors;
     }
 
+//    public void changeStatus(int mentorId) {
+//        String getStatusSql = "SELECT [status] FROM Mentor WHERE [id] = ?";
+//        String updateStatusSql = "UPDATE Mentor SET [status] = ? WHERE [id] = ?";
+//        try {
+//            // Lấy trạng thái hiện tại
+//            PreparedStatement getStatusPs = connection.prepareStatement(getStatusSql);
+//            getStatusPs.setInt(1, mentorId);
+//            ResultSet rs = getStatusPs.executeQuery();
+//            if (rs.next()) {
+//                boolean currentStatus = rs.getBoolean("status");
+//
+//                // Đảo ngược trạng thái
+//                boolean newStatus = !currentStatus;
+//
+//                // Cập nhật trạng thái mới
+//                PreparedStatement updateStatusPs = connection.prepareStatement(updateStatusSql);
+//                updateStatusPs.setBoolean(1, newStatus);
+//                updateStatusPs.setInt(2, mentorId);
+//                updateStatusPs.executeUpdate();
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
     public void changeStatus(int mentorId) {
         String getStatusSql = "SELECT [status] FROM Mentor WHERE [id] = ?";
         String updateStatusSql = "UPDATE Mentor SET [status] = ? WHERE [id] = ?";
+        String getCvIdSql = "SELECT [cvid] FROM Mentor WHERE [id] = ?";
+        String updateCvStatusSql = "UPDATE Mentor_CV SET [status] = 0 WHERE [cvid] = ?";
         try {
-            // Lấy trạng thái hiện tại
+            // Lấy trạng thái hiện tại từ Mentor
             PreparedStatement getStatusPs = connection.prepareStatement(getStatusSql);
             getStatusPs.setInt(1, mentorId);
             ResultSet rs = getStatusPs.executeQuery();
             if (rs.next()) {
                 boolean currentStatus = rs.getBoolean("status");
-
-                // Đảo ngược trạng thái
                 boolean newStatus = !currentStatus;
 
-                // Cập nhật trạng thái mới
+                // Cập nhật trạng thái mới trong Mentor
                 PreparedStatement updateStatusPs = connection.prepareStatement(updateStatusSql);
                 updateStatusPs.setBoolean(1, newStatus);
                 updateStatusPs.setInt(2, mentorId);
                 updateStatusPs.executeUpdate();
+
+                // Lấy cvid từ Mentor
+                PreparedStatement getCvIdPs = connection.prepareStatement(getCvIdSql);
+                getCvIdPs.setInt(1, mentorId);
+                ResultSet cvIdRs = getCvIdPs.executeQuery();
+                if (cvIdRs.next()) {
+                    int cvid = cvIdRs.getInt("cvid");
+                   
+//                    PreparedStatement updateCvStatusPs = connection.prepareStatement(updateCvStatusSql);
+//                    updateCvStatusPs.setBoolean(1, newStatus);
+//                    updateCvStatusPs.setInt(2, cvid);
+//                    updateCvStatusPs.executeUpdate();
+
+                    // Cập nhật trạng thái của CV trong Mentor_CV
+                    PreparedStatement updateCvStatusPs = connection.prepareStatement(updateCvStatusSql);
+                    updateCvStatusPs.setInt(1, cvid);
+                    updateCvStatusPs.executeUpdate();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void rejectCV(int mentorId) {
+        String getCvIdSql = "SELECT [cvid] FROM Mentor WHERE [id] = ?";
+        String updateCvStatusSql = "UPDATE Mentor_CV SET [status] = 0 WHERE [cvid] = ?";
+        try {
+            // Lấy cvid từ Mentor
+            PreparedStatement getCvIdPs = connection.prepareStatement(getCvIdSql);
+            getCvIdPs.setInt(1, mentorId);
+            ResultSet rs = getCvIdPs.executeQuery();
+            if (rs.next()) {
+                int cvid = rs.getInt("cvid");
+
+                // Cập nhật trạng thái của CV trong Mentor_CV
+                PreparedStatement updateCvStatusPs = connection.prepareStatement(updateCvStatusSql);
+                updateCvStatusPs.setInt(1, cvid);
+                updateCvStatusPs.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public MentorCV getMentorCVById(int mentorId) {
+        MentorCV mentorCV = null;
+        try {
+            String sql = """
+            SELECT [cvid], [name], [gender], [phone], [address], [dateofbirth], [ava], [job], [skill], [intro], [achievement], [experience], [certificate]
+            FROM Mentor_CV
+            WHERE [cvid] = ?""";
+
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, mentorId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                mentorCV = new MentorCV();
+                mentorCV.setCvid(rs.getInt("cvid"));
+                mentorCV.setName(rs.getString("name"));
+                mentorCV.setGender(rs.getBoolean("gender"));
+                mentorCV.setPhone(rs.getString("phone"));
+                mentorCV.setAddress(rs.getString("address"));
+                mentorCV.setDateOfBirth(rs.getDate("dateofbirth"));
+                mentorCV.setAva(rs.getString("ava"));
+                mentorCV.setJob(rs.getString("job"));
+                mentorCV.setSkill(rs.getString("skill"));
+                mentorCV.setIntro(rs.getString("intro"));
+                mentorCV.setAchievement(rs.getString("achievement"));
+                mentorCV.setExperience(rs.getString("experience"));
+                mentorCV.setCertificate(rs.getString("certificate"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mentorCV;
     }
 
 //        public List<Product> getProductsWithPagging(int page, int PAGE_SIZE) {

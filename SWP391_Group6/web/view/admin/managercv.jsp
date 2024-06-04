@@ -97,31 +97,34 @@
                                     </tr>
                                 </thead>
                                 <tbody id="contentt">
-                                <c:forEach items="${requestScope.mentors}" var="mentor">
-                                    <tr>
-                                        <td class="text_page">${mentor.id}</td>
-                                        <td class="text_page">${mentor.name}</td>
-                                        <td class="text_page">${mentor.phone}</td>
-                                        <td class="text_page" style="padding: 10px 2px 14px; text-align: center;">
-                                            <a href="viewcv?sid=${mentor.id}">
-                                                <button type="button" class="btn btn-warning">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </button>
-                                            </a>
-<!--                                            <a href="changestatus?sid=${mentor.id}?status="accept">-->
-                                            <a href="changestatus?sid=${mentor.id}">
-                                                <button type="button" class="btn btn-success">
-                                                    <i class="fa-solid fa-check"></i>
-                                                </button>
-                                            </a>
-                                            <a href="deletecv?sid=${mentor.id}">
-                                                <button type="button" class="btn btn-danger">
-                                                    <i class="fa-solid fa-x" data-toggle="tooltip" title="Delete"></i>
-                                                </button>
-                                            </a>
-                                        </td> 
-                                    </tr>
-                                </c:forEach>
+                                    <c:forEach items="${requestScope.mentors}" var="mentor">
+                                        <tr>
+                                            <td class="text_page">${mentor.id}</td>
+                                            <td class="text_page">${mentor.name}</td>
+                                            <td class="text_page">${mentor.phone}</td>
+                                            <td class="text_page" style="padding: 10px 2px 14px; text-align: center;">
+                                                <a href="viewcv?sid=${mentor.id}">
+                                                    <button type="button" class="btn btn-info">
+                                                        <!--<i class="fa-solid fa-eye"></i>-->
+                                                        View
+                                                    </button>
+                                                </a>
+    <!--                                            <a href="changestatus?sid=${mentor.id}?status="accept">-->
+                                                <a href="changestatus?sid=${mentor.id}">
+                                                    <button type="button" class="btn btn-success">
+                                                        <!--<i class="fa-solid fa-check"></i>-->
+                                                        Accept
+                                                    </button>
+                                                </a>
+                                                <a href="rejectcv?sid=${mentor.id}">
+                                                    <button type="button" class="btn btn-danger">
+                                                        <!--<i class="fa-solid fa-x" data-toggle="tooltip" title="Delete"></i>-->
+                                                        Reject
+                                                    </button>
+                                                </a>
+                                            </td> 
+                                        </tr>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>
