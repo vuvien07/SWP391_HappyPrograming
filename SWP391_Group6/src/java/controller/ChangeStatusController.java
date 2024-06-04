@@ -54,32 +54,56 @@ public class ChangeStatusController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        int mentorId = Integer.parseInt(request.getParameter("sid"));
+//        MentorDBContext mentorDAO = new MentorDBContext();
+//        mentorDAO.changeStatus(mentorId);
+//
+//        // Chuyển hướng lại trang quản lý mentor
+//        response.sendRedirect("managercv");
+//        String mentorIdStr = request.getParameter("sid");
+//    }
+////        if (mentorIdStr == null || mentorIdStr.isEmpty()) {
+////            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Mentor ID is required");
+////            return;
+////        }
+////
+////        try {
+////             int mentorId = Integer.parseInt(mentorIdStr);
+////            MentorDBContext mentorDAO = new MentorDBContext();
+////            mentorDAO.changeStatus(mentorId);
+////
+////            // Chuyển hướng lại trang quản lý mentor
+////            response.sendRedirect("managercv");
+////        } catch (NumberFormatException e) {
+////            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Mentor ID format");
+////        }
+////    }
+    
+        @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int mentorId = Integer.parseInt(request.getParameter("sid"));
-        MentorDBContext mentorDAO = new MentorDBContext();
-        mentorDAO.changeStatus(mentorId);
-
-        // Chuyển hướng lại trang quản lý mentor
-        response.sendRedirect("managercv");
         String mentorIdStr = request.getParameter("sid");
 
-//        if (mentorIdStr == null || mentorIdStr.isEmpty()) {
-//            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Mentor ID is required");
-//            return;
-//        }
-//
-//        try {
-//             int mentorId = Integer.parseInt(mentorIdStr);
-//            MentorDBContext mentorDAO = new MentorDBContext();
-//            mentorDAO.changeStatus(mentorId);
-//
-//            // Chuyển hướng lại trang quản lý mentor
-//            response.sendRedirect("managercv");
-//        } catch (NumberFormatException e) {
-//            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Mentor ID format");
-//        }
+        if (mentorIdStr == null || mentorIdStr.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Mentor ID is required");
+            return;
+        }
+
+        try {
+            int mentorId = Integer.parseInt(mentorIdStr);
+
+            MentorDBContext mentorDAO = new MentorDBContext();
+            mentorDAO.changeStatus(mentorId);
+
+            // Redirect lại về trang quản lý mentor
+            response.sendRedirect("managercv");
+
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Mentor ID format");
+        }
     }
 
     /**
