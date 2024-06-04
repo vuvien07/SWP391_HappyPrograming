@@ -15,14 +15,20 @@ public class Mentor {
     private int id;
     private String name;
     private boolean gender;
-    private String phone, address;
+    private String phone;
+    private String address;
     private Date dateOfBirth;
-    private String ava, job, skill, intro, achievement, experience, certificate;
-    private boolean status;
+    private String ava;
+    private String job;
+    private String intro;
+    private String achievement;
+    private String experience;
+    private String certificate;
     private Account account;
     private List<Mentor_Skill> mentorSkills;
+    private boolean status;
 
-
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -87,14 +93,6 @@ public class Mentor {
         this.job = job;
     }
 
-    public String getSkill() {
-        return skill;
-    }
-
-    public void setSkill(String skill) {
-        this.skill = skill;
-    }
-
     public String getIntro() {
         return intro;
     }
@@ -127,14 +125,6 @@ public class Mentor {
         this.certificate = certificate;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public Account getAccount() {
         return account;
     }
@@ -149,5 +139,13 @@ public class Mentor {
 
     public void setMentorSkills(List<Mentor_Skill> mentorSkills) {
         this.mentorSkills = mentorSkills;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

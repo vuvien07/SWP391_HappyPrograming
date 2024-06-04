@@ -20,8 +20,8 @@ import model.User;
 public abstract class DBContext<T> {
 
     protected Connection connection;
-    protected PreparedStatement statement;
-    protected ResultSet resultSet;
+    protected PreparedStatement statement=null;
+    protected ResultSet resultSet=null;
 
     public DBContext() {
         try {

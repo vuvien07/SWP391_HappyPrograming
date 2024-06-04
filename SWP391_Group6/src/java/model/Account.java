@@ -14,16 +14,6 @@ public class Account {
     private String username, password, email, role;
     private boolean status;
 
-    public Account() {
-    }
-
-    public Account(int id, String username, String email) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-    }
-    
-
     public boolean isStatus() {
         return status;
     }

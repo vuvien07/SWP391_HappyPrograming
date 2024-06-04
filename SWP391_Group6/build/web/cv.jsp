@@ -16,7 +16,7 @@
         <p><strong>Experience:</strong> ${mentor.experience}</p>
         <p><strong>Certificates:</strong> ${mentor.certificate}</p>
         <p><strong>Status:</strong> ${mentor.status}</p>
-        <p><strong>Avatar:</strong> <img src="${mentor.avatar}" alt="Avatar" /></p>
+        <p><strong>Avatar:</strong> <img src="${mentor.ava}" alt="Avatar" /></p>
         <p><strong>Email:</strong> ${mentor.email}</p>
         <p><strong>Name:</strong> ${mentor.name}</p>
         <p><strong>Gender:</strong> ${mentor.gender ? "Male" : "Female"}</p>
