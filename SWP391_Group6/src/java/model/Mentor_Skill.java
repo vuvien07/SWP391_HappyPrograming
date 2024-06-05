@@ -9,5 +9,23 @@ package model;
  * @author Admin
  */
 public class Mentor_Skill {
-    
+    private Mentor mentor;
+    private Skill skill;
+
+    public Mentor getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+     
 }

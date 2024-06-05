@@ -5,17 +5,16 @@
 package controller.user;
 
 import controller.authorization.BaseAuthController;
-import dao.SkillDAO;
+import dal.SkillDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Account;
 import model.Skill;
-import service.UserRequestService;
+import service.user.UserRequestService;
 import util.UserDataDetail;
 
 /**
@@ -62,7 +61,7 @@ public class RequestController extends BaseAuthController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        SkillDAO skillDAO = new SkillDAO();
+        SkillDBContext skillDAO = new SkillDBContext();
         String menid = request.getParameter("menid");
         List<Skill> skills = skillDAO.listByMentor(Integer.parseInt(menid));
         request.setAttribute("skills", skills);

@@ -117,6 +117,7 @@
         </section>
 
         <section class="ftco-section bg-light">
+            ${requestScope.err}
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9 m-auto">
@@ -131,7 +132,7 @@
                                             <h3><a href="">Design for the web with adobe photoshop</a></h3>
                                             <p class="advisor">Advisor <span>Tony Garret</span></p>
                                             <ul class="d-flex justify-content-between">
-                                                <li class="m-auto"><a style="padding: 5px 10px; background-color: buttonface; border-radius: 10px" href="request?menid=${c.id}">Book mentor</a></li>
+                                                <li class="m-auto"><a style="padding: 5px 10px; background-color: buttonface; border-radius: 10px" href="book_mentor?menid=${c.id}">Book mentor</a></li>
 <!--                                                <li class="price">$199</li>-->
                                             </ul>
                                         </div>

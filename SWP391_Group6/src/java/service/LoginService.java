@@ -4,8 +4,8 @@
  */
 package service;
 
-import dao.AccountDAO;
-import dao.UserDAO;
+import dal.AccountDBContext;
+import dal.UserDBContext;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,12 +17,12 @@ import util.UserDataDetail;
  * @author Admin
  */
 public class LoginService {
-    private AccountDAO accountDAO;
-    private UserDAO userDAO;
+    private AccountDBContext accountDAO;
+    private UserDBContext userDAO;
 
     public LoginService() {
-        accountDAO = new AccountDAO();
-        userDAO = new UserDAO();
+        accountDAO = new AccountDBContext();
+        userDAO = new UserDBContext();
     }
     
     public Account getAccount(String username, String password){

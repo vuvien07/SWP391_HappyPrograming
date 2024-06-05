@@ -5,16 +5,16 @@
 package controller.admin;
 
 import controller.authorization.BaseAuthController;
-import dao.SkillDAO;
+import dal.SkillDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Account;
 import model.Skill;
+import service.admin.AdminService;
+import util.UserDataDetail;
 
 /**
  *
@@ -22,18 +22,17 @@ import model.Skill;
  */
 public class UpdateSkillController extends BaseAuthController {
 
+    private final AdminService adminService = new AdminService();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
         String id_raw = request.getParameter("sid");
-        SkillDAO sdb = new SkillDAO();
-
+        SkillDBContext sdb = new SkillDBContext();
         int id = Integer.parseInt(id_raw);
         Skill s = sdb.getSkillById(id);
-
         request.setAttribute("detail", s);
-
         request.getRequestDispatcher("WEB-INF/view/admin/updateskill.jsp").forward(request, response);
 
     }
@@ -47,41 +46,26 @@ public class UpdateSkillController extends BaseAuthController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
+        UserDataDetail udd = new UserDataDetail();
         String sid_raw = request.getParameter("id");
         String skillName = request.getParameter("skillname");
-        String[] skillImage = request.getParameterValues("image");
+        String skillImage = request.getParameter("image");
         String status_raw = request.getParameter("status");
         String description = request.getParameter("description");
 
-        SkillDAO sdb = new SkillDAO();
-        int sid;
-        boolean status;
-        String image = "";
+        udd.putAttribute("id", sid_raw);
+        udd.putAttribute("skillname", skillName);
+        udd.putAttribute("skillImage", skillImage);
+        udd.putAttribute("status", status_raw);
+        udd.putAttribute("description", description);
 
         try {
-            sid = Integer.parseInt(sid_raw);
-            status = Boolean.parseBoolean(status_raw);
-            if (skillImage[0] != null && !skillImage[0].equals("")) {
-                for (int i = 0; i < skillImage.length; i++) {
-                    image += "assets/uploads/skill/" + skillImage[i] + ",";
-                }
-                if (image.endsWith(",")) {
-                    image = image.substring(0, image.length() - 1);
-                }
-            }
-
-            sdb.editSkill(sid, skillName, status, description, image);
-
-            List<Skill> skillList = sdb.listAll();
-            request.setAttribute("mess", "Edit successfully!");
-            request.setAttribute("listByPage", skillList);
-
+            this.adminService.handleUpdateSkill(udd);
         } catch (NumberFormatException e) {
             System.out.println(e);
+        }finally{
+            request.getSession().setAttribute("mess", "Update skill sucessfully");
         }
         response.sendRedirect("skills");
     }
 }
-
-
-

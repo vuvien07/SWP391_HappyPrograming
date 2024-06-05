@@ -4,7 +4,7 @@
  */
 package controller.admin;
 
-import dao.SkillDAO;
+import dal.SkillDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -60,7 +60,7 @@ public class ManageSkillController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SkillDAO skillDAO = new SkillDAO();
+        SkillDBContext skillDAO = new SkillDBContext();
         ArrayList<Skill> skills = skillDAO.listAllForAdmin();
         int size = skills.size(), numPerPage = 6, page;
         String xPage = request.getParameter("page");
@@ -69,7 +69,7 @@ public class ManageSkillController extends HttpServlet {
         } else {
             page = Integer.parseInt(xPage);
         }
-        int num = (size % numPerPage == 0 ? (size / numPerPage) : ((size / 7) + 1));
+        int num = (size % numPerPage == 0 ? (size / numPerPage) : ((size / numPerPage) + 1));
         List<Object> pagedSkills = Util.listByPage((List<Object>) (List<?>) skills, xPage, numPerPage);
         request.setAttribute("num", num);
         request.setAttribute("page", page);
@@ -88,7 +88,22 @@ public class ManageSkillController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        SkillDBContext skillDBContext = new SkillDBContext();
+        String txtSearch = request.getParameter("valueSearch");
+        List<Skill> skills = skillDBContext.getSkillsSearch(txtSearch);
+        int size = skills.size(), numPerPage = 6, page;
+        String xPage = request.getParameter("page");
+        if (xPage == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(xPage);
+        }
+        int num = (size % numPerPage == 0 ? (size / numPerPage) : ((size / numPerPage) + 1));
+        List<Object> pagedSkills = Util.listByPage((List<Object>) (List<?>) skills, xPage, numPerPage);
+        request.setAttribute("num", num);
+        request.setAttribute("page", page);
+        request.setAttribute("pagedSkills", pagedSkills);
+        request.getRequestDispatcher("WEB-INF/view/admin/skills.jsp").forward(request, response);
     }
 
     /**

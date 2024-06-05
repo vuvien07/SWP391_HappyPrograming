@@ -4,8 +4,8 @@
  */
 package service.user;
 
-import dao.RequestDAO;
-import dao.UserDAO;
+import dal.RequestDBContext;
+import dal.UserDBContext;
 import jakarta.servlet.http.HttpServletRequest;
 import java.sql.Time;
 import java.sql.Date;
@@ -21,12 +21,12 @@ import util.UserDataDetail;
  */
 public class UserRequestService {
 
-    private RequestDAO requestDAO;
-    private UserDAO userDAO;
+    private RequestDBContext requestDAO;
+    private UserDBContext userDAO;
 
     public UserRequestService() {
-        requestDAO = new RequestDAO();
-        userDAO = new UserDAO();
+        requestDAO = new RequestDBContext();
+        userDAO = new UserDBContext();
     }
 
     public void processCreateRequest(UserDataDetail userDataDetail, HttpServletRequest request) {

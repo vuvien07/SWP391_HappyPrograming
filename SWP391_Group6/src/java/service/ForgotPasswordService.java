@@ -4,7 +4,7 @@
  */
 package service;
 
-import dao.AccountDAO;
+import dal.AccountDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,10 +21,10 @@ import util.Util;
  */
 public class ForgotPasswordService {
 
-    private AccountDAO accountDAO;
+    private AccountDBContext accountDAO;
 
     public ForgotPasswordService() {
-        accountDAO = new AccountDAO();
+        accountDAO = new AccountDBContext();
     }
 
     public Account getAccountByUsernameAndEmail(String username, String email) {

@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.SkillDAO;
+import dal.SkillDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -58,7 +58,7 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        SkillDAO sdc = new SkillDAO();
+        SkillDBContext sdc = new SkillDBContext();
         List<Skill> skills = sdc.listAll();
         int size = skills.size(), numPerPage = 6, page;
         String xPage = request.getParameter("page");
@@ -67,7 +67,7 @@ public class HomeController extends HttpServlet {
         } else {
             page = Integer.parseInt(xPage);
         }
-        int num = (size % numPerPage == 0 ? (size / numPerPage) : ((size / 7) + 1));
+        int num = (size % numPerPage == 0 ? (size / numPerPage) : ((size / numPerPage) + 1));
         List<Object> pagedSkills = Util.listByPage((List<Object>)(List<?>)skills, xPage, numPerPage);
         request.setAttribute("num", num);
         request.setAttribute("page", page);

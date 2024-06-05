@@ -4,9 +4,9 @@
  */
 package service;
 
-import dao.AccountDAO;
-import dao.MentorDAO;
-import dao.UserDAO;
+import dal.AccountDBContext;
+import dal.MentorDBContext;
+import dal.UserDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,14 +23,14 @@ import util.Util;
  */
 public class SignUpService {
 
-    private AccountDAO accountDAO;
-    private UserDAO userDAO;
-    private MentorDAO mentorDAO;
+    private AccountDBContext accountDAO;
+    private UserDBContext userDAO;
+    private MentorDBContext mentorDAO;
 
     public SignUpService() {
-        accountDAO = new AccountDAO();
-        userDAO = new UserDAO();
-        mentorDAO = new MentorDAO();
+        accountDAO = new AccountDBContext();
+        userDAO = new UserDBContext();
+        mentorDAO = new MentorDBContext();
     }
 
     public void processSendEmail(HttpServletRequest request, HttpServletResponse response, UserDataDetail userDataDetail) throws ServletException, IOException {

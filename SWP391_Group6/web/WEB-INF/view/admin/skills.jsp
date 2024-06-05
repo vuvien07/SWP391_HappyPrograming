@@ -83,7 +83,7 @@
                                 </form>
                             </div>
                             <div class="col-lg-2">
-                                <a href="#addEmployeeModal" style="height: 40px; margin-top: 36px;" class="buttonadd btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i></a>
+                                <a href="create_skill" style="height: 40px; margin-top: 36px;" class="buttonadd btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i></a>
                             </div>
                         </div>
 
@@ -109,7 +109,7 @@
                                             <td class="text_page">${s.skillname}</td>
                                             <td class="text_page">${s.status ? "Active" : "Inactive"}</td>
                                             <td class="text_page">${s.description}</td>
-                                            <td class="text_page"><img src="assets/uploads/skill/${s.ava}" alt="${s.skillname}" width="50" height="50"/></td>
+                                            <td class="text_page"><img src="${pageContext.request.contextPath}/assets/uploads/skill/${s.ava}" alt="${s.skillname}" width="50" height="50"/></td>
                                             <td class="text_page" style="padding: 10px 2px 14px; text-align: center;">
                                                 <a href="updateskill?sid=${s.id}"><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
                                                 <a href="hideskill?sid=${s.id}">
@@ -123,21 +123,22 @@
                                     </c:forEach>
                                 </tbody>
                             </table>
-                            <myTag:myPagination currentPage="${requestScope.page}" subject="skills?" totalPages="${requestScope.num}"></myTag:myPagination>
+                            <myTag:myPagination currentPage="${requestScope.page}" subject="skills" totalPages="${requestScope.num}"></myTag:myPagination>
+                            </div>
                         </div>
-                    </div>
-            </div>
+                </div>
 
 
-</main>
-<script type="text/javascript">
-    <% String message = (String)request.getAttribute("mess"); %>
-    <% if(message != null && !message.isEmpty()) { %>
-    alert("<%= message %>");
-    <% } %>
+            </main>
+            <script type="text/javascript">
+            <% String message = (String)request.getSession().getAttribute("mess"); %>
+            <% if(message != null && !message.isEmpty()) { %>
+                alert("<%= message %>");
+            <% request.getSession().removeAttribute("mess");
+                } %>
 
 
-</script>
+        </script>
 
-</body>
+    </body>
 </html>

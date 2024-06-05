@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
 import model.User;
-import service.UserProfileService;
+import service.user.UserService;
 import util.UserDataDetail;
 
 /**
@@ -78,7 +78,7 @@ public class ProfileController extends BaseAuthController {
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account acc)
             throws ServletException, IOException {
         UserDataDetail udd = new UserDataDetail();
-        UserProfileService userProfileService = new UserProfileService();
+        UserService userProfileService = new UserService();
         try {
             Account updateAcc = new Account();
             Account account = (Account) request.getSession().getAttribute("account");

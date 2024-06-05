@@ -6,8 +6,8 @@
 package controller.user;
 
 import controller.authorization.BaseAuthController;
-import dao.RequestDAO;
-import dao.SkillDAO;
+import dal.RequestDBContext;
+import dal.SkillDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -61,8 +61,8 @@ public class UpdateRequestController extends BaseAuthController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
         String requestId = request.getParameter("id");
-        RequestDAO requestDAO = new RequestDAO();
-        SkillDAO skillDAO = new SkillDAO();
+        RequestDBContext requestDAO = new RequestDBContext();
+        SkillDBContext skillDAO = new SkillDBContext();
         Request userRequest = requestDAO.getById(Integer.parseInt(requestId));
         List<Skill> skills = skillDAO.listByMentor(userRequest.getMentor().getId());
         request.setAttribute("skills", skills);

@@ -103,9 +103,11 @@
             </div>
         </nav>
         <section class="ftco-section bg-light">
+            <p class="text-center" style="color: red">${requestScope.err}</p>
+            <p class="text-center" style="color: green">${requestScope.success}</p>
             <form action="schedule" method="post">
                 <div class="container m-auto w-50">
-                        <h1 style=" font-family: Arial, Helvetica, sans-serif">Create Schedule</h1>
+                    <h1 style=" font-family: Arial, Helvetica, sans-serif">Create Schedule</h1>
                     <div class="d-flex justify-content-between w-100">
                         <div>
                             <label>Select date</label><br>
@@ -114,13 +116,13 @@
                     </div>
                     <div>
                         <label>Select slot</label><br>
-                        <c:forEach items="${requestScope.slots}" var="s">
+                        <c:forEach items="${sessionScope.slots}" var="s">
                             <input type="checkbox" name="freeslot" value="${s.id}"/> Slot ${s.id} <br>
                         </c:forEach>
                     </div>
                     <div>
                         <label>Select skills:</label><br>
-                        <c:forEach items="${requestScope.skills}" var="s">
+                        <c:forEach items="${sessionScope.skills}" var="s">
                             <input type="checkbox" name="skill" value="${s.skillname}"/>${s.skillname}<br>
                         </c:forEach>
                     </div>
@@ -129,7 +131,6 @@
                     </div>
                 </div>
             </form>
-            <p>${sessionScope.err}</p>
         </section>
 
         <footer class="ftco-footer ftco-no-pt">

@@ -4,8 +4,8 @@
  */
 package controller;
 
-import dao.AccountDAO;
-import dao.UserDAO;
+import dal.AccountDBContext;
+import dal.UserDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -113,7 +113,7 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
         } else {
             loginService.saveCookie(response, udd);
-            UserDAO udc = new UserDAO();
+            UserDBContext udc = new UserDBContext();
             request.getSession().setAttribute("user", udc.getUserById(account.getId()));
             request.getSession().setAttribute("account", account);
             response.sendRedirect("home");

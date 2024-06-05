@@ -76,16 +76,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Status</label>
-                                    <input type="checkbox" name="status" ${detail.status ? 'checked' : ''}>
+                                    <input type="checkbox" name="status" ${detail.status ? 'checked' : ''} value="true">
                                 </div>
                                 <div class="form-group" style="display: flex; align-items: center; justify-content: space-between">
                                     <label style="margin-right: 20px">Image</label>
                                     <div>
                                         <c:forEach var="img" items="${detail.ava}">
-                                            <img style="width: 200px; height: auto; margin-right: 10px;" src="${img}">
+                                            <img style="width: 200px; height: auto; margin-right: 10px;" src="assets/uploads/skill/${img}">
                                         </c:forEach>
                                     </div>
-                                    <input id="imageInput" name="image" type="file" multiple>
+                                    <input id="imageInput" name="image" type="file" accept=".jpg, .jpeg, .png">
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>

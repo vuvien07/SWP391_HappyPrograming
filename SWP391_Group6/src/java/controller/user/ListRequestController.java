@@ -6,8 +6,8 @@
 package controller.user;
 
 import controller.authorization.BaseAuthController;
-import dao.RequestDAO;
-import dao.UserDAO;
+import dal.RequestDBContext;
+import dal.UserDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -62,8 +62,8 @@ public class ListRequestController extends BaseAuthController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
         int accid = Integer.parseInt(request.getParameter("id"));
-        UserDAO userDAO = new UserDAO();
-        RequestDAO requestDAO = new RequestDAO();
+        UserDBContext userDAO = new UserDBContext();
+        RequestDBContext requestDAO = new RequestDBContext();
         User user = userDAO.getUserById(accid);
         ArrayList<Request> requests = requestDAO.listByUserId(user.getId());
         request.setAttribute("requests", requests);

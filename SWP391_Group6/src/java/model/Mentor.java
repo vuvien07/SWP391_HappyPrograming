@@ -20,7 +20,6 @@ public class Mentor {
     private String ava, job, skill, intro, achievement, experience, certificate;
     private boolean status;
     private Account account;
-    private List<Mentor_Skill> mentorSkills;
 
     public int getId() {
         return id;
@@ -142,11 +141,4 @@ public class Mentor {
         this.account = account;
     }
 
-    public List<Mentor_Skill> getMentorSkills() {
-        return mentorSkills;
-    }
-
-    public void setMentorSkills(List<Mentor_Skill> mentorSkills) {
-        this.mentorSkills = mentorSkills;
-    }
 }

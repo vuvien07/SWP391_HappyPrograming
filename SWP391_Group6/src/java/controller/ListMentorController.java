@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.MentorDAO;
+import dal.MentorDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -62,7 +62,7 @@ public class ListMentorController extends HttpServlet {
             throws ServletException, IOException {
         try {
             String skillId = request.getParameter("id");
-            MentorDAO mentorDAO = new MentorDAO();
+            MentorDBContext mentorDAO = new MentorDBContext();
             ArrayList<Mentor> mentors = mentorDAO.listBySkill(Integer.parseInt(skillId));
             int size = mentors.size(), numPerPage = 6, page;
             String xPage = request.getParameter("page");

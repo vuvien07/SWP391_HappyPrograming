@@ -46,7 +46,7 @@
     </servlet>
     <servlet>
         <servlet-name>ChangePasswordController</servlet-name>
-        <servlet-class>controller.ChangePasswordController</servlet-class>
+        <servlet-class>controller.user.ChangePasswordController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ListMentorController</servlet-name>
@@ -83,6 +83,18 @@
     <servlet>
         <servlet-name>ScheduleController</servlet-name>
         <servlet-class>controller.mentor.ScheduleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewScheduleController</servlet-name>
+        <servlet-class>controller.mentor.ViewScheduleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookMentorController</servlet-name>
+        <servlet-class>controller.user.BookMentorController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateSkillController</servlet-name>
+        <servlet-class>controller.admin.CreateSkillController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -167,6 +179,18 @@
     <servlet-mapping>
         <servlet-name>ScheduleController</servlet-name>
         <url-pattern>/schedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewScheduleController</servlet-name>
+        <url-pattern>/view_schedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookMentorController</servlet-name>
+        <url-pattern>/book_mentor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateSkillController</servlet-name>
+        <url-pattern>/create_skill</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home.jsp</welcome-file>
