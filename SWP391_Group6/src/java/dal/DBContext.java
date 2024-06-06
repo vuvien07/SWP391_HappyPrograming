@@ -42,5 +42,6 @@ public abstract class DBContext<T> {
     public abstract void update(T entity);
 
     public abstract void delete(T entity);
+    
 
 }
