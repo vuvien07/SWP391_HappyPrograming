@@ -11,9 +11,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import model.Account;
 import model.Skill;
-import model.User;
 import util.UserDataDetail;
 
 /**
@@ -31,7 +29,7 @@ public class AdminService {
     public void handleUpdateSkill(UserDataDetail userDataDetail) {
         Skill skill = new Skill();
         skill.setId(Integer.parseInt((String) userDataDetail.getAttribute("id")));
-        skill.setSkillname((String) userDataDetail.getAttribute("skillName"));
+        skill.setSkillname((String) userDataDetail.getAttribute("skillname"));
         skill.setDescription((String) userDataDetail.getAttribute("description"));
         skill.setStatus(((String) userDataDetail.getAttribute("status") != null));
         skill.setAva((String) userDataDetail.getAttribute("skillImage"));

@@ -5,6 +5,7 @@
 package controller.mentor;
 
 import controller.authorization.BaseAuthController;
+import dal.MentorDBContext;
 import dal.SessionDBContext;
 import dal.SlotDBContext;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import model.Account;
+import model.Mentor;
 import model.Session;
 import model.Slot;
 import service.ViewScheduleService;
@@ -72,8 +74,10 @@ public class ViewScheduleController extends BaseAuthController {
             throws ServletException, IOException {
         ViewScheduleService viewScheduleService = new ViewScheduleService();
         SessionDBContext sessionDBContext = new SessionDBContext();
+        MentorDBContext mentorDBContext = new MentorDBContext();
         Account menAccount = (Account) request.getSession().getAttribute("account");
-        ArrayList<Session> sessions = sessionDBContext.listByMentorId(menAccount.getId());
+        Mentor mentor = mentorDBContext.getByAccountId(menAccount.getId());
+        ArrayList<Session> sessions = sessionDBContext.listByMentorId(mentor.getId());
         request.getSession().setAttribute("sessions", sessions);
         viewScheduleService.viewSchedule(request);
         request.getRequestDispatcher("WEB-INF/view/mentor/viewschedule.jsp").forward(request, response);

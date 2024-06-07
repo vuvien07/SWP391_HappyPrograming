@@ -63,9 +63,7 @@
             <jsp:include page="LeftDashBoard.jsp"></jsp:include>
         </header>
         <jsp:include page="header.jsp"></jsp:include>
-        <main style="padding: 20px;">
-           
-            
+        <main style="padding: 20px;">     
         </main>
     </body>
 </html>

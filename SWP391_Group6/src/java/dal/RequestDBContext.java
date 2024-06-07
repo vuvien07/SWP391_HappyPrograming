@@ -103,5 +103,54 @@ public class RequestDBContext extends DBContext<Request> {
         }
         return null;
     }
+    
+    public Request selectTopRequest(){
+        try {
+            String sql = "select top 1 * from [dbo].[Request] order by [id] desc";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Mentor m = new Mentor();
+                m.setId(rs.getInt("menid"));
+                Request request = new Request();
+                request.setId(rs.getInt("id"));
+                request.setTitle(rs.getString("title"));
+                request.setDeadlineTime(rs.getString("deadlineTime"));
+                request.setSkill(rs.getString("skills"));
+                request.setContent(rs.getString("contentRequest"));
+                request.setMentor(m);
+                return request;
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public void updateRequestById(Request entity){
+         try {
+            connection.setAutoCommit(false);
+            String sql = "UPDATE [dbo].[Request] SET [title] = ?, [deadlineTime] = ?, [skills] = ?, [contentRequest] = ? WHERE [id] = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, entity.getTitle());
+            ps.setTimestamp(2, Timestamp.valueOf(entity.getDeadlineTime()));
+            ps.setString(3, entity.getSkill());
+            ps.setString(4, entity.getContent());
+            ps.setInt(5, entity.getId());
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e3) {
+                e3.printStackTrace();
+            }
+        }
+    }
 
 }

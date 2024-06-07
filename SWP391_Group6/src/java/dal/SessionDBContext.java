@@ -9,18 +9,19 @@ import java.util.ArrayList;
 import model.Mentor;
 import model.Session;
 import model.Slot;
+import model.User;
 
 /**
  *
  * @author Admin
  */
 public class SessionDBContext extends DBContext<Session> {
-
+    
     @Override
     public ArrayList<Session> listAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void insert(Session entity) {
         try {
@@ -46,23 +47,24 @@ public class SessionDBContext extends DBContext<Session> {
             }
         }
     }
-
+    
     @Override
     public void update(Session entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void delete(Session entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    public boolean isDuplicatedSession(Date date, int slotid) throws SQLException {
+    
+    public boolean isDuplicatedSession(Date date, int slotid, int menid) throws SQLException {
         try {
-            String sql = "SELECT * FROM [Session] s WHERE s.[date] = ? AND s.slotid = ?";
+            String sql = "SELECT * FROM [Session] s WHERE s.[date] = ? AND s.slotid = ? AND s.menid = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setDate(1, date);
             ps.setInt(2, slotid);
+            ps.setInt(3, menid);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return true;
@@ -71,7 +73,7 @@ public class SessionDBContext extends DBContext<Session> {
         }
         return false;
     }
-
+    
     public boolean isDuplicatedSessionByUserId(int sesid, int userid) throws SQLException {
         try {
             String sql = "SELECT * FROM [Session] s WHERE s.id = ? AND s.userid = ?";
@@ -86,11 +88,12 @@ public class SessionDBContext extends DBContext<Session> {
         }
         return false;
     }
-
+    
     public ArrayList<Session> listByMentorId(int id) {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM [Session] s WHERE s.menid = ?";
+            String sql = "SELECT * FROM [dbo].[Session] s LEFT JOIN [dbo].[User] u ON u.[userid] = s.[userid]"
+                    + " LEFT JOIN [dbo].[Account] a ON a.[accid] = u.accid WHERE s.[menid] = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -99,25 +102,27 @@ public class SessionDBContext extends DBContext<Session> {
                 slot.setId(rs.getInt("slotid"));
                 Mentor mentor = new Mentor();
                 mentor.setId(rs.getInt("menid"));
+                User user = new User();
+                user.setName(rs.getString("Name"));
                 Session session = new Session();
                 session.setId(rs.getInt("id"));
                 session.setDate(rs.getDate("date"));
                 session.setSlot(slot);
                 session.setMentor(mentor);
                 session.setSkill(rs.getString("skill"));
+                session.setUser(user);
                 sessions.add(session);
             }
         } catch (SQLException e) {
         }
         return sessions;
     }
-
-    public void updateById(int userid, int sesid) {
+    
+    public void updateById(Session entity, int sesid) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE [Session] SET userid = ? WHERE id = ?";
+            String sql = "UPDATE [Session] SET userid = ?, requestid = ?, temprequestid = ? WHERE id = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, userid);
             ps.setInt(2, sesid);
             ps.executeUpdate();
             connection.commit();
@@ -133,5 +138,43 @@ public class SessionDBContext extends DBContext<Session> {
             }
         }
     }
-
+    
+    public boolean isSlotAvailable(int id) throws SQLException {
+        String sql = "SELECT * FROM [dbo].[Session] s WHERE s.id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("tempuserid") == 0;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("An error occured");
+        }
+        return false;
+    }
+    
+    public void updateByTempuser(int requestId, int userTempId, int sesid) {
+        String sql = "UPDATE [dbo].[Session] SET [requestid] = ?, [tempuserid] = ? WHERE [id] = ?";
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, requestId);
+            ps.setInt(2, userTempId);
+            ps.setInt(3, sesid);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e3) {
+            }
+        }
+    }
+    
 }

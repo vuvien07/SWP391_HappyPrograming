@@ -6,6 +6,7 @@ package controller.mentor;
 
 import controller.authorization.BaseAuthController;
 import dal.MentorDBContext;
+import dal.SessionDBContext;
 import dal.SkillDBContext;
 import dal.SlotDBContext;
 import java.io.IOException;
@@ -19,8 +20,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
 import model.Mentor;
+import model.Session;
 import model.Skill;
 import model.Slot;
+import service.ViewScheduleService;
 import service.mentor.MentorService;
 import util.UserDataDetail;
 
@@ -68,15 +71,18 @@ public class ScheduleController extends BaseAuthController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
+        SessionDBContext sessionDBContext = new SessionDBContext();
+        ViewScheduleService viewScheduleService = new ViewScheduleService();
         Account mentorAccount = (Account) request.getSession().getAttribute("account");
         MentorDBContext menDBContext = new MentorDBContext();
         Mentor mentor = menDBContext.getByAccountId(mentorAccount.getId());
+        ArrayList<Session> sessions = sessionDBContext.listByMentorId(mentor.getId());
         SlotDBContext slotDAO = new SlotDBContext();
-        SkillDBContext skillDAO = new SkillDBContext();
         ArrayList<Slot> slots = slotDAO.listAll();
+        viewScheduleService.viewSchedule(request);
         request.getSession().setAttribute("slots", slots);
-        ArrayList<Skill> skills = skillDAO.listByMentor(mentor.getId());
-        request.getSession().setAttribute("skills", skills);
+        request.setAttribute("mentor", mentor);
+        request.getSession().setAttribute("sessions", sessions);
         request.getRequestDispatcher("WEB-INF/view/mentor/createschedule.jsp").forward(request, response);
     }
 
@@ -96,33 +102,18 @@ public class ScheduleController extends BaseAuthController {
         UserDataDetail udd = new UserDataDetail();
         Account menAccount = (Account) request.getSession().getAttribute("account");
         String freeDate = request.getParameter("scheduleDate");
-        String[] slots = request.getParameterValues("freeslot");
-        String[] skills = request.getParameterValues("skill");
+        String slot = request.getParameter("freeSlot");
+        String menid = request.getParameter("menid");
 
         udd.putAttribute("freeDate", freeDate);
-        udd.putAttribute("skill", skills[0]);
         udd.putAttribute("account", menAccount);
-        if (slots.length > 1 || skills.length > 1) {
-            request.getSession().setAttribute("err", "Slot or skill must be choose no more than 1");
-        } else {
-            udd.putAttribute("freeSlot", slots[0]);
-            try {
-                createSchedule.createSchedule(udd, request, response);
-            } catch (SQLException ex) {
-                Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            request.getRequestDispatcher("WEB-INF/view/mentor/createschedule.jsp").forward(request, response);
+        udd.putAttribute("freeSlot", slot);
+        udd.putAttribute("menid", menid);
+        try {
+            createSchedule.createSchedule(udd, request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        response.sendRedirect("schedule");
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

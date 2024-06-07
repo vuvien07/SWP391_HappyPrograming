@@ -115,25 +115,32 @@ public class BookMentorController extends BaseAuthController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        String sessionid = request.getParameter("sesid");
+        String action = request.getParameter("action");
         ViewScheduleService vss = new ViewScheduleService();
-        if (!sessionid.equals("")) {
-            UserDBContext userDAO = new UserDBContext();
-            Account userAccount = (Account) request.getSession().getAttribute("account");
-            User user = userDAO.getUserById(userAccount.getId());
-            SessionDBContext sessionDAO = new SessionDBContext();
-            try {
-                if (sessionDAO.isDuplicatedSessionByUserId(Integer.parseInt(sessionid), user.getId())) {
-                    request.setAttribute("err", "This slot is registered by another user. Please book again");
-                    request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);
-                } else {
-                    sessionDAO.updateById(user.getId(), Integer.parseInt(sessionid));
-                    request.setAttribute("success", "Book successful!");
-                    request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(BookMentorController.class.getName()).log(Level.SEVERE, null, ex);
+        if (action.equals("bookMentor")) {
+//            UserDBContext userDAO = new UserDBContext();
+//            Account userAccount = (Account) request.getSession().getAttribute("account");
+//            User user = userDAO.getUserById(userAccount.getId());
+//            SessionDBContext sessionDAO = new SessionDBContext();
+//            try {
+//                if (sessionDAO.isDuplicatedSessionByUserId(Integer.parseInt(sessionid), user.getId())) {
+//                    request.setAttribute("err", "This slot is registered by another user. Please book again");
+//                    request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);
+//                } else {
+//                    sessionDAO.updateById(user.getId(), Integer.parseInt(sessionid));
+//                    request.setAttribute("success", "Book successful!");
+//                    request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(BookMentorController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+             String[] selectedSchedules = request.getParameterValues("selectedSchedule");
+             StringBuilder selectedSchedule = new StringBuilder();
+             for (String selectedSchedule1 : selectedSchedules) {
+                selectedSchedule.append(selectedSchedule1).append(" ");
             }
+             request.getSession().setAttribute("selectedSchedule", selectedSchedule.toString());
+             response.sendRedirect("request");
         }else{
             vss.viewScheduleByChange(request);
             request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);

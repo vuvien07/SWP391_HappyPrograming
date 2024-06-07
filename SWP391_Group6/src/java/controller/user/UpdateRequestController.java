@@ -14,10 +14,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Request;
 import model.Skill;
+import service.user.UserRequestService;
+import util.UserDataDetail;
 
 /**
  *
@@ -65,10 +71,9 @@ public class UpdateRequestController extends BaseAuthController {
         SkillDBContext skillDAO = new SkillDBContext();
         Request userRequest = requestDAO.getById(Integer.parseInt(requestId));
         List<Skill> skills = skillDAO.listByMentor(userRequest.getMentor().getId());
-        request.setAttribute("skills", skills);
+        request.getSession().setAttribute("skills", skills);
         request.setAttribute("userRequest", userRequest);
-        request.setAttribute("action", "update");
-        request.getRequestDispatcher("WEB-INF/view/user/request.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/view/user/updaterequest.jsp").forward(request, response);
     } 
 
     /** 
@@ -81,6 +86,34 @@ public class UpdateRequestController extends BaseAuthController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
+         UserDataDetail udd = new UserDataDetail();
+        UserRequestService userRequestService = new UserRequestService();
+        StringBuilder deadlineTime = new StringBuilder();
+        String title = request.getParameter("title");
+        String deadlineDate = request.getParameter("deadlineDate");
+        String deadlineHour = request.getParameter("deadlineHour");
+        String content = request.getParameter("content");
+        String[] skills = request.getParameterValues("skills");
+        deadlineTime.append(deadlineDate).append(" ").append(deadlineHour).append(":00");
+        udd.putAttribute("title", title);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date parsedDate = null;
+        try {
+            parsedDate = dateFormat.parse(deadlineTime.toString());
+        } catch (ParseException ex) {
+            Logger.getLogger(UpdateRequestController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String dd = dateFormat.format(parsedDate);
+        udd.putAttribute("deadlineTime", dd);
+        udd.putAttribute("content", content);
+        if(skills.length > 1){
+            request.setAttribute("err", "You must choose no more than 1 skill");
+            request.getRequestDispatcher("WEB-INF/view/user/updaterequest.jsp").forward(request, response);
+            return;
+        }
+        udd.putAttribute("updateSkill", skills[0]);
+        userRequestService.processUpdateRequest(udd, request);
+        response.sendRedirect("list_request");
     }
 
     /** 

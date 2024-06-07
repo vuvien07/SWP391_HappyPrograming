@@ -136,8 +136,6 @@
                 alert("<%= message %>");
             <% request.getSession().removeAttribute("mess");
                 } %>
-
-
         </script>
 
     </body>

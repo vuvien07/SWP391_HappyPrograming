@@ -34,8 +34,9 @@ public class MentorService {
     public void createSchedule(UserDataDetail userDataDetail, HttpServletRequest request, HttpServletResponse response) throws SQLException{
         Date freeDate = Date.valueOf((String) userDataDetail.getAttribute("freeDate"));
         int slotid = Integer.parseInt((String) userDataDetail.getAttribute("freeSlot"));
-        if (sessionDAO.isDuplicatedSession(freeDate, slotid)) {
-            request.setAttribute("err", "Schedule is duplicated. Please try again!");
+        int menid = Integer.parseInt((String) userDataDetail.getAttribute("menid"));
+        if (sessionDAO.isDuplicatedSession(freeDate, slotid, menid)) {
+            request.getSession().setAttribute("err", "Schedule is duplicated. Please try again!");
         } else {
             Account menAccount = (Account) userDataDetail.getAttribute("account");
             Slot slot = new Slot();
@@ -51,7 +52,7 @@ public class MentorService {
                 sessionDAO.insert(session);
             } catch (Exception e) {
             }finally{
-                request.setAttribute("success", "Create schedule successful!");
+                request.getSession().setAttribute("success", "Create schedule successful!");
             }
         }
     }

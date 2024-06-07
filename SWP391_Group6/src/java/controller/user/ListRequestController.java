@@ -61,10 +61,10 @@ public class ListRequestController extends BaseAuthController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
-        int accid = Integer.parseInt(request.getParameter("id"));
+        Account account1 = (Account) request.getSession().getAttribute("account");
         UserDBContext userDAO = new UserDBContext();
         RequestDBContext requestDAO = new RequestDBContext();
-        User user = userDAO.getUserById(accid);
+        User user = userDAO.getUserById(account1.getId());
         ArrayList<Request> requests = requestDAO.listByUserId(user.getId());
         request.setAttribute("requests", requests);
         request.getRequestDispatcher("WEB-INF/view/user/listrequest.jsp").forward(request, response);
