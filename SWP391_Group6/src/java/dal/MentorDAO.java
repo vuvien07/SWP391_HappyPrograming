@@ -194,6 +194,24 @@ public abstract class MentorDAO extends DBContext<Mentor> {
         }
     }
 
+    // Method to list all mentors
+
+    // Method to find skill id by name
+    public int findSkillIdByName(String skillName) {
+        String sql = "SELECT id FROM Skill WHERE name = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, skillName);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if skill not found
+    }
+
     // Method to insert a new mentor
     public boolean insertMentor(Mentor mentor) {
         try {
@@ -288,6 +306,7 @@ public abstract class MentorDAO extends DBContext<Mentor> {
             System.err.println("Error inserting mentor email: " + e.getMessage());
         }
     }
+
     // Method to view the profile of a single mentor
     public Mentor viewMentorProfile(int mentorId) {
         Mentor mentor = null;
@@ -372,6 +391,38 @@ public abstract class MentorDAO extends DBContext<Mentor> {
 
         return mentor;
     }
-}
 
+    // Private method to get account ID by mentor ID
+    private int getAccountIdByMentorId(int mentorId) {
+        String sql = "SELECT account_id FROM Mentor WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, mentorId);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("account_id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if account ID not found
+    }
+
+    // New method to check if the job field of a mentor is null
+    public boolean isJobFieldNull(int mentorId) {
+        String sql = "SELECT job FROM Mentor WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, mentorId);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    String job = rs.getString("job");
+                    return job == null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true; // Return true if job field is null or not found
+    }
+}
 

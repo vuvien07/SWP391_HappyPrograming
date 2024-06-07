@@ -30,5 +30,10 @@
         </p>
         <a href="cv?action=update&id=${mentor.id}">Update Profile</a>
     </c:if>
+   <!-- Nút chỉnh sửa CV -->
+    <form action="updatecv.jsp" method="get">
+        <input type="hidden" name="mentorId" value="<%= request.getParameter("mentorId") %>" />
+        <button type="submit">Chỉnh sửa CV</button>
+    </form>
 </body>
 </html>
