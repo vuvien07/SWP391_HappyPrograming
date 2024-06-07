@@ -37,9 +37,15 @@ public class Displaymentor extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             MentorDAO mDao = new MentorDAO();
             ArrayList<Mentor> mentors = mDao.listAll();
+<<<<<<< Updated upstream:SWP391_HappyPrograming-VuVT/SWP391_Group6/src/java/controller/Displaymentor.java
             List<MentorSkill> list = mDao.getMentorSkills();
             request.setAttribute("mentorsP", mentors);
             request.setAttribute("mentorskilP", list);
+=======
+            
+            request.setAttribute("mentorsP", mentors);
+           
+>>>>>>> Stashed changes:SWP391_Group6/src/java/controller/Displaymentor.java
         request.getRequestDispatcher("displaymentor.jsp").forward(request, response);
             
         }

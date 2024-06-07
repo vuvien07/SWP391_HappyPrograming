@@ -36,10 +36,15 @@ public class FIlterMentor extends HttpServlet {
         String MentroID = request.getParameter("mentorId");
         MentorDAO  mDao = new MentorDAO();
         ArrayList<Mentor> mentors = mDao.getMentorByFilter(MentroID);
+<<<<<<< Updated upstream:SWP391_HappyPrograming-VuVT/SWP391_Group6/src/java/controller/FIlterMentor.java
         List<MentorSkill> list = mDao.getMentorSkills();
             
        request.setAttribute("mentorsP", mentors);
        request.setAttribute("mentorskilP", list);
+=======
+            
+       request.setAttribute("mentorsP", mentors);
+>>>>>>> Stashed changes:SWP391_Group6/src/java/controller/FIlterMentor.java
        request.getRequestDispatcher("displaymentor.jsp").forward(request, response);
         
         

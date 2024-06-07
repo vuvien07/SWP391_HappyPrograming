@@ -84,6 +84,7 @@
                                 </div>
                             </form>
                         </div>
+<<<<<<< Updated upstream:SWP391_HappyPrograming-VuVT/SWP391_Group6/build/web/displaymentor.jsp
 
                         <div class="sidebar-box bg-white p-4 ftco-animate active">
                             <h3 class="heading-sidebar">Course Instructor</h3>
@@ -102,6 +103,13 @@
             align-items: center;nstructor</h3>
                             <form action="#" class="browse-form" style="            display: flex;
             flex-direction: column;">
+=======
+                           <div class="sidebar-box bg-white p-4 ftco-display: flex;
+            align-items: center;nstructor</h3>
+                            <form action="#" class="browse-form" style="            display: flex;
+            flex-direction: column;">
+                             <h3 class="heading-sidebar">Course Instructor</h3>
+>>>>>>> Stashed changes:SWP391_Group6/build/web/displaymentor.jsp
                                 <c:forEach items="${mentorsP}" var="o">
                                     <label for="option-instructor-1">
                                         <input type="checkbox" id="option-category-1" name="vehicle" value="" onclick="redirectToLink(event, '${o.id}')">
@@ -113,6 +121,11 @@
                             </form>
                         </div>
 
+<<<<<<< Updated upstream:SWP391_HappyPrograming-VuVT/SWP391_Group6/build/web/displaymentor.jsp
+=======
+                       
+
+>>>>>>> Stashed changes:SWP391_Group6/build/web/displaymentor.jsp
                         <div class="sidebar-box bg-white p-4 ftco-animate">
                             <h3 class="heading-sidebar">Course Experience</h3>
                             <form action="#" class="browse-form" style=" display: flex;
