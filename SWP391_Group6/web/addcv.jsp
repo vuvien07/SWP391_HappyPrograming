@@ -12,7 +12,7 @@
 </head>
 <body>
   <h1>Add Mentor</h1>
-  <form action="addcv" method="post">
+  <form action="/SWP391_Group6/addcv" method="post">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required><br>
 
