@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package dal;
+package controller;
 
 import dal.MentorDAO;
 import dal.MentorDAO;
@@ -60,7 +60,6 @@ public class AddCvController extends HttpServlet {
 
      @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
         String name = request.getParameter("name");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         String phone = request.getParameter("phone");
@@ -83,7 +82,6 @@ public class AddCvController extends HttpServlet {
         }
 
         Mentor mentor = new Mentor();
-        mentor.setId(mentorId);
         mentor.setName(name);
         mentor.setGender(gender);
         mentor.setPhone(phone);
