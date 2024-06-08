@@ -6,6 +6,8 @@
 <html>
 <head>
     <title>Mentor Profile</title>
+    <li class="nav-item"><a href="addcv?id=${param.id}" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">CreateCV Mentor</a></li>
+    <li class="nav-item"><a href="updatecv?id=${param.id}" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Update CV Mentor</a></li>
 </head>
 <body>
     <h1>Mentor Profile</h1>

@@ -13,10 +13,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Mentor;
 import model.Mentor_Skill;
@@ -58,8 +61,10 @@ public class AddCvController extends HttpServlet {
         request.getRequestDispatcher("addcv.jsp").forward(request, response);
     }
 
-     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    try {
+        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
         String name = request.getParameter("name");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         String phone = request.getParameter("phone");
@@ -72,32 +77,35 @@ public class AddCvController extends HttpServlet {
         String experience = request.getParameter("experience");
         String certificate = request.getParameter("certificate");
         String email = request.getParameter("email");
-
+        
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateOfBirth = null;
+        java.util.Date dateOfBirth = null;
         try {
             dateOfBirth = formatter.parse(dateOfBirthStr);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         Mentor mentor = new Mentor();
+        mentor.setId(mentorId);
         mentor.setName(name);
         mentor.setGender(gender);
         mentor.setPhone(phone);
         mentor.setAddress(address);
-        mentor.setDateOfBirth(dateOfBirth);
+        if (dateOfBirth != null) {
+            mentor.setDateOfBirth(new java.sql.Date(dateOfBirth.getTime()));
+        }
         mentor.setAva(ava);
         mentor.setJob(job);
         mentor.setIntro(intro);
         mentor.setAchievement(achievement);
         mentor.setExperience(experience);
         mentor.setCertificate(certificate);
-
+        
         Account account = new Account();
         account.setEmail(email);
         mentor.setAccount(account);
-
+        
         List<Mentor_Skill> mentorSkills = new ArrayList<>();
         String[] skills = request.getParameterValues("skills");
         if (skills != null) {
@@ -110,14 +118,17 @@ public class AddCvController extends HttpServlet {
             }
         }
         mentor.setMentorSkills(mentorSkills);
-
+        
         boolean isInserted = mentorDAO.insertMentor(mentor);
         if (isInserted) {
             response.sendRedirect("cv.jsp");
         } else {
             request.getRequestDispatcher("addcv.jsp").forward(request, response);
         }
+    } catch (SQLException ex) {
+            Logger.getLogger(AddCvController.class.getName()).log(Level.SEVERE, null, ex);
     }
+}
 }
         
 

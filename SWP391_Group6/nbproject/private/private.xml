@@ -3,20 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/CvController.java</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/dal/MentorDAO.java</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/dal/AccountDBContext.java</file>
             <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/AddCvController.java</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/ChangePasswordController.java</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/model/Account.java</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/web/WEB-INF/web.xml</file>
+            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/dal/MentorDAO.java</file>
+            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/UpdateCvController.java</file>
             <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/web/cv.jsp</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/dal/DBContext.java</file>
+            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/LoginController.java</file>
             <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/web/updatecv.jsp</file>
             <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/web/home.jsp</file>
             <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/web/addcv.jsp</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/src/java/controller/UpdateCvController.java</file>
-            <file>file:/D:/happyprog/SWP391_HappyPrograming/SWP391_Group6/web/META-INF/context.xml</file>
         </group>
     </open-files>
 </project-private>

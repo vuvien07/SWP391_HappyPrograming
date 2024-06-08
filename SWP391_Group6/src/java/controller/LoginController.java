@@ -124,7 +124,7 @@ public class LoginController extends HttpServlet {
             UserDBContext udc = new UserDBContext();
             request.getSession().setAttribute("user", udc.getUserById(account.getId()));
             request.getSession().setAttribute("account", account);
-            response.sendRedirect("home");
+            response.sendRedirect("home?id="+account.getId());
         }
     }
 

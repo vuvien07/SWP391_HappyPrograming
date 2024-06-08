@@ -71,6 +71,8 @@
                             <c:if test="${sessionScope.account != null}">
                             <li class="nav-item"><a href="profile" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Profile</a></li>
                             <li class="nav-item"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Log out</a></li>
+                            <li class="nav-item"><a href="cv?id=${param.id}" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">CV Mentor</a></li>
+                            <li class="nav-item"><a href="updatecv?id=${param.id}" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Update CV Mentor</a></li>
                             </c:if>
                     </ul>
 

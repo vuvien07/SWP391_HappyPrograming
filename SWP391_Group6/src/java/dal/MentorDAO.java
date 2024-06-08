@@ -213,16 +213,29 @@ public abstract class MentorDAO extends DBContext<Mentor> {
     }
 
     // Method to insert a new mentor
-    public boolean insertMentor(Mentor mentor) {
-        try {
+    public boolean insertMentor(Mentor mentor) throws SQLException {
+
             connection.setAutoCommit(false); // Start transaction
 
             String sql = """
-                    INSERT INTO Mentor (name, gender, phone, address, dateofbirth, ava, job, intro, achivement, experience, certificate)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    UPDATE [dbo].[Mentor]
+                       SET [name] = ?
+                          ,[gender] = ?
+                          ,[phone] = ?
+                          ,[address] = ?
+                          ,[dateofbirth] = ?
+                          ,[ava] = ?
+                          ,[job] = ?
+                          ,[intro] = ?
+                          ,[achivement] = ?
+                          ,[experience] = ?
+                          ,[certificate] = ?
+                          ,[status] = ?
+                          ,[accid] = ?
+                     WHERE [id] = ?
                 """;
 
-            try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, mentor.getName().trim());
                 statement.setBoolean(2, mentor.isGender());
                 statement.setString(3, mentor.getPhone().trim());
@@ -234,11 +247,12 @@ public abstract class MentorDAO extends DBContext<Mentor> {
                 statement.setString(9, mentor.getAchievement().trim());
                 statement.setString(10, mentor.getExperience().trim());
                 statement.setString(11, mentor.getCertificate().trim());
+                statement.setInt(12, mentor.getId());
 
                 int rowsAffected = statement.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                   ResultSet generatedKeys = statement.getGeneratedKeys();
                         if (generatedKeys.next()) {
                             int mentorId = generatedKeys.getInt(1);
                             insertMentorSkill(mentorId, mentor.getMentorSkills());
@@ -247,26 +261,9 @@ public abstract class MentorDAO extends DBContext<Mentor> {
                     }
                     connection.commit();
                     return true;
-                } else {
-                    throw new SQLException("Mentor insertion failed");
-                }
+                
             }
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                System.err.println("Error during rollback: " + e1.getMessage());
-            }
-            System.err.println("Error during insertion: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                System.err.println("Error setting autocommit: " + e.getMessage());
-            }
-        }
-    }
+          
 
     // Private method to insert mentor skills
     private void insertMentorSkill(int mentorId, List<Mentor_Skill> mentorSkills) {
@@ -313,7 +310,7 @@ public abstract class MentorDAO extends DBContext<Mentor> {
         String sql = """
                 SELECT 
                     m.id as mentor_id, m.name as mentor_name, m.gender, m.phone, m.address, m.dateofbirth, 
-                    m.ava as mentor_avatar, m.job, m.intro, m.achivement, m.experience, m.certificate, 
+                    m.ava as mentor_avatar, m.job, m.intro, m.achivement, m.experience, m.certificate,m. 
                     a.email, a.username as accountUsername, s.skillname
                 FROM 
                     Mentor m

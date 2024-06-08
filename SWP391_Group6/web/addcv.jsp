@@ -13,6 +13,7 @@
 <body>
   <h1>Add Mentor</h1>
   <form action="/SWP391_Group6/addcv" method="post">
+    <input type="hidden" name="mentorId" value="${param.id}"/>
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required><br>
 

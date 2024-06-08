@@ -61,7 +61,7 @@ public class UpdateCvController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         int mentorId = Integer.parseInt(request.getParameter("mentorId"));
+        int mentorId = Integer.parseInt(request.getParameter("mentorId"));
         String name = request.getParameter("name");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         String phone = request.getParameter("phone");
@@ -75,8 +75,8 @@ public class UpdateCvController extends HttpServlet {
         String certificate = request.getParameter("certificate");
         String email = request.getParameter("email");
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateOfBirth = null;
+       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date dateOfBirth = null;
         try {
             dateOfBirth = formatter.parse(dateOfBirthStr);
         } catch (Exception e) {

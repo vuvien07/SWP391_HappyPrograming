@@ -13,7 +13,7 @@
 <body>
     <h1>Update Mentor CV</h1>
     <form action="updatecv" method="post">
-        <input type="hidden" name="mentorId" value="${mentor.id}" />
+        <input type="hidden" name="mentorId" value="${param.id}" />
 
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="${mentor.name}" required><br>
