@@ -63,7 +63,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="index.html"><span>Happy</span>Programing</a>
+                <a class="navbar-brand" href="https://www.google.com/"><span>Happy</span>Programing</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                         aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
@@ -84,31 +84,49 @@
                         <c:if test="${sessionScope.account.roleid == 3}">
                             <li class="nav-item"><a href="admin" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
                             </c:if>
+                             <c:if test="${sessionScope.account.roleid == 4}">
+                            <li class="nav-item"><a href="manage_cv" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
+                            </c:if>
                     </ul>
                     <c:if test="${sessionScope.account != null}">
                         <img src="assets/images/about-1.jpg" class="user_img" style="width: 60px; height: 60px; border-radius: 50%" alt="alt"/>
                         <i class="bi bi-chevron-compact-down icon"></i>
                         <div style="margin-top: 27%; margin-left: 45%; position: absolute">
-                            <ul class="io" style="display: none; margin-top:10px">
-                                <c:if test="${sessionScope.account.roleid == 2}">
-                                    <li style="padding: 0"><a href="" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-top: 80px"><h2><i class="bi bi-person-fill"></i>${sessionScope.account.username}</h2></a></li>
-                                    <li style="padding: 0"><a href="profile" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a></li>
-                                    <li style="padding: 0"><a href="list_request" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> List request</a></li>
-                                    <li style="padding: 0"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> Statistic request</a></li> 
-                                    <li style="padding: 0"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-box-arrow-left"></i> Log out</a></li> 
+                            <ul class="io" id="dynamicMenu" style="display: none; margin-top:10px">
+                                <li style="padding: 0"><a href="" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-top: 80px"><h2><i class="bi bi-person-fill"></i>${sessionScope.account.username}</h2></a></li>
+                                                <c:if test="${sessionScope.account.roleid == 2}">
+                                    <li style="padding: 0"><a href="profile" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a></li>
+                                    <li style="padding: 0"><a href="list_request" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> List request</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.account.roleid == 1}">
-                                    <li style="padding: 0"><a href="" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-top: 80px"><h2><i class="bi bi-person-fill"></i>${sessionScope.account.username}</h2></a></li>
-                                    <li style="padding: 0"><a href="schedule" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>Create schedule</a></li>
-                                    <li style="padding: 0"><a href="view_schedule" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a></li>
-                                    <li style="padding: 0"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> Statistic request</a></li> 
-                                    <li style="padding: 0"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-box-arrow-left"></i> Log out</a></li> 
+                                    <li style="padding: 0"><a href="mentor_profile" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a></li>
+                                    <li style="padding: 0"><a href="schedule" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>Create schedule</a></li>
+                                    <li style="padding: 0"><a href="view_schedule" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a></li>
                                     </c:if>
+                                <li style="padding: 0"><a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> Statistic request</a></li> 
+                                <li style="padding: 0"><a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-box-arrow-left"></i> Log out</a></li> 
                             </ul>
                         </div>
                     </c:if>
                 </div>
 
             </div>
+            <script>
+                $(document).ready(function () {
+                    // Bắt sự kiện click trên cả trang
+                    $(document).on('click', function (event) {
+                        // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
+                        if (!$(event.target).closest('.icon').length) {
+                            // Nếu không, ẩn icon
+                            $('.io').hide();
+                        }
+                    });
+
+                    // Bắt sự kiện click trên icon
+                    $('.icon').click(function () {
+                        $('.io').css('display', 'block');
+                    });
+                });
+            </script>
         </nav>
         <!-- END nav -->

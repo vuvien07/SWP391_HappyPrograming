@@ -5,6 +5,7 @@
 package controller;
 
 import dal.AccountDBContext;
+import dal.MentorDBContext;
 import dal.UserDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -72,7 +73,7 @@ public class LoginController extends HttpServlet {
                 if (cooky.getName().equals("password")) {
                     password = cooky.getValue();
                 }
-                if(cooky.getName().equals("rememberMe")){
+                if (cooky.getName().equals("rememberMe")) {
                     rememberMe = cooky.getValue();
                 }
             }
@@ -98,7 +99,7 @@ public class LoginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
-        
+
         LoginService loginService = new LoginService();
         UserDataDetail udd = new UserDataDetail();
         //tim xem co acc phu hop username vs pass ng dung nhap k
@@ -114,7 +115,13 @@ public class LoginController extends HttpServlet {
         } else {
             loginService.saveCookie(response, udd);
             UserDBContext udc = new UserDBContext();
-            request.getSession().setAttribute("user", udc.getUserById(account.getId()));
+            MentorDBContext mentorDBContext = new MentorDBContext();
+            if (account.getRoleid() == 2) {
+                request.getSession().setAttribute("user", udc.getUserById(account.getId()));
+            }
+            if (account.getRoleid() == 1) {
+                request.getSession().setAttribute("mentor", mentorDBContext.getByAccountId(account.getId()));
+            }
             request.getSession().setAttribute("account", account);
             response.sendRedirect("home");
         }

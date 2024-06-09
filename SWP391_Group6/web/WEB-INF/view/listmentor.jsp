@@ -125,7 +125,7 @@
                             <c:forEach var="c" items="${sessionScope.pagedMentors}">
                                 <div class="col-md-6 d-flex align-items-stretch ftco-animate">
                                     <div class="project-wrap">
-                                        <a href="#" class="img" style="background-image: url(assets/uploads/skill/${c.ava});">
+                                        <a href="profile_cv?menid=${c.id}" class="img" style="background-image: url(assets/uploads/skill/${c.ava});">
                                             <span class="price">${c.name}</span>
                                         </a>
                                         <div class="text p-4">
@@ -264,6 +264,5 @@
                                     });
                                 });
         </script>
-
     </body>
 </html>

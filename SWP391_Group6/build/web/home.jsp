@@ -81,10 +81,10 @@
                 <div class="row">
                     <div class="col-lg-3 sidebar">
                         <div class="sidebar-box bg-white ftco-animate">
-                            <form action="#" class="search-form">
+                            <form action="search_skill" class="search-form">
                                 <div class="form-group">
                                     <span class="icon fa fa-search"></span>
-                                    <input type="text" class="form-control" placeholder="Search...">
+                                    <input type="text" class="form-control" name="key" value="${requestScope.key}" placeholder="Search...">
                                 </div>
                             </form>
                         </div>
@@ -197,11 +197,11 @@
         <script src="${pageContext.request.contextPath}/resources/js/google-map.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
         <script>
-            window.onload = function () {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "home", true);
-                xhr.send();
-            };
+//            window.onload = function () {
+//                var xhr = new XMLHttpRequest();
+//                xhr.open("GET", "home", true);
+//                xhr.send();
+//            };
             $(document).ready(function () {
                 // Bắt sự kiện click trên cả trang
                 $(document).on('click', function (event) {

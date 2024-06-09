@@ -40,74 +40,86 @@
         </style>
     </head>
     <body>
-        <div class="wrapper">
-            <div class="title-text">
-                <div class="title login">
-                    <a href="home"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; height: 40%; border-radius: 50%"><br></a>
-                    <p style="color: black">Profile</p><br>
-                    <p style="color: red; font-weight: lighter; font-size: 20px">${requestScope.err}</p>
-                    <p style="color: green; font-weight: lighter; font-size: 20px">${requestScope.success}</p>
-                </div>
-                <!--            <div class="title signup">
-                                Signup Form
-                            </div>-->
-            </div><br>
-            <div class="form-container">
-                <div class="form-inner">
-                    <form action="profile" class="signup" method="post" enctype="multipart/form-data">
-                        <input type="file" id="fileUpload" name="avatar" accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(event)">
-                        <button type="button" class="img-upload" onclick="document.getElementById('fileUpload').click()">Click here to upload</button>
-                        <br>
-                        <img id="preview" class="preview-img" style="margin-left: 24%;border-radius: 12px" src="${pageContext.request.contextPath}/resources/uploads/${sessionScope.user.ava}">
-                        <input type="hidden" name="image-initiate" value="${sessionScope.user.ava}">
-                        <div style="display: flex; margin-bottom: 10%;">
-                            <div style="margin-right: 10px;width: 49%">
-                                <div class="field">
-                                    <input type="text" name="name" pattern="^[A-Z][a-z]* (?:[A-Z][a-z]* ){1}[A-Z][a-z]*$" title="Name must be three letters and the first char of each word must be capitalize" value="${sessionScope.user.getName()}" placeholder="Full Name">
-                                </div>
-                                <div class="field">
-                                    <input type="text" name="username" value="${sessionScope.user.account.username}" placeholder="Username" required>
-                                </div>
-                                <div style="margin-top:8%">
-                                    <label>Gender:
-                                    </label><br>
-                                    <select name="gender" style="width: 100%">
-                                        <option value="Male" <c:if test="${sessionScope.user.gender == true}">selected</c:if>>Male</option>
-                                        <option value="Female" <c:if test="${sessionScope.user.gender == false}">selected</c:if>>Female</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-
-                                <div style="margin-left: 10px; width: 49%">
-                                    <!--                                    <div class="field">
-                                                                            <input type="password" name="re-pass" placeholder="Confirm password" pattern="^\S{8}$" 
-                                                                                   title="Password must be 8 characters long and cannot contain spaces" required>
-                                                                        </div>-->
-                                    <div class="field">
-                                        <input type="text" name="email" value="${sessionScope.user.account.email}" placeholder="Email" readonly>
-                                </div>
-
-                                <div class="field">
-                                    <label style="min-width: 100px;">Date of birth:</label>
-                                    <input type="date" name="dob" value="${sessionScope.user.dateOfBirth}">
+        <jsp:include page="../component/header.jsp"/>
+ <p style="color: red; font-weight: lighter; font-size: 20px">${requestScope.err}</p>
+        <div class="container-xl" style="margin-top: 10%">
+            <form action="profile" class="signup" method="post" enctype="multipart/form-data">
+                 <p style="color: green; font-weight: lighter; font-size: 20px">${requestScope.success}</p>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="card mb-4 mb-xl-0">
+                            <div class="card-header text-center">Profile Avatar</div>
+                            <div class="card-body text-center box_info">
+                                <div class="avatar">
+                                    <input type="file" id="fileUpload" name="avatar" accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(event)">
+                                    <img id="preview" class="preview-img" style="margin-left: 20%;border-radius: 50%; width: 200px; height: 200px; border: 1px solid black; margin-bottom: 10px"  src="${pageContext.request.contextPath}/resources/uploads/${sessionScope.user.ava}">
+                                    <button type="button" class="img-upload" onclick="document.getElementById('fileUpload').click()">Click here to upload</button>
+                                    <br>
+                                    <input type="hidden" name="image-initiate" value="${sessionScope.user.ava}">
                                 </div>
                             </div>
                         </div>
-                        <div class="field">
-                            <input type="text" name="add" style="width: 100%" value="${sessionScope.user.address}" placeholder="Address">
+                    </div>
+                    <div class="col-xl-8">
+                        <div class="card-mb-4 mb-xl-0">
+                            <div class="card-header">YOUR PROFILE</div>
+                            <div class="card-body box_info">
+
+                                <div class="row">
+                                    <div class="col-md-6">  
+                                        <label class="mb-1" for="inputUsername">Username</label>
+                                        <input class="form-control" id="inputUsername" name="username" type="text" placeholder="Enter your username" value="${sessionScope.user.account.username}">
+                                    </div>
+                                    <div class="col-md-6">  
+                                        <label class="mb-1" for="inputUsername">Date of birth</label><br>
+                                        <input type="date" name="dob" value="${sessionScope.user.dateOfBirth}">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-1" for="inputFirstName">Full name</label>
+                                        <input class="form-control acceptEdit"  name="name" id="inputFirstName" type="text" placeholder="Full Name" value="${sessionScope.user.name}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="mb-1" for="inputFirstName">Email</label>
+                                        <input class="form-control acceptEdit" readonly  name="email" id="inputFirstName" type="text" placeholder="Email" value="${sessionScope.user.account.email}">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Gender:
+                                        </label><br>
+                                        <select name="gender" style="width: 100%">
+                                            <option value="Male" <c:if test="${sessionScope.user.gender == true}">selected</c:if>>Male</option>
+                                            <option value="Female" <c:if test="${sessionScope.user.gender == false}">selected</c:if>>Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>Address
+                                        </label><br>
+                                        <input class="form-control acceptEdit" name="add" id="inputFirstName" type="text" placeholder="Address" value="${sessionScope.user.address}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label style="margin-left: 39%"><a href="changepass" style="text-decoration: none">Change password</a></label>
+                                </div>
+                                <div class="mb-3" style="margin-left: 40%">
+                                    <div class="btn-layer"></div>
+                                    <input type="submit" class="btn-primary" style="border-style: none; padding: 5px 10px; border-radius: 10px" value="Update profile">
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="field btn">
-                            <label style="margin-left: 39%"><a href="changepass" style="text-decoration: none">Change password</a></label>
-                        </div>
-                        <div class="field btn">
-                            <div class="btn-layer"></div>
-                            <input type="submit" value="Update profile">
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
+
+
         <script>
             $(document).ready(function () {
                 // Ẩn phần tử container trước
@@ -115,50 +127,50 @@
                 // Áp dụng hiệu ứng kết hợp fadeIn và slideDown trong 2000ms (2 giây)
                 $(".wrapper").slideDown(500).fadeIn({duration: 250, queue: false});
             });
-//            function submitForm() {
-//                let check = true;
-//                var name = $('[name="name"]').val();
-//                var username = $('[name="username"]').val();
-//                var pass = $('[name="pass"]').val();
-//                var repass = $('[name="re-pass"]').val();
-//                var phone = $('[name="phone"]').val();
-//                var add = $('[name="add"]').val();
-//                var gender = $('[name="name"]').val();
-//                var dob = $('[name="dob"]').val();
-//                var email1 = $('[name="email"]').val();
-//                if (!name.match("^[A-Z][a-z]* (?:[A-Z][a-z]* ){1}[A-Z][a-z]*$")) {
-//                    window.alert("Full name must be in 'First Last' format with each word capitalized.");
-//                    check = false;
-//                }
-//                if (username.trim() === "") {
-//                    window.alert("Username cannot be empty.");
-//                    check = false;
-//                }
-//                if (pass.trim() === "") {
-//                    window.alert("Password cannot be empty.");
-//                    check = false;
-//                } else if (pass !== repass) {
-//                    window.alert("Passwords do not match.");
-//                    check = false;
-//                }
-//                if (!phone.match("^[0-9]{10}$")) {
-//                    window.alert("Phone number must be 10 digits.");
-//                    check = false;
-//                }
-//                if (add.trim() === "") {
-//                    window.alert("Address cannot be empty.");
-//                    check = false;
-//                }
-//                if (gender.trim() === "") {
-//                    window.alert("Gender cannot be empty.");
-//                    check = false;
-//                }
-//                if (!dob.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
-//                    window.alert("Date of Birth must be in YYYY-MM-DD format.");
-//                    check = false;
-//                }
-//                return check;
-//            }
+            //            function submitForm() {
+            //                let check = true;
+            //                var name = $('[name="name"]').val();
+            //                var username = $('[name="username"]').val();
+            //                var pass = $('[name="pass"]').val();
+            //                var repass = $('[name="re-pass"]').val();
+            //                var phone = $('[name="phone"]').val();
+            //                var add = $('[name="add"]').val();
+            //                var gender = $('[name="name"]').val();
+            //                var dob = $('[name="dob"]').val();
+            //                var email1 = $('[name="email"]').val();
+            //                if (!name.match("^[A-Z][a-z]* (?:[A-Z][a-z]* ){1}[A-Z][a-z]*$")) {
+            //                    window.alert("Full name must be in 'First Last' format with each word capitalized.");
+            //                    check = false;
+            //                }
+            //                if (username.trim() === "") {
+            //                    window.alert("Username cannot be empty.");
+            //                    check = false;
+            //                }
+            //                if (pass.trim() === "") {
+            //                    window.alert("Password cannot be empty.");
+            //                    check = false;
+            //                } else if (pass !== repass) {
+            //                    window.alert("Passwords do not match.");
+            //                    check = false;
+            //                }
+            //                if (!phone.match("^[0-9]{10}$")) {
+            //                    window.alert("Phone number must be 10 digits.");
+            //                    check = false;
+            //                }
+            //                if (add.trim() === "") {
+            //                    window.alert("Address cannot be empty.");
+            //                    check = false;
+            //                }
+            //                if (gender.trim() === "") {
+            //                    window.alert("Gender cannot be empty.");
+            //                    check = false;
+            //                }
+            //                if (!dob.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
+            //                    window.alert("Date of Birth must be in YYYY-MM-DD format.");
+            //                    check = false;
+            //                }
+            //                return check;
+            //            }
             function previewImage(event) {
                 var reader = new FileReader();
                 reader.onload = function () {
@@ -167,6 +179,7 @@
                 };
                 reader.readAsDataURL(event.target.files[0]);
             }
+            
         </script>
     </body>
 </html>

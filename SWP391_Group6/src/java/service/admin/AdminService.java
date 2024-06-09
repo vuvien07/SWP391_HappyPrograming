@@ -26,13 +26,27 @@ public class AdminService {
         skillDBContext = new SkillDBContext();
     }
 
-    public void handleUpdateSkill(UserDataDetail userDataDetail) {
+    public void handleUpdateSkill(UserDataDetail userDataDetail, HttpServletRequest request) throws IOException, ServletException {
         Skill skill = new Skill();
         skill.setId(Integer.parseInt((String) userDataDetail.getAttribute("id")));
         skill.setSkillname((String) userDataDetail.getAttribute("skillname"));
         skill.setDescription((String) userDataDetail.getAttribute("description"));
         skill.setStatus(((String) userDataDetail.getAttribute("status") != null));
-        skill.setAva((String) userDataDetail.getAttribute("skillImage"));
+        Part fPart = request.getPart("image");
+        if (fPart != null) {
+            String fileName = Paths.get(fPart.getSubmittedFileName()).getFileName().toString();
+            String fileType = fPart.getContentType();
+            if (fileType.equals("image/jpeg") || fileType.equals("image/png")) {
+                String uploadDir = request.getServletContext().getRealPath("/assets/uploads/skill");
+                File uploadDirFile = new File(uploadDir);
+                if (!uploadDirFile.exists()) {
+                    uploadDirFile.mkdirs();
+                }
+                String filePath = uploadDir + "\\" + fileName;
+                fPart.write(filePath);
+                skill.setAva(fileName);
+            }
+        }
         skillDBContext.editSkill(skill);
     }
 

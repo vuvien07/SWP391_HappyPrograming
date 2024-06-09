@@ -58,7 +58,7 @@
             <div id="editSkillModal">
                 <div class="modal-dialog" style="width: 100%">
                     <div class="modal-content">
-                        <form id="form" action="updateskill" method="post">
+                        <form id="form" action="updateskill" method="post" enctype="multipart/form-data">
                             <div class="modal-header">						
                                 <h4 class="modal-title">Edit Skill</h4>
                                 <a href="skills">
@@ -86,13 +86,14 @@
                                         </c:forEach>
                                     </div>
                                     <input id="imageInput" name="image" type="file" accept=".jpg, .jpeg, .png">
+                                    <input type="hidden" name="image-initiate" value="${detail.ava}">
                                 </div>
                                 <div class="form-group">
                                     <label>Description</label>
                                     <textarea style="height: 200px" name="description" class="form-control" required>${detail.description}</textarea>
                                 </div>
                             </div>
-                                <input type="hidden" name="jj" value="klk">
+                            <input type="hidden" name="jj" value="klk">
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-success" value="Edit">
                             </div>
@@ -101,7 +102,7 @@
                 </div>
             </div>
         </div>
-                                    <script src="${pageContext.request.contextPath}/resources/js/main_2.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/main_2.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/clickevents.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/calender.js"></script>
 

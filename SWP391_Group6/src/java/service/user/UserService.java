@@ -66,6 +66,7 @@ public class UserService {
         updateUser.setAccount(account);
         userDAO.updateById(updateUser, user.getId());
         request.getSession().setAttribute("user", updateUser);
+        request.setAttribute("success", "Update successfully!");
         request.getRequestDispatcher("WEB-INF/view/user/profile.jsp").forward(request, response);
 
     }

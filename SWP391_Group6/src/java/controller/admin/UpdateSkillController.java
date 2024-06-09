@@ -8,6 +8,7 @@ import controller.authorization.BaseAuthController;
 import dal.SkillDBContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -20,6 +21,7 @@ import util.UserDataDetail;
  *
  * @author Admin
  */
+@MultipartConfig
 public class UpdateSkillController extends BaseAuthController {
 
     private final AdminService adminService = new AdminService();
@@ -60,7 +62,7 @@ public class UpdateSkillController extends BaseAuthController {
         udd.putAttribute("description", description);
 
         try {
-            this.adminService.handleUpdateSkill(udd);
+            this.adminService.handleUpdateSkill(udd, request);
         } catch (NumberFormatException e) {
             System.out.println(e);
         }finally{
