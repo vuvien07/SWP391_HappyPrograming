@@ -86,8 +86,19 @@
                                 <a href="create_skill" style="height: 40px; margin-top: 36px;" class="buttonadd btn btn-success" data-toggle="modal"><i class="fa-solid fa-plus"></i></a>
                             </div>
                         </div>
-
                     </div>
+                    <c:if test="${sessionScope.mess != null}">
+                        <div class="alert alert-success" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+                            ${sessionScope.mess}
+                            <% request.getSession().removeAttribute("mess");%>
+                        </div>
+                    </c:if>
+                    <c:if test="${sessionScope.err != null}">
+                        <div class="alert alert-danger" role="alert" style="background-color: #f8d7da; border-color: #f5c6cb; color: #721c24;">
+                            ${sessionScope.err}
+                            <% request.getSession().removeAttribute("err");%>
+                        </div>
+                    </c:if>
 
                     <div class="card-body">
                         <div class="table-responsive">

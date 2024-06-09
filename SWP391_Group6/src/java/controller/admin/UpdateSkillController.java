@@ -63,10 +63,8 @@ public class UpdateSkillController extends BaseAuthController {
 
         try {
             this.adminService.handleUpdateSkill(udd, request);
-        } catch (NumberFormatException e) {
+        } catch (ServletException | IOException e) {
             System.out.println(e);
-        }finally{
-            request.getSession().setAttribute("mess", "Update skill sucessfully");
         }
         response.sendRedirect("skills");
     }

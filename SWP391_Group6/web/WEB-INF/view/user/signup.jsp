@@ -13,13 +13,16 @@
         <link rel="stylesheet" href="font/flaticon.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style_1.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/signup.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
+            <a href="home" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);text-decoration: none">Home</a>
             <div class="title-text">
                 <div class="title login">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
+                    <i class="bi bi-person-fill"></i><br>
                     <p style="color: black">Sign up form</p>
                     <p style="color: red; font-weight: lighter; font-size: 15px" class="errorMessage">${requestScope.err}</p>
                 </div>
@@ -30,14 +33,22 @@
                         <div style="display: flex; margin-bottom: 10%;">
                             <div style="margin-right: 10px;width: 49%">
                                 <div class="field">
-                                    <input type="text" name="name" pattern="[A-Za-z ]{1,50}" title="Name must be between 1 and 50 characters and contain only letters and spaces" placeholder="Full Name" required>
+                                    <input type="text" name="name" placeholder="Full Name" required>
+                                </div>
+                                <div class="name">
+
                                 </div>
                                 <div class="field">
-                                    <input type="text" name="username" pattern="^\S{6,20}$" title="Username must be between 6 and 20 characters and cannot contain spaces" placeholder="Username" required>
+                                    <input type="text" name="username" placeholder="Username" required>
+                                </div>
+                                <div class="username">
+
                                 </div>
                                 <div class="field">
-                                    <input type="password" name="pass" pattern="^\S{8, 20}$" 
-                                           title="Password must be 8-20 characters long and cannot contain spaces"  placeholder="Password" required>
+                                    <input type="password" name="pass"  placeholder="Password" required>
+                                </div>
+                                <div class="pass">
+
                                 </div>
                                 <div style="margin-top:8%">
                                     <label>Gender:
@@ -59,24 +70,36 @@
 
                             <div style="margin-left: 10px; width: 49%">
                                 <div class="field">
-                                    <input type="password" name="re-pass" placeholder="Confirm password" pattern="^\S{8, 20}$" 
-                                           title="Password must be 8-20 characters long and cannot contain spaces" required>
+                                    <input type="password" name="re-pass" placeholder="Confirm password" 
+                                           required>
                                 </div>
-                                <div class="field">
-                                    <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Enter a valid email address" placeholder="Email" required>
+                                <div class="repass">
 
                                 </div>
                                 <div class="field">
-                                    <input type="text" name="phone" pattern="0[0-9]{9}" title="Phone must be 10 digits" placeholder="Phone" required>
+                                    <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Enter a valid email address" placeholder="Email" required>
+                                </div>
+                                <div class="email">
+
+                                </div>
+                                <div class="field">
+                                    <input type="text" name="phone" placeholder="Phone" required>
+                                </div>
+                                <div class="phone">
+
                                 </div>
                                 <div class="field">
                                     <label style="min-width: 100px;">Date of birth:</label>
                                     <input type="date" name="dob" required>
-                                </div>
+                                </div><br>
+                                <div class="dob"></div>
                             </div>
                         </div>
                         <div class="field">
                             <input type="text" name="add" style="width: 100%" placeholder="Address" required>
+                        </div>
+                        <div class="address">
+
                         </div>
                         <div class="field btn">
                             <label style="margin-left: 20%">Already have an account?Sign in <a href="login">here</a></label>
@@ -98,6 +121,7 @@
             });
             function submitForm() {
                 let check = true;
+                var name = $('[name="name"]').val();
                 var username = $('[name="username"]').val();
                 var pass = $('[name="pass"]').val();
                 var repass = $('[name="re-pass"]').val();
@@ -106,32 +130,58 @@
                 var gender = $('[name="name"]').val();
                 var dob = $('[name="dob"]').val();
                 var email1 = $('[name="email"]').val();
-                if (username.trim() === "") {
-                    window.alert("Username cannot be empty.");
+                if (!name.match("[A-Za-z ]{1,50}")) {
+                    $(".name").html('<p style="color:red">Name must be between 1 and 50 characters and contain only letters and spaces</p>');
                     check = false;
+                } else {
+                    $(".name").empty();
                 }
-                if (pass.trim() === "") {
-                    window.alert("Password cannot be empty.");
+                if (username.length < 6 || username.length > 20) {
+                    $(".username").html('<p style="color:red">Username must be between 6 and 20 characters and cannot contain spaces</p>');
                     check = false;
-                } else if (pass !== repass) {
-                    window.alert("Passwords do not match.");
+                } else {
+                    $(".username").empty();
+                }
+                if (pass.length < 8 || pass.length > 20) {
+                    $(".pass").html('<p style="color:red">Password must be 8-20 characters long and cannot contain spaces</p>');
                     check = false;
+                } else {
+                    $(".pass").empty();
+                }
+                if (pass !== repass) {
+                    $(".repass").html('<p style="color:red">Password does not match</p>');
+                    check = false;
+                } else {
+                    $(".repass").empty();
                 }
                 if (!phone.match("^[0-9]{10}$")) {
-                    window.alert("Phone number must be 10 digits.");
+                    $(".phone").html('<p style="color:red">Phone must be 10 digits</p>');
                     check = false;
+                } else {
+                    $(".phone").empty();
                 }
-                if (add.trim() === "") {
-                    window.alert("Address cannot be empty.");
+                var currentDate = new Date();
+
+                // Chuyển đổi ngày cụ thể thành đối tượng Date
+                var targetDateObj = new Date(dob);
+
+                // Lấy các giá trị năm, tháng và ngày của ngày hiện tại và ngày cụ thể
+                var currentYear = currentDate.getFullYear();
+                var currentMonth = currentDate.getMonth();
+                var currentDay = currentDate.getDate();
+
+                var targetYear = targetDateObj.getFullYear();
+                var targetMonth = targetDateObj.getMonth();
+                var targetDay = targetDateObj.getDate();
+
+                // So sánh chỉ với năm, tháng và ngày
+                if (targetYear > currentYear ||
+                        (targetYear === currentYear && targetMonth > currentMonth) ||
+                        (targetYear === currentYear && targetMonth === currentMonth && targetDay > currentDay)) {
+                    $(".dob").html('<p style="color:red">Date of birth is the future date compared to current date</p>');
                     check = false;
-                }
-                if (gender.trim() === "") {
-                    window.alert("Gender cannot be empty.");
-                    check = false;
-                }
-                if (!dob.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
-                    window.alert("Date of Birth must be in YYYY-MM-DD format.");
-                    check = false;
+                }else{
+                    $(".dob").empty();
                 }
                 return check;
             }

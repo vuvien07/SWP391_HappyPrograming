@@ -51,7 +51,7 @@
                             <div class="card-body text-center box_info">
                                 <div class="avatar">
                                     <input type="file" id="fileUpload" name="avatar" accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(event)">
-                                    <img id="preview" class="preview-img" style="margin-left: 20%;border-radius: 50%; width: 200px; height: 200px; border: 1px solid black; margin-bottom: 10px"  src="${pageContext.request.contextPath}/resources/uploads/${sessionScope.user.ava}">
+                                    <img id="preview" class="preview-img" style="margin-left: 20%;border-radius: 50%; width: 200px; height: 200px; border: 1px solid black; margin-bottom: 10px"  src="${pageContext.request.contextPath}/assets/uploads/${sessionScope.user.ava}">
                                     <button type="button" class="img-upload" onclick="document.getElementById('fileUpload').click()">Click here to upload</button>
                                     <br>
                                     <input type="hidden" name="image-initiate" value="${sessionScope.user.ava}">

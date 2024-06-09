@@ -71,10 +71,12 @@ public class CVController extends HttpServlet {
         CVDBContext cvDBContext = new CVDBContext();
         CV mentorCV = cvDBContext.getCVByMentor(mentor.getId());
         List<Skill> skills = skillDBContext.listAll();
-        String[] cvSkills = mentorCV.getSkills().split("\n");
+        if (mentorCV != null) {
+            String[] cvSkills = mentorCV.getSkills().split("\n");
+            request.setAttribute("cvSkills", cvSkills);
+        }
         request.getSession().setAttribute("skills", skills);
         request.getSession().setAttribute("cv", mentorCV);
-        request.setAttribute("cvSkills", cvSkills);
         request.getRequestDispatcher("WEB-INF/view/mentor/cv.jsp").forward(request, response);
     }
 
@@ -109,10 +111,10 @@ public class CVController extends HttpServlet {
         userDataDetail.putAttribute("thirdSkill", thirdSkill);
         if (action == null) {
             mentorService.processCreateCV(userDataDetail, request);
-        }else{
+        } else {
             mentorService.processUpdateCV(userDataDetail, request);
         }
-        request.getRequestDispatcher("WEB-INF/view/mentor/cv.jsp").forward(request, response);
+       response.sendRedirect("mentor_cv");
     }
 
     /**

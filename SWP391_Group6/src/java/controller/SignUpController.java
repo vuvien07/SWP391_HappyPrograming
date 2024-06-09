@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
 import util.UserDataDetail;
 
 /**
@@ -97,6 +98,8 @@ public class SignUpController extends HttpServlet {
                 userDataDetail.putAttribute("gender", gender);
                 userDataDetail.putAttribute("role", role);
                 userDataDetail.putAttribute("email", email);
+                String dateOfBirth = (String) userDataDetail.getAttribute("dob");
+                LocalDate currTime = LocalDate.now();
                 sus.processSendEmail(request, response, userDataDetail);
             } else {
                 if (sus.isVerifyEmail(request, response)) {

@@ -45,9 +45,22 @@ public class AdminService {
                 String filePath = uploadDir + "\\" + fileName;
                 fPart.write(filePath);
                 skill.setAva(fileName);
+            } else {
+                String imageInitiate = request.getParameter("image-initiate");
+                skill.setAva(imageInitiate);
             }
         }
-        skillDBContext.editSkill(skill);
+        if (skillDBContext.checkSkillExist((String) userDataDetail.getAttribute("skillname"))) {
+            request.getSession().setAttribute("err", "Skill is existed");
+        } else {
+            try {
+                skillDBContext.editSkill(skill);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            request.getSession().setAttribute("mess", "Update skill sucessfully");
+        }
+
     }
 
     public void handleCreateSkill(UserDataDetail userDataDetail, HttpServletRequest request) throws IOException, ServletException {
@@ -69,6 +82,15 @@ public class AdminService {
             }
         }
         skill.setDescription((String) userDataDetail.getAttribute("description"));
-        skillDBContext.insert(skill);
+        if (skillDBContext.checkSkillExist((String) userDataDetail.getAttribute("skillname"))) {
+            request.getSession().setAttribute("err", "Skill is existed");
+        } else {
+            try {
+                skillDBContext.insert(skill);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            request.getSession().setAttribute("mess", "Add skill successfully!");
+        }
     }
 }

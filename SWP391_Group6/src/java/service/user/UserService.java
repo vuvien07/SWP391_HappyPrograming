@@ -45,7 +45,7 @@ public class UserService {
             String fileName = Paths.get(fPart.getSubmittedFileName()).getFileName().toString();
             String fileType = fPart.getContentType();
             if (fileType.equals("image/jpeg") || fileType.equals("image/png")) {
-                String uploadDir = request.getServletContext().getRealPath("/resources/uploads");
+                String uploadDir = request.getServletContext().getRealPath("/assets/uploads");
                 File uploadDirFile = new File(uploadDir);
                 if (!uploadDirFile.exists()) {
                     uploadDirFile.mkdirs();

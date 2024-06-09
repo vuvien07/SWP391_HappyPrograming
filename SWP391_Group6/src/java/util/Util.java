@@ -11,6 +11,7 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -171,6 +172,11 @@ public class Util {
             week++;
         }
         return weeks;
+    }
+    
+    public static void main(String[] args) {
+        LocalDate ld = LocalDate.now();
+        System.out.println(java.sql.Date.valueOf("2024-06-10").after(java.sql.Date.valueOf(ld)));
     }
   
 }

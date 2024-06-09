@@ -83,8 +83,6 @@ public class CreateSkillController extends HttpServlet {
             adminService.handleCreateSkill(userDataDetail, request);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
-        }finally{
-            request.getSession().setAttribute("mess", "Add skill successfully!");
         }
         response.sendRedirect("skills");
     }

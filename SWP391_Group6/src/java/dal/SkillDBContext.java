@@ -140,13 +140,9 @@ public class SkillDBContext extends DBContext<Skill> {
             st.setBoolean(2, entity.isStatus());
             st.setString(3, entity.getDescription());
 
-            if (!entity.getAva().equals("")) {
-                st.setString(4, entity.getAva());
-                st.setInt(5, entity.getId());
-            } else {
-                st.setString(4, null);
-                st.setInt(5, entity.getId());
-            }
+            st.setString(4, entity.getAva());
+            st.setInt(5, entity.getId());
+
             st.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -171,8 +167,8 @@ public class SkillDBContext extends DBContext<Skill> {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Skill skill = new Skill();
-                skill.setId( rs.getInt("id"));
-                skill.setSkillname( rs.getString("skillname"));
+                skill.setId(rs.getInt("id"));
+                skill.setSkillname(rs.getString("skillname"));
                 skill.setStatus(rs.getBoolean("status"));
                 skill.setDescription(rs.getString("description"));
                 skill.setAva(rs.getString("image"));
@@ -182,6 +178,21 @@ public class SkillDBContext extends DBContext<Skill> {
             // Handle exception
         }
         return list;
+    }
+
+    public boolean checkSkillExist(String skillName) {
+        String sql = "SELECT COUNT(*) AS count FROM Skill WHERE skillname = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, skillName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count") > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

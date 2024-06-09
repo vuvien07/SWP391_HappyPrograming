@@ -71,9 +71,9 @@ public class MentorService {
         String secondSkill = (String) userDataDetail.getAttribute("secondSkill");
         String thirdSkill = (String) userDataDetail.getAttribute("thirdSkill");
         if (firstSkill.equals("none") && secondSkill.equals("none") && thirdSkill.equals("none")) {
-            request.setAttribute("err", "Skills must not be none!");
+            request.getSession().setAttribute("err", "Skills must not be none!");
         } else if (firstSkill.equals(secondSkill) || secondSkill.equals(thirdSkill) || firstSkill.equals(thirdSkill)) {
-            request.setAttribute("err", "Skills must not be duplicated");
+            request.getSession().setAttribute("err", "Skills must not be duplicated");
         } else {
             CV cv = new CV();
             StringBuilder sb = new StringBuilder();
@@ -123,9 +123,9 @@ public class MentorService {
         String secondSkill = (String) userDataDetail.getAttribute("secondSkill");
         String thirdSkill = (String) userDataDetail.getAttribute("thirdSkill");
         if (firstSkill.equals("none") && secondSkill.equals("none") && thirdSkill.equals("none")) {
-            request.setAttribute("err", "Skills must not be none!");
+            request.getSession().setAttribute("err", "Skills must not be none!");
         } else if (firstSkill.equals(secondSkill) || secondSkill.equals(thirdSkill) || firstSkill.equals(thirdSkill)) {
-            request.setAttribute("err", "Skills must not be duplicated");
+            request.getSession().setAttribute("err", "Skills must not be duplicated");
         } else {
             CV cv = new CV();
             StringBuilder sb = new StringBuilder();
@@ -165,7 +165,7 @@ public class MentorService {
                 cvDBContext.updateCV(cv);
             } catch (Exception e) {
             }
-            request.setAttribute("update_success", "Update CV successfully!");
+            request.getSession().setAttribute("update_success", "Update CV successfully!");
         }
 
     }

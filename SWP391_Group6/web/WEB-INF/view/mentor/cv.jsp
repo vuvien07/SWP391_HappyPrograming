@@ -43,8 +43,10 @@
         <jsp:include page="../component/header.jsp"/>
         <div class="container-xl" style="margin-top: 10%">
             <p style="color: green" class="text-center">${requestScope.success}</p>
-             <p style="color: green" class="text-center">${requestScope.update_success}</p>
-            <p style="color: red" class="text-center">${requestScope.err}</p>
+            <p style="color: green" class="text-center">${sessionScope.update_success}</p>
+            <% request.getSession().removeAttribute("update_success");%>
+            <p style="color: red" class="text-center">${sessionScope.err}</p>
+            <% request.getSession().removeAttribute("err");%>
             <h2 class="text-center">CV for ${sessionScope.account.username}</h2>
             <form action="mentor_cv" class="signup" method="post" enctype="multipart/form-data">
                 <p style="color: green; font-weight: lighter; font-size: 20px">${requestScope.success}</p>
