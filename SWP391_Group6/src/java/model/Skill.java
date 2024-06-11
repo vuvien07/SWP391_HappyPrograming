@@ -15,6 +15,7 @@ public class Skill {
     private String skillname;
     private boolean status;
     private String description;
+    private String ava;
     private List<Mentor_Skill> mentorSkills;
 
     public int getId() {
@@ -56,6 +57,13 @@ public class Skill {
     public void setMentorSkills(List<Mentor_Skill> mentorSkills) {
         this.mentorSkills = mentorSkills;
     }
-    
-    
+
+    public String getAva() {
+        return ava;
+    }
+
+    public void setAva(String ava) {
+        this.ava = ava;
+    }
+      
 }

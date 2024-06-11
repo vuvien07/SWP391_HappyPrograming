@@ -11,16 +11,9 @@ package model;
 public class Account {
 
     private int id;
-    private String username, password, email, role;
+    private String username, password, email;
+    private int roleid;
     private boolean status;
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     public int getId() {
         return id;
@@ -54,12 +47,22 @@ public class Account {
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
+    public int getRoleid() {
+        return roleid;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleid(int roleid) {
+        this.roleid = roleid;
     }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    
 
 }

@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import util.UserDataDetail;
 import util.Util;
 
 /**
@@ -58,7 +59,8 @@ public class VerifyAccount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = (String) request.getSession().getAttribute("email");
+        UserDataDetail udd = (UserDataDetail) request.getSession().getAttribute("userDataDetail");
+        String email = (String) udd.getAttribute("email");
         String str = "0123456789";
         String pass = Util.generatePassword(str, 6);
         Util.sendEmail(email, "Your passcode confirm is: " + pass);

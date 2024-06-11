@@ -4,9 +4,7 @@
  */
 package controller;
 
-import dal.AccountDBContext;
-import dal.MentorDBContext;
-import dal.UserDBContext;
+import service.SignUpService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,10 +12,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
-import model.Account;
-import model.Mentor;
-import model.User;
+import java.time.LocalDate;
+import util.UserDataDetail;
 
 /**
  *
@@ -78,10 +74,9 @@ public class SignUpController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String status = (String) request.getSession().getAttribute("status");
-        AccountDBContext adc = new AccountDBContext();
-        UserDBContext udc = new UserDBContext();
-        MentorDBContext mdc = new MentorDBContext();
+        String status = request.getParameter("status");
+        SignUpService sus = new SignUpService();
+        UserDataDetail userDataDetail = new UserDataDetail();
         try {
             if (status == null) {
                 String fullname = request.getParameter("name");
@@ -93,74 +88,29 @@ public class SignUpController extends HttpServlet {
                 String dob = request.getParameter("dob");
                 String gender = request.getParameter("gender");
                 String role = request.getParameter("role");
-                Account a = adc.checkAccountExist(username, email);
-                if (a != null) {
-                    request.setAttribute("err", "Username or email are existed. Please try again!");
-                    request.getRequestDispatcher("WEB-INF/view/user/signup.jsp").forward(request, response);
-                    return;
-                }
-                session.setAttribute("name", fullname);
-                session.setAttribute("username", username);
-                session.setAttribute("pass", password);
-                session.setAttribute("phone", phone);
-                session.setAttribute("address", address);
-                session.setAttribute("dob", dob);
-                session.setAttribute("gender", gender);
-                session.setAttribute("role", role);
-                request.getSession().setAttribute("email", email);
-                response.sendRedirect("verify");
+
+                userDataDetail.putAttribute("name", fullname);
+                userDataDetail.putAttribute("username", username);
+                userDataDetail.putAttribute("pass", password);
+                userDataDetail.putAttribute("phone", phone);
+                userDataDetail.putAttribute("address", address);
+                userDataDetail.putAttribute("dob", dob);
+                userDataDetail.putAttribute("gender", gender);
+                userDataDetail.putAttribute("role", role);
+                userDataDetail.putAttribute("email", email);
+                String dateOfBirth = (String) userDataDetail.getAttribute("dob");
+                LocalDate currTime = LocalDate.now();
+                sus.processSendEmail(request, response, userDataDetail);
             } else {
-                String name = (String) session.getAttribute("name");
-                String username = (String) session.getAttribute("username");
-                String password = (String) session.getAttribute("pass");
-                String phone = (String) session.getAttribute("phone");
-                String addess = (String) session.getAttribute("address");
-                String dob = (String) session.getAttribute("dob");
-                String gender = (String) session.getAttribute("gender");
-                String email = (String) session.getAttribute("email");
-                String role = (String) session.getAttribute("role");
-                Account newAcc = new Account();
-                newAcc.setUsername(username);
-                newAcc.setEmail(email);
-                newAcc.setPassword(password);
-                newAcc.setStatus(true);
-                if (role.equals("Mentee")) {
-                    User newMen = new User();
-                    newMen.setName(name);
-                    newMen.setGender("Male".equals(gender));
-                    newMen.setPhone(phone);
-                    newMen.setAddress(addess);
-                    newMen.setDateOfBirth(java.sql.Date.valueOf(dob));
-                    newAcc.setRole(role);
-                    adc.insert(newAcc);
-                    Account account = adc.getAccount(username, password);
-                    if (account != null) {
-                        newMen.setAccount(account);
-                        udc.insert(newMen);
-                    }else{
-                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occured. Please try again later!");
-                    }
+                if (sus.isVerifyEmail(request, response)) {
+                    UserDataDetail userDataDetail1 = (UserDataDetail) session.getAttribute("userDataDetail");
+                    sus.registerUser(userDataDetail1);
+                    session.invalidate();
+                    request.setAttribute("success", "Sign up sucessfully! You can login to our system");
+                    request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
                 } else {
-                    newAcc.setRole(role);
-                    Mentor newMentor = new Mentor();
-                    newMentor.setName(name);
-                    newMentor.setGender("Male".equals(gender));
-                    newMentor.setPhone(phone);
-                    newMentor.setAddress(addess);
-                    newMentor.setDateOfBirth(java.sql.Date.valueOf(dob));
-                    newMentor.setStatus(false);
-                    adc.insert(newAcc);
-                    Account account = adc.getAccount(username, password);
-                    if (account != null) {
-                        newMentor.setAccount(account);
-                        mdc.insert(newMentor);
-                    }else{
-                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occured. Please try again later!");
-                    }
+                    request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
                 }
-                session.removeAttribute("status");
-                request.setAttribute("success", "Sign up sucessfully! You can login to our system");
-                request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
             }
         } catch (ServletException | IOException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occured. Please try again later!");

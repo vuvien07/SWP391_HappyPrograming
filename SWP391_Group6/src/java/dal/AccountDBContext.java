@@ -36,11 +36,11 @@ public class AccountDBContext extends DBContext<Account> {
     public void insert(Account entity) {
         try {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO Account VALUES(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Account(username, [password], roleid, email, [status]) VALUES(?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, entity.getUsername());
             ps.setString(2, entity.getPassword());
-            ps.setString(3, entity.getRole());
+            ps.setInt(3, entity.getRoleid());
             ps.setString(4, entity.getEmail());
             ps.setBoolean(5, entity.isStatus());
 
@@ -108,28 +108,24 @@ public class AccountDBContext extends DBContext<Account> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public Account checkAccountExist(String username, String email) {
+    public boolean checkAccountExist(String username, String email) {
         try {
             String sql = "SELECT * FROM Account a WHERE a.username = ? OR a.email = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
             ps.setString(2, email);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Account a = new Account();
-                a.setId(rs.getInt("accid"));
-                a.setUsername(rs.getString("username"));
-                return a;
+            if (rs.next()) {
+               return true;
             }
         } catch (SQLException e) {
         }
-        return null;
+        return false;
     }
 
     public Account getAccount(String username, String password) {
         try {
-            String sql = "SELECT a.accid, a.username, a.password, a.email FROM Account a WHERE a.username = ? AND a.password = ?";
-
+            String sql = "SELECT a.accid, a.username, a.email, a.roleid FROM Account a WHERE a.username = ? AND a.[password] = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
             ps.setString(2, password);
@@ -138,8 +134,8 @@ public class AccountDBContext extends DBContext<Account> {
                 Account a = new Account();
                 a.setId(rs.getInt("accid"));
                 a.setUsername(rs.getString("username"));
-                a.setPassword(rs.getString("password"));
                 a.setEmail(rs.getString("email"));
+                a.setRoleid(rs.getInt("roleid"));
                 return a;
             }
         } catch (SQLException e) {

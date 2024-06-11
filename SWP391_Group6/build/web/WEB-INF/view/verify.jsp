@@ -21,10 +21,10 @@
     <body>
         <section class="wrapper">
             <p style="color: red">${requestScope.err}</p>
-            <header style="text-align: center;margin-bottom: 10px">A password confirm was sent to email ${sessionScope.email}.Please check your mail</header>
+            <header style="text-align: center">A password confirm was sent to email ${sessionScope.email}.Please check your mail</header>
             <form action="verify" method="post">
-                <input type="text" name="passconfirm" placeholder="Enter verification code" style="margin-bottom: 12px; width: 100%"><br>
-                <input type="submit" class="su" value="Verify" style="padding: 5px 10px; background-color: #0073e6; border-style: none; border-radius: 10px" />
+                    <input type="text" name="passconfirm" placeholder="Enter verification code">
+                    <input type="submit" class="su" value="Verify" />
                 </form>
         </section>
     </body>

@@ -11,4 +11,5 @@ package util;
 public class Message {
     public static final String HOST_EMAIL = "vuvthe173552@fpt.edu.vn";
     public static final String HOST_PASSWORD = "muqt sosf eoqr fdhq";
+    public static final String GENERATION_PASSWORD = "abcdefgfijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
 }

@@ -4,13 +4,12 @@
  */
 package dal;
 
-import controller.LoginController;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Skill;
-import model.User;
 
 /**
  *
@@ -20,14 +19,12 @@ import model.User;
 public abstract class DBContext<T> {
 
     protected Connection connection;
-    protected PreparedStatement statement=null;
-    protected ResultSet resultSet=null;
 
     public DBContext() {
         try {
             String user = "sa";
-            String pass = "123456789";
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=PRJ_ASSIGNMENT;encrypt=true;trustServerCertificate=true;";
+            String pass = "sa123";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=HappyPrograming;encrypt=true;trustServerCertificate=true;";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException | SQLException ex) {
@@ -43,5 +40,4 @@ public abstract class DBContext<T> {
 
     public abstract void delete(T entity);
     
-
 }

@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 import model.Skill;
+import util.Util;
 
 /**
  *
@@ -57,8 +59,19 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         SkillDBContext sdc = new SkillDBContext();
-        ArrayList<Skill> skills = sdc.listAll();
-        request.getSession().setAttribute("skills", skills);
+        List<Skill> skills = sdc.listAll();
+        int size = skills.size(), numPerPage = 6, page;
+        String xPage = request.getParameter("page");
+        if (xPage == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(xPage);
+        }
+        int num = (size % numPerPage == 0 ? (size / numPerPage) : ((size / numPerPage) + 1));
+        List<Object> pagedSkills = Util.listByPage((List<Object>)(List<?>)skills, xPage, numPerPage);
+        request.setAttribute("num", num);
+        request.setAttribute("page", page);
+        request.getSession().setAttribute("pagedSkills", pagedSkills);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     } 
 
