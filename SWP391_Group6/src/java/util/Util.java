@@ -11,6 +11,9 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +39,7 @@ public class Util {
         }
         return sb.toString();
     }
-    
+
     public static void sendEmail(String to, String content) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //smtp host
@@ -67,30 +70,30 @@ public class Util {
             e.printStackTrace();
         }
     }
-    
-    public static String getRequestValue(HttpServletRequest request, String key){
+
+    public static String getRequestValue(HttpServletRequest request, String key) {
         return request.getParameter(key);
     }
-    
-    public static void setRequestAttribute(HttpServletRequest request, String key, Object value){
+
+    public static void setRequestAttribute(HttpServletRequest request, String key, Object value) {
         request.setAttribute(key, value);
     }
-    
-    public static Object getSessionValue(HttpServletRequest request, String key){
+
+    public static Object getSessionValue(HttpServletRequest request, String key) {
         return request.getSession().getAttribute(key);
     }
-    
-    public static void setSessionAttribute(HttpServletRequest request, String key, Object value){
+
+    public static void setSessionAttribute(HttpServletRequest request, String key, Object value) {
         request.getSession().setAttribute(key, value);
     }
-    
+
     public static List<Object> listByPage(List<Object> objects, String xPage, int numPerPage) {
         List<Object> results = new ArrayList<>();
         int size = objects.size(), page;
         int num = (size % numPerPage == 0) ? (size / numPerPage) : ((size / (numPerPage + 1)) + 1);
         if (xPage == null) {
             page = 1;
-        }else{
+        } else {
             page = Integer.parseInt(xPage);
         }
         int start, end = 0;
@@ -101,7 +104,7 @@ public class Util {
         }
         return results;
     }
-    
+
     public static java.sql.Date convertUtilDateToSqlDate(java.util.Date utilDate) {
         if (utilDate != null) {
             Calendar cal = Calendar.getInstance();
@@ -159,10 +162,10 @@ public class Util {
         while (week != 53) {
             Date utilValue = calendar.getTime();
             java.sql.Date key = new java.sql.Date(utilValue.getTime());
-            System.out.println("Tuần " + week + ": "
-                    + calendar.get(Calendar.DATE) + " "
-                    + calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, java.util.Locale.getDefault()) + " "
-                    + calendar.get(Calendar.YEAR));
+//            System.out.println("Tuần " + week + ": "
+//                    + calendar.get(Calendar.DATE) + " "
+//                    + calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, java.util.Locale.getDefault()) + " "
+//                    + calendar.get(Calendar.YEAR));
             calendar.add(Calendar.DATE, 6);
             utilValue = calendar.getTime();
             java.sql.Date value = new java.sql.Date(utilValue.getTime());
@@ -173,10 +176,45 @@ public class Util {
         }
         return weeks;
     }
-    
-    public static void main(String[] args) {
-        LocalDate ld = LocalDate.now();
-        System.out.println(java.sql.Date.valueOf("2024-06-10").after(java.sql.Date.valueOf(ld)));
+
+    public static Date findMinDate(ArrayList<String> str) throws ParseException{
+        Date minDate = null;
+        SimpleDateFormat sss = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        for (String string : str) {
+             minDate = sss.parse(string);
+            if (sss.parse(string).getTime() > minDate.getTime()) {
+                minDate = sss.parse(string);
+            }
+        }
+        return minDate;
     }
-  
+
+    public static void main(String[] args) throws ParseException {
+        Date date = new Date();
+        SimpleDateFormat sss = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//        Date startTime = sss.parse("2024-06-10 7:00:00");
+//        Date endTime = sss.parse("2024-06-10 23:00:00");
+//        if (date.getTime() >= startTime.getTime() && date.getTime() <= endTime.getTime()) {
+//            System.out.println("Cho phep hoat dong");
+//        } else {
+//            System.out.println("khong cho phep hoat dong");
+//        }
+        String dates[] = {"2024-06-05 12:00:45", "2024-06-05 11:12:00", "2023-06-09 14:00:00"};
+        Date minDate = null;
+        for (String date1 : dates) {
+            minDate = sss.parse(date1);
+            if (sss.parse(date1).getTime() > minDate.getTime()) {
+                minDate = sss.parse(date1);
+            }
+        }
+        System.out.println(minDate);
+    }
+
+    public static boolean checkValidTimeInDay() throws ParseException {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date startTime = sdf.parse(Message.START_TIME);
+        Date endTime = sdf.parse(Message.END_TIME);
+        return date.getTime() >= startTime.getTime() && date.getTime() <= endTime.getTime();
+    }
 }

@@ -197,7 +197,7 @@
                    Map<Integer, Integer> selectedSlots = (Map<Integer, Integer>) request.getSession().getAttribute("selectedSlots");
                    request.getSession().setAttribute("selectedSlots", selectedSlots);
                 %>
-                <table>
+                <table class="table-bordered">
                     <tr>
                         <td></td>
                         <td style="text-align: center; background-color: #00BFFF">Mon<br>${sessionScope.dates[0].toString().split("-")[2]}-${sessionScope.dates[0].toString().split("-")[1]}</td>

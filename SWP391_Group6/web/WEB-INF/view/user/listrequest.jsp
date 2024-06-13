@@ -104,6 +104,8 @@
 
         <section class="ftco-section bg-light">
             <div class="container m-auto w-75">
+                <p style="color: red">${sessionScope.err}</p>
+                <% request.getSession().removeAttribute("err"); %>
                 <p style="color: green">${sessionScope.success}</p>
                 <% request.getSession().removeAttribute("success"); %>
                 <h1 style=" font-family: Arial, Helvetica, sans-serif">List of request</h1>

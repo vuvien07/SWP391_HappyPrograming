@@ -97,7 +97,13 @@ public class MentorDBContext extends DBContext<Mentor> {
 
     public Mentor getByAccountId(int id) {
         try {
-            String sql = "SELECT * FROM Account a JOIN Mentor m ON a.accid = m.accid WHERE a.accid = ?";
+                String sql = """
+                             SELECT a.[username], a.[email], m.[id], 
+                             m.[name], m.[gender], m.[phone], m.[address],
+                             m.[dateofbirth], m.[ava], m.[status] AS menstatus
+                             FROM Account a JOIN Mentor m ON a.accid = m.accid
+                             WHERE a.accid = ?
+                             """;
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -113,6 +119,7 @@ public class MentorDBContext extends DBContext<Mentor> {
                 mentor.setAddress(rs.getString("address"));
                 mentor.setDateOfBirth(rs.getDate("dateofbirth"));
                 mentor.setAccount(account);
+                mentor.setStatus(rs.getBoolean("menstatus"));
                 return mentor;
             }
         } catch (SQLException e) {
@@ -208,6 +215,7 @@ public class MentorDBContext extends DBContext<Mentor> {
              SELECT m.id, m.name, m.phone 
                         FROM Mentor m 
                         JOIN CV c ON m.id = c.menid
+                         WHERE m.status = 0
                         """;
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -277,6 +285,8 @@ public class MentorDBContext extends DBContext<Mentor> {
     public void rejectCV(int mentorId) {
         String getCvIdSql = "SELECT c.id FROM Mentor m JOIN CV c ON m.id = c.menid WHERE m.id = ?";
         String deleteCV = "DELETE FROM [dbo].[CV] WHERE [id] = ?";
+        String updateMentorStatus = "UPDATE Mentor SET [status] = 0 WHERE [id] = ?";
+        String removeMentorSkills = "DELETE FROM [dbo].[Mentor_Skill] WHERE [mentorid] = ?";
         try {
             // Lấy cvid từ Mentor
             PreparedStatement getCvIdPs = connection.prepareStatement(getCvIdSql);
@@ -288,6 +298,14 @@ public class MentorDBContext extends DBContext<Mentor> {
                 // Cập nhật trạng thái của CV trong Mentor_CV
                 PreparedStatement deleteCVSql = connection.prepareStatement(deleteCV);
                 deleteCVSql.setInt(1, cvid);
+                
+                PreparedStatement updateMentor = connection.prepareStatement(updateMentorStatus);
+                updateMentor.setInt(1, mentorId);
+                
+                PreparedStatement removeMenSkills = connection.prepareStatement(removeMentorSkills);
+                removeMenSkills.setInt(1, mentorId);
+                removeMenSkills.executeUpdate();
+                updateMentor.executeUpdate();
                 deleteCVSql.executeUpdate();
             }
         } catch (SQLException e) {

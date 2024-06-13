@@ -8,18 +8,35 @@ import java.util.ArrayList;
 import model.Request;
 import java.sql.*;
 import model.Mentor;
+import model.User;
 
 /**
  *
  * @author Admin
  */
 public class RequestDBContext extends DBContext<Request> {
-
+    
     @Override
     public ArrayList<Request> listAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<Request> requests = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Request r WHERE r.[status] = 'Processing'";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Request request = new Request();
+                request.setId(rs.getInt("id"));
+                request.setTitle(rs.getString("title"));
+                request.setDeadlineTime(rs.getString("deadlineTime"));
+                request.setSkill(rs.getString("skills"));
+                request.setContent(rs.getString("contentRequest"));
+                requests.add(request);
+            }
+        } catch (Exception e) {
+        }
+        return requests;
     }
-
+    
     @Override
     public void insert(Request entity) {
         try {
@@ -49,17 +66,17 @@ public class RequestDBContext extends DBContext<Request> {
             }
         }
     }
-
+    
     @Override
     public void update(Request entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void delete(Request entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     public ArrayList<Request> listByUserId(int id) {
         ArrayList<Request> requests = new ArrayList<>();
         try {
@@ -80,7 +97,7 @@ public class RequestDBContext extends DBContext<Request> {
         }
         return requests;
     }
-
+    
     public Request getById(int id) {
         try {
             String sql = "SELECT * FROM Request r WHERE r.id = ?";
@@ -104,7 +121,7 @@ public class RequestDBContext extends DBContext<Request> {
         return null;
     }
     
-    public Request selectTopRequest(){
+    public Request selectTopRequest() {
         try {
             String sql = "select top 1 * from [dbo].[Request] order by [id] desc";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -126,8 +143,8 @@ public class RequestDBContext extends DBContext<Request> {
         return null;
     }
     
-    public void updateRequestById(Request entity){
-         try {
+    public void updateRequestById(Request entity) {
+        try {
             connection.setAutoCommit(false);
             String sql = "UPDATE [dbo].[Request] SET [title] = ?, [deadlineTime] = ?, [skills] = ?, [contentRequest] = ? WHERE [id] = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -152,5 +169,52 @@ public class RequestDBContext extends DBContext<Request> {
             }
         }
     }
-
+    
+    public ArrayList<Request> listByMentorId(int id) {
+        ArrayList<Request> requests = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Request r WHERE r.[status] = 'Processing' AND r.menid = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("userid"));
+                Request request = new Request();
+                request.setId(rs.getInt("id"));
+                request.setTitle(rs.getString("title"));
+                request.setDeadlineTime(rs.getString("deadlineTime"));
+                request.setSkill(rs.getString("skills"));
+                request.setContent(rs.getString("contentRequest"));
+                request.setUser(user);
+                requests.add(request);
+            }
+        } catch (Exception e) {
+        }
+        return requests;
+    }
+    
+    public void updateStatusRequest(int id) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "UPDATE [dbo].[Request] SET [status] = 'Accept' WHERE [id] = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e3) {
+                e3.printStackTrace();
+            }
+        }
+    }
+    
 }

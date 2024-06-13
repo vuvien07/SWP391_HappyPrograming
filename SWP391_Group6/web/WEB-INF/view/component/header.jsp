@@ -26,7 +26,7 @@
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-datepicker.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery.timepicker.css">
-
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flaticon.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
@@ -57,6 +57,18 @@
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
             }
 
+            .notification-count {
+                position: absolute;
+                background-color: red;
+                color: white;
+                font-size: 12px;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 18px;
+            }
+
         </style>
     </head>
 
@@ -74,7 +86,12 @@
                         <li class="nav-item active"><a href="home" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Home</a></li>
                         <li class="nav-item"><a href="about.html" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">About</a></li>
                         <li class="nav-item"><a href="contact.html" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Contact</a></li>
-                            <c:if test="${sessionScope.account == null}">
+                            <c:if test="${sessionScope.account != null}">
+                                <c:if test="${requestScope.numUnread != null}">
+                                <li class="nav-item"><a href="notification" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-bell-fill"></i><span id="notification-count" class="notification-count">${requestScope.numUnread}</span></a></li>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${sessionScope.account == null}">
                             <li class="nav-item"><a href="login" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Login</a></li>
                             </c:if>
                             <c:if test="${sessionScope.account != null}">
@@ -84,29 +101,28 @@
                         <c:if test="${sessionScope.account.roleid == 3}">
                             <li class="nav-item"><a href="admin" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
                             </c:if>
-                             <c:if test="${sessionScope.account.roleid == 4}">
+                            <c:if test="${sessionScope.account.roleid == 4}">
                             <li class="nav-item"><a href="manage_cv" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
                             </c:if>
                     </ul>
                     <c:if test="${sessionScope.account != null}">
                         <img src="assets/images/about-1.jpg" class="user_img" style="width: 60px; height: 60px; border-radius: 50%" alt="alt"/>
                         <i class="bi bi-chevron-compact-down icon"></i>
-                        <div style="margin-top: 27%; margin-left: 45%; position: absolute">
-                            <ul class="io" id="dynamicMenu" style="display: none; margin-top:10px">
-                                <li style="padding: 0"><a href="" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-top: 80px"><h2><i class="bi bi-person-fill"></i>${sessionScope.account.username}</h2></a></li>
-                                                <c:if test="${sessionScope.account.roleid == 2}">
-                                    <li style="padding: 0"><a href="profile" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a></li>
-                                    <li style="padding: 0"><a href="list_request" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> List request</a></li>
+                            <div class="io list-group position-absolute end-0 top-50 mt-md-5" id="dynamicMenu" style="display: none">
+                                <a href="" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4)"><h2><i class="bi bi-person-fill"></i>${sessionScope.account.username}</h2></a>
+                                     <c:if test="${sessionScope.account.roleid == 2}">
+                                    <a href="profile" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a>
+                                    <a href="list_request" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> List request</a>
+                                    <a href="time_table" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a>
                                     </c:if>
                                     <c:if test="${sessionScope.account.roleid == 1}">
-                                    <li style="padding: 0"><a href="mentor_profile" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a></li>
-                                    <li style="padding: 0"><a href="schedule" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>Create schedule</a></li>
-                                    <li style="padding: 0"><a href="view_schedule" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a></li>
+                                    <a href="mentor_profile" class="list-group-item" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a>
+                                    <a href="schedule" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>Create schedule</a>
+                                    <a href="view_schedule" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a>
+                                    <a href="mentee_request" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> View mentee request</a>
                                     </c:if>
-                                <li style="padding: 0"><a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> Statistic request</a></li> 
-                                <li style="padding: 0"><a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-box-arrow-left"></i> Log out</a></li> 
-                            </ul>
-                        </div>
+                                <a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-box-arrow-left"></i> Log out</a>
+                            </div>
                     </c:if>
                 </div>
 

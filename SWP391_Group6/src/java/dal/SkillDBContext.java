@@ -194,5 +194,33 @@ public class SkillDBContext extends DBContext<Skill> {
         }
         return false;
     }
+    
+    public void insertMentorSkill(int menid, String skillname){
+        String skillSql = "SELECT * FROM Skill s WHERE s.skillname = ?";
+        String insertSql = "INSERT INTO [dbo].[Mentor_Skill]([mentorid], [skillid]) VALUES(?, ?)";
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement ps = connection.prepareStatement(skillSql);
+            ps.setString(1, skillname);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                PreparedStatement insert = connection.prepareStatement(insertSql);
+                insert.setInt(1, menid);
+                insert.setInt(2, rs.getInt("id"));
+                insert.executeUpdate();
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e3) {
+            }
+        }
+    }
 
 }

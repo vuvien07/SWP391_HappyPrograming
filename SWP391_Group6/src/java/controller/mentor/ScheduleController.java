@@ -65,6 +65,7 @@ public class ScheduleController extends BaseAuthController {
      *
      * @param request servlet request
      * @param response servlet response
+     * @param account
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
@@ -76,6 +77,10 @@ public class ScheduleController extends BaseAuthController {
         Account mentorAccount = (Account) request.getSession().getAttribute("account");
         MentorDBContext menDBContext = new MentorDBContext();
         Mentor mentor = menDBContext.getByAccountId(mentorAccount.getId());
+        if (!mentor.isStatus()) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "You cannot perform this function due to your CV checking is processing or rejected");
+            return;
+        }
         ArrayList<Session> sessions = sessionDBContext.listByMentorId(mentor.getId());
         SlotDBContext slotDAO = new SlotDBContext();
         ArrayList<Slot> slots = slotDAO.listAll();
@@ -98,19 +103,32 @@ public class ScheduleController extends BaseAuthController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        MentorService createSchedule = new MentorService();
+        MentorService mentorService = new MentorService();
         UserDataDetail udd = new UserDataDetail();
         Account menAccount = (Account) request.getSession().getAttribute("account");
         String freeDate = request.getParameter("scheduleDate");
         String slot = request.getParameter("freeSlot");
         String menid = request.getParameter("menid");
-
+        String action = request.getParameter("remove");
+        String changeWeek = request.getParameter("changeweek");
+        
         udd.putAttribute("freeDate", freeDate);
         udd.putAttribute("account", menAccount);
         udd.putAttribute("freeSlot", slot);
         udd.putAttribute("menid", menid);
         try {
-            createSchedule.createSchedule(udd, request, response);
+            if(!changeWeek.equals("")){
+                ViewScheduleService viewScheduleService = new ViewScheduleService();
+                viewScheduleService.viewScheduleByChange(request);
+                request.getRequestDispatcher("WEB-INF/view/mentor/createschedule.jsp").forward(request, response);
+                return;
+            }
+            if (action.equals("")) {
+                mentorService.createSchedule(udd, request, response);
+            } else {
+                String sesid = request.getParameter("sesid");
+                mentorService.removeSchedule(Integer.parseInt(sesid), request);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
         }

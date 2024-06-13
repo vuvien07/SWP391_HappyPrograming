@@ -65,6 +65,15 @@ public class MentorService {
         }
     }
 
+    public void removeSchedule(int id, HttpServletRequest request) throws SQLException {
+        try {
+            sessionDAO.removeEmptyScheduleById(id);
+        } catch (Exception e) {
+        } finally {
+            request.getSession().setAttribute("success", "Remove schedule successful!");
+        }
+    }
+
     public void processCreateCV(UserDataDetail userDataDetail, HttpServletRequest request) throws IOException, ServletException {
         Part fPart = request.getPart("avatar");
         String firstSkill = (String) userDataDetail.getAttribute("firstSkill");
@@ -167,6 +176,10 @@ public class MentorService {
             }
             request.getSession().setAttribute("update_success", "Update CV successfully!");
         }
+
+    }
+
+    public void noticeToUser() {
 
     }
 }

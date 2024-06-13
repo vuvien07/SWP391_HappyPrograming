@@ -67,13 +67,14 @@
         <section class="ftco-section bg-light">
             <form action="request" method="post">
                 ${requestScope.err}
+                ${requestScope.errr}
                 ${requestScope.success}
                 <div class="container m-auto w-50">
                     <h1 style=" font-family: Arial, Helvetica, sans-serif">Create Request</h1>
                     <label>Title</label><br>
                     <input type="text" class="form-control w-100" name="title" value="${requestScope.userRequest.title}">
                     <div class="d-flex justify-content-between w-100">
-                        <div>
+<!--                        <div>
                             <label>Deadline date</label><br>
                             <c:set var="deadlineTime" value="${requestScope.userRequest.deadlineTime}"/>    
                             <c:choose>
@@ -83,10 +84,10 @@
                                 </c:when>
                             </c:choose>
                             <input type="date" class="form-control" name="deadlineDate" value="${formattedDate}">
-                        </div>
+                        </div>-->
                         <div>
-                            <label>Deadline hour</label><br>
-                            <input type="time" class="form-control" name="deadlineHour" value="${formattedTime}">
+                            <label>Deadline Time</label><br>
+                            <input type="datetime-local" class="form-control" name="deadlineTime">
                         </div>
                     </div>
                     <div>

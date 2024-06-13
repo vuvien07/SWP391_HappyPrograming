@@ -107,8 +107,8 @@ public class UpdateRequestController extends BaseAuthController {
         udd.putAttribute("deadlineTime", dd);
         udd.putAttribute("content", content);
         if(skills.length > 1){
-            request.setAttribute("err", "You must choose no more than 1 skill");
-            request.getRequestDispatcher("WEB-INF/view/user/updaterequest.jsp").forward(request, response);
+            request.getSession().setAttribute("err", "You must choose no more than 1 skill");
+            response.sendRedirect("list_request");
             return;
         }
         udd.putAttribute("updateSkill", skills[0]);

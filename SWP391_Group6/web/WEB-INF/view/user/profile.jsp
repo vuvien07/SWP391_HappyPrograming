@@ -51,9 +51,9 @@
                             <div class="card-header text-center">Profile Avatar</div>
                             <div class="card-body text-center box_info">
                                 <div class="avatar">
-                                    <input type="file" id="fileUpload" name="avatar" accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(event)">
+                                    <input type="file" id="fileUpload" name="avatar" readonly accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(event)">
                                     <img id="preview" class="preview-img" style="margin-left: 20%;border-radius: 50%; width: 200px; height: 200px; border: 1px solid black; margin-bottom: 10px"  src="${pageContext.request.contextPath}/assets/uploads/${sessionScope.user.ava}">
-                                    <button type="button" class="img-upload" onclick="document.getElementById('fileUpload').click()">Click here to upload</button>
+                                    <button type="button" disabled class="img-upload enableUploadImage" onclick="document.getElementById('fileUpload').click()">Click here to upload</button>
                                     <br>
                                     <input type="hidden" name="image-initiate" value="${sessionScope.user.ava}">
                                 </div>
@@ -68,22 +68,22 @@
                                 <div class="row">
                                     <div class="col-md-6">  
                                         <label class="mb-1" for="inputUsername">Username</label>
-                                        <input class="form-control" id="inputUsername" name="username" type="text" placeholder="Enter your username" value="${sessionScope.user.account.username}">
+                                        <input class="form-control acceptEdit" id="inputUsername" readonly name="username" type="text" placeholder="Enter your username" value="${sessionScope.user.account.username}">
                                     </div>
                                     <div class="col-md-6">  
                                         <label class="mb-1" for="inputUsername">Date of birth</label><br>
-                                        <input type="date" name="dob" value="${sessionScope.user.dateOfBirth}">
+                                        <input type="date" class="acceptEdit" name="dob" readonly value="${sessionScope.user.dateOfBirth}">
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label class="mb-1" for="inputFirstName">Full name</label>
-                                        <input class="form-control acceptEdit"  name="name" id="inputFirstName" type="text" placeholder="Full Name" value="${sessionScope.user.name}">
+                                        <input class="form-control acceptEdit" readonly name="name" id="inputFirstName" type="text" placeholder="Full Name" value="${sessionScope.user.name}">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="mb-1" for="inputFirstName">Email</label>
-                                        <input class="form-control acceptEdit" readonly  name="email" id="inputFirstName" type="text" placeholder="Email" value="${sessionScope.user.account.email}">
+                                        <input class="form-control" readonly  name="email" id="inputFirstName" type="text" placeholder="Email" value="${sessionScope.user.account.email}">
                                     </div>
                                 </div>
 
@@ -91,7 +91,7 @@
                                     <div class="col-md-6">
                                         <label>Gender:
                                         </label><br>
-                                        <select name="gender" style="width: 100%">
+                                        <select name="gender" class="acceptEditGender" disabled style="width: 100%">
                                             <option value="Male" <c:if test="${sessionScope.user.gender == true}">selected</c:if>>Male</option>
                                             <option value="Female" <c:if test="${sessionScope.user.gender == false}">selected</c:if>>Female</option>
                                             </select>
@@ -101,17 +101,21 @@
                                     <div class="mb-3">
                                         <label>Address
                                         </label><br>
-                                        <input class="form-control acceptEdit" name="add" id="inputFirstName" type="text" placeholder="Address" value="${sessionScope.user.address}">
+                                        <input class="form-control acceptEdit" name="add"  readonly id="inputFirstName" type="text" placeholder="Address" value="${sessionScope.user.address}">
                                 </div>
 
                                 <div class="mb-3">
                                     <label style="margin-left: 39%"><a href="changepass" style="text-decoration: none">Change password</a></label>
                                 </div>
-                                <div class="mb-3" style="margin-left: 40%">
+                                <div class="mb-3 edit" style="margin-left: 35%">
+                                    <div class="btn-layer">
+                                        <button type="button" class="btn btn-primary w-50" style="border-style: none; border-radius: 10px" onclick="acceptRead()">Edit profile</button>
+                                    </div>
+                                </div>
+                                <div class="mb-3 saveButton" style="margin-left: 40%; display: none">
                                     <div class="btn-layer"></div>
                                     <input type="submit" class="btn-primary" style="border-style: none; padding: 5px 10px; border-radius: 10px" value="Update profile">
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -178,6 +182,14 @@
                     output.src = reader.result;
                 };
                 reader.readAsDataURL(event.target.files[0]);
+            }
+            
+            function acceptRead(){
+                $(".acceptEdit").attr('readonly', false);
+                $(".acceptEditGender").attr('disabled', false);
+                $(".enableUploadImage").attr('disabled', false);
+                $(".edit").css('display', 'none');
+                $(".saveButton").css('display', 'block');
             }
 
         </script>

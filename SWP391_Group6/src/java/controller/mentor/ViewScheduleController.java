@@ -7,25 +7,17 @@ package controller.mentor;
 import controller.authorization.BaseAuthController;
 import dal.MentorDBContext;
 import dal.SessionDBContext;
-import dal.SlotDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 import model.Account;
 import model.Mentor;
 import model.Session;
-import model.Slot;
 import service.ViewScheduleService;
-import util.UserDataDetail;
-import util.Util;
+
 
 /**
  *
@@ -77,7 +69,11 @@ public class ViewScheduleController extends BaseAuthController {
         MentorDBContext mentorDBContext = new MentorDBContext();
         Account menAccount = (Account) request.getSession().getAttribute("account");
         Mentor mentor = mentorDBContext.getByAccountId(menAccount.getId());
-        ArrayList<Session> sessions = sessionDBContext.listByMentorId(mentor.getId());
+        if(!mentor.isStatus()){
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "You cannot perform this function due to your CV checking is processing or rejected");
+            return;
+        }
+        ArrayList<Session> sessions = sessionDBContext.listScheduleByMentorId(mentor.getId());
         request.getSession().setAttribute("sessions", sessions);
         viewScheduleService.viewSchedule(request);
         request.getRequestDispatcher("WEB-INF/view/mentor/viewschedule.jsp").forward(request, response);

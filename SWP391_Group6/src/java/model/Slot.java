@@ -4,12 +4,15 @@
  */
 package model;
 
+import java.sql.Time;
+
 /**
  *
  * @author Admin
  */
 public class Slot {
     private int id;
+    private java.sql.Time from, to;
 
     public int getId() {
         return id;
@@ -18,6 +21,24 @@ public class Slot {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Time getFrom() {
+        return from;
+    }
+
+    public void setFrom(Time from) {
+        this.from = from;
+    }
+
+    public Time getTo() {
+        return to;
+    }
+
+    public void setTo(Time to) {
+        this.to = to;
+    }
+    
+    
     
     
 }

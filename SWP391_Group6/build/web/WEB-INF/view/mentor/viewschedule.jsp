@@ -5,9 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.SimpleDateFormat, java.sql.Date, java.sql.Time" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib prefix="myTag" tagdir="/WEB-INF/tags/" %>
+<%@ page import="model.Session" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -208,7 +210,22 @@
                                             Skill:${s.skill}<br>
                                             Mentee:${s.user.name}<br>
                                             <c:if test="${s.status eq false and s.user.name != null}">
-                                                <a href="">Taking check</a>
+                                                <%
+                                                 java.util.Date date = new java.util.Date();
+                                                 SimpleDateFormat sss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                                  model.Session session1 = (model.Session) pageContext.findAttribute("s");
+                                                  model.Slot slot = session1.getSlot();
+                                                  java.sql.Date slotDate = session1.getDate();
+                                                 String dateTime = (new StringBuilder().append(slotDate).append(" ").append(slot.getFrom())).toString();
+                                                 String deadline = (new StringBuilder().append(slotDate).append(" ").append("23:59:00")).toString();
+                                                 java.util.Date ddd = sss.parse(dateTime);
+                                                 java.util.Date deadline1 = sss.parse(deadline);
+                                                  if(date.getTime() >= ddd.getTime() && date.getTime() <= deadline1.getTime()){
+                                                %>
+                                                <a href="">Taking check</a>     
+                                                <%
+                                                    }
+                                                %>
                                             </c:if>
                                             <c:if test="${s.status eq true and s.user.name != null}">
                                                 <p style="color: green">Checked</p>

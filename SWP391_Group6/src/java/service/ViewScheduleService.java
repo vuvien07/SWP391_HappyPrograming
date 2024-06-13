@@ -4,10 +4,8 @@
  */
 package service;
 
-import dal.SessionDBContext;
 import dal.SlotDBContext;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -23,11 +21,9 @@ import util.Util;
  */
 public class ViewScheduleService {
 
-    private SessionDBContext sessionDAO;
-    private SlotDBContext slotDAO;
+    private final SlotDBContext slotDAO;
 
     public ViewScheduleService() {
-        sessionDAO = new SessionDBContext();
         slotDAO = new SlotDBContext();
     }
 

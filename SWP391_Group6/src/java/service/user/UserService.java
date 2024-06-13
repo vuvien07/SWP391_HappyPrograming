@@ -5,6 +5,7 @@
 package service.user;
 
 import dal.AccountDBContext;
+import dal.NotificationDBContext;
 import dal.UserDBContext;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -27,10 +28,12 @@ public class UserService {
 
     private AccountDBContext accountDAO;
     private UserDBContext userDAO;
+    private NotificationDBContext notificationDBContext;
 
     public UserService() {
         accountDAO = new AccountDBContext();
         userDAO = new UserDBContext();
+        notificationDBContext = new NotificationDBContext();
     }
 
     public void updateProfile(HttpServletRequest request, HttpServletResponse response, UserDataDetail userDataDetail) throws ServletException, IOException {
@@ -69,6 +72,9 @@ public class UserService {
         request.setAttribute("success", "Update successfully!");
         request.getRequestDispatcher("WEB-INF/view/user/profile.jsp").forward(request, response);
 
+    }
+    
+    public void noticeTomentor(String msg){
     }
 
 }

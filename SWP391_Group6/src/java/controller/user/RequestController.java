@@ -5,20 +5,26 @@
 package controller.user;
 
 import controller.authorization.BaseAuthController;
+import dal.NotificationDBContext;
 import dal.SkillDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Mentor;
-import model.Session;
+import model.MentorNotification;
 import model.Skill;
 import service.user.UserRequestService;
 import util.UserDataDetail;
+import util.Util;
 
 /**
  *
@@ -58,17 +64,22 @@ public class RequestController extends BaseAuthController {
      *
      * @param request servlet request
      * @param response servlet response
+     * @param account
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
+        //            if (!Util.checkValidTimeInDay()) {
+//                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Out of work time");
+//            } else {
         SkillDBContext skillDAO = new SkillDBContext();
         Mentor mentor = (Mentor) request.getSession().getAttribute("mentor");
         List<Skill> skills = skillDAO.listByMentor(mentor.getId());
         request.getSession().setAttribute("menSkills", skills);
         request.getRequestDispatcher("WEB-INF/view/user/request.jsp").forward(request, response);
+//            }
     }
 
     /**
@@ -85,20 +96,20 @@ public class RequestController extends BaseAuthController {
             throws ServletException, IOException {
         UserDataDetail udd = new UserDataDetail();
         UserRequestService userRequestService = new UserRequestService();
-        StringBuilder deadlineTime = new StringBuilder();
         String title = request.getParameter("title");
-        String deadlineDate = request.getParameter("deadlineDate");
-        String deadlineHour = request.getParameter("deadlineHour");
-        deadlineHour += ":00";
+        String deadlineTime = request.getParameter("deadlineTime");
+        deadlineTime += ":00";
         String content = request.getParameter("content");
         String[] skills = request.getParameterValues("skills");
-        deadlineTime.append(deadlineDate).append(" ").append(deadlineHour);
         udd.putAttribute("title", title);
-        udd.putAttribute("deadlineTime", deadlineTime.toString());
+        udd.putAttribute("deadlineTime", deadlineTime);
         udd.putAttribute("content", content);
         udd.putAttribute("skills", skills);
-
-        userRequestService.processCreateRequest(udd, request);
+        try {
+            userRequestService.processCreateRequest(udd, request);
+        } catch (ParseException ex) {
+            Logger.getLogger(RequestController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         request.getRequestDispatcher("WEB-INF/view/user/request.jsp").forward(request, response);
     }
 

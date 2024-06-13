@@ -127,7 +127,10 @@
                 <input type="hidden" name="menid" value="${requestScope.mentor.id}"/>
                 <input type="hidden" name="scheduleDate" id="date"/>
                 <input type="hidden" name="freeSlot" id="slotid"/>
-                <table>
+                <input type="hidden" name="remove" id="remove"/>
+                <input type="hidden" name="sesid" id="sesid"/>
+                <input type="hidden" name="changeweek" id="changeweek"/>
+                <table class="table-bordered">
                     <tr>
                         <td style="background-color: #00BFFF">
                             Select week:
@@ -159,14 +162,28 @@
                         <tr>
                             <td>Slot ${r.id}</td>
                             <c:forEach var="d" items="${sessionScope.dates}">
-                                <td onclick="bookSchedule('${d}', ${r.id})">
-                                    <c:forEach items="${sessionScope.sessions}" var="s">
-                                        <c:if test="${(r.id eq s.slot.id) and (s.date eq d)}">
-                                            Lecture:${sessionScope.account.username}<br>
-                                            Skill:${s.skill}
-                                        </c:if>
-                                    </c:forEach>
-                                </td>
+                                <c:set var="hasSession" value="false" />
+                                <c:forEach items="${sessionScope.sessions}" var="s">
+                                    <c:if test="${(r.id eq s.slot.id) and (s.date eq d)}">
+                                        <c:set var="hasSession" value="true" />
+                                    </c:if>
+                                </c:forEach>
+                                <c:if test="${hasSession}">
+                                    <td>
+                                        <c:forEach items="${sessionScope.sessions}" var="s">
+                                            <c:if test="${(r.id eq s.slot.id) and (s.date eq d)}">
+                                                <span onclick="removeSchedule('${s.id}')">
+                                                    Lecture:${sessionScope.account.username}<br>
+                                                </span>
+                                            </c:if>
+                                        </c:forEach>
+                                    </td>
+                                </c:if>
+                                <c:if test="${!hasSession}">
+                                    <td onclick="bookSchedule('${d}', ${r.id})">
+
+                                    </td>
+                                </c:if>
                             </c:forEach>
                         </tr>
                     </c:forEach>
@@ -194,34 +211,46 @@
         <script src="${pageContext.request.contextPath}/resources/js/google-map.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
         <script>
-                                window.onload = function () {
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open("GET", "home", true);
-                                    xhr.send();
-                                };
-                                $(document).ready(function () {
-                                    // Bắt sự kiện click trên cả trang
-                                    $(document).on('click', function (event) {
-                                        // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
-                                        if (!$(event.target).closest('.icon').length) {
-                                            // Nếu không, ẩn icon
-                                            $('.io').hide();
+                                        window.onload = function () {
+                                            var xhr = new XMLHttpRequest();
+                                            xhr.open("GET", "home", true);
+                                            xhr.send();
+                                        };
+                                        $(document).ready(function () {
+                                            // Bắt sự kiện click trên cả trang
+                                            $(document).on('click', function (event) {
+                                                // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
+                                                if (!$(event.target).closest('.icon').length) {
+                                                    // Nếu không, ẩn icon
+                                                    $('.io').hide();
+                                                }
+                                            });
+
+                                            // Bắt sự kiện click trên icon
+                                            $('.icon').click(function () {
+                                                $('.io').css('display', 'block');
+                                            });
+                                        });
+
+                                        function bookSchedule(date, slot) {
+                                            if (window.confirm("Are u sure book with date " + date + ", slot" + slot)) {
+                                                $("#date").val(date);
+                                                $("#slotid").val(slot);
+                                                $("#timetableForm").submit();
+                                            }
                                         }
-                                    });
 
-                                    // Bắt sự kiện click trên icon
-                                    $('.icon').click(function () {
-                                        $('.io').css('display', 'block');
-                                    });
-                                });
-
-                                function bookSchedule(date, slot) {
-                                    if (window.confirm("Are u sure book with date " + date + ", slot" + slot)) {
-                                        $("#date").val(date);
-                                        $("#slotid").val(slot);
-                                        $("#timetableForm").submit();
-                                    }
-                                }
+                                        function removeSchedule(id) {
+                                            if (window.confirm("Are u sure remove schedule with id " + id)) {
+                                                $("#remove").val('remove');
+                                                $("#sesid").val(id);
+                                                $("#timetableForm").submit();
+                                            }
+                                        }
+                                        function submitForm() {
+                                            $("#changeweek").val('change');
+                                            $("#timetableForm").submit();
+                                        }
         </script>
 
     </body>

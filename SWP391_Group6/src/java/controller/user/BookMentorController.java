@@ -79,28 +79,12 @@ public class BookMentorController extends BaseAuthController {
         String menid = request.getParameter("menid");
         MentorDBContext mentorDAO = new MentorDBContext();
         SessionDBContext sessionDAO = new SessionDBContext();
-        SlotDBContext slotDAO = new SlotDBContext();
-        LocalDate localDate = LocalDate.now();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        Map<java.sql.Date, java.sql.Date> weeksOnYear = Util.getWeeksByYear(localDate.getYear());
-        ArrayList<Slot> slots = slotDAO.listAll();
-        ArrayList<java.sql.Date> dates = null;
-        Set<java.sql.Date> keySet = weeksOnYear.keySet();
-        for (java.sql.Date object : keySet) {
-            if (localDate.get(weekFields.weekOfYear()) == object.toLocalDate().get(weekFields.weekOfYear())) {
-                dates = Util.getDatesBetween(object, weeksOnYear.get(object));
-                break;
-            }
-        }
+        ViewScheduleService viewScheduleService = new ViewScheduleService();
+        viewScheduleService.viewSchedule(request);
         ArrayList<Session> sessions = sessionDAO.listByMentorId(Integer.parseInt(menid));
         Mentor mentor = mentorDAO.getByMentorid(Integer.parseInt(menid));
         request.getSession().setAttribute("mentor", mentor);
-        request.getSession().setAttribute("dates", dates);
         request.getSession().setAttribute("sessions", sessions);
-        request.setAttribute("currentWeek", localDate.get(weekFields.weekOfYear()));
-        request.getSession().setAttribute("slots", slots);
-        request.getSession().setAttribute("weeks_on_year", weeksOnYear);
-        request.getSession().setAttribute("year", localDate.getYear());
         request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);
     }
 
@@ -118,22 +102,6 @@ public class BookMentorController extends BaseAuthController {
         String action = request.getParameter("action");
         ViewScheduleService vss = new ViewScheduleService();
         if (action.equals("bookMentor")) {
-//            UserDBContext userDAO = new UserDBContext();
-//            Account userAccount = (Account) request.getSession().getAttribute("account");
-//            User user = userDAO.getUserById(userAccount.getId());
-//            SessionDBContext sessionDAO = new SessionDBContext();
-//            try {
-//                if (sessionDAO.isDuplicatedSessionByUserId(Integer.parseInt(sessionid), user.getId())) {
-//                    request.setAttribute("err", "This slot is registered by another user. Please book again");
-//                    request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);
-//                } else {
-//                    sessionDAO.updateById(user.getId(), Integer.parseInt(sessionid));
-//                    request.setAttribute("success", "Book successful!");
-//                    request.getRequestDispatcher("WEB-INF/view/user/bookmentor.jsp").forward(request, response);
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(BookMentorController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
              String[] selectedSchedules = request.getParameterValues("selectedSchedule");
              StringBuilder selectedSchedule = new StringBuilder();
              for (String selectedSchedule1 : selectedSchedules) {

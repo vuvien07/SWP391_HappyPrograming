@@ -197,11 +197,11 @@
         <script src="${pageContext.request.contextPath}/resources/js/google-map.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
         <script>
-//            window.onload = function () {
-//                var xhr = new XMLHttpRequest();
-//                xhr.open("GET", "home", true);
-//                xhr.send();
-//            };
+            window.onload = function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "home", true);
+                xhr.send();
+            };
             $(document).ready(function () {
                 // Bắt sự kiện click trên cả trang
                 $(document).on('click', function (event) {
