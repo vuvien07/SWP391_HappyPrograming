@@ -104,10 +104,7 @@
 
         <section class="ftco-section bg-light">
             <div class="container m-auto w-75">
-                <p style="color: red">${sessionScope.err}</p>
-                <% request.getSession().removeAttribute("err"); %>
-                <p style="color: green">${sessionScope.success}</p>
-                <% request.getSession().removeAttribute("success"); %>
+                <p style="color: red">${requestScope.err}</p>
                 <h1 style=" font-family: Arial, Helvetica, sans-serif">List of request</h1>
                 <table class="table table-striped">
                     <thead>
@@ -122,15 +119,17 @@
                     </thead>
                     <tbody>
                         <c:forEach items="${requestScope.requests}" var="r">
-                            <tr>
-                                <td>${r.id}</td>
-                                <td>${r.title}</td>
-                                <td>${r.deadlineTime}</td>
-                                <td>${r.content}</td>
-                                <td>${r.skill}</td>
-                                <td><a class="btn btn-success" onclick="acceptForm('${r.id}', '${r.skill}', '${r.user.id}')">Accept</a>
-                                    <a class="btn btn-danger" onclick="rejectForm('${r.id}')">Reject</a></td>
-                            </tr>
+                            <c:if test="${r.status eq 'Processing'}">
+                                <tr>
+                                    <td>${r.id}</td>
+                                    <td>${r.title}</td>
+                                    <td>${r.deadlineTime}</td>
+                                    <td>${r.content}</td>
+                                    <td>${r.skill}</td>
+                                    <td><a class="btn btn-success" onclick="acceptForm('${r.id}', '${r.skill}', '${r.user.id}', '${r.deadlineTime}')">Accept</a>
+                                        <a class="btn btn-danger" onclick="rejectForm('${r.id}', '${r.user.id}', '${r.deadlineTime}')">Reject</a></td>
+                                </tr>
+                            </c:if>
                         </c:forEach>
                     </tbody>
                 </table>
@@ -138,12 +137,15 @@
                     <input type="hidden" name="skill" id="skill">
                     <input type="hidden" name="userid" id="userid">
                     <input type="hidden" name="id" id="id1">
+                    <input type="hidden" name="deadlineTime" id="acceptdeadlineTime">
                     <label>Reason for accept</label>
                     <textarea id="id" name="reason" cols="10" class="w-100"></textarea>
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
                 <form action="reject_request" method="post" class="w-100 reject" style="display: none">
-                    <input type="hidden" name="id" id="id1">
+                    <input type="hidden" name="userid" id="rejectuserid">
+                    <input type="hidden" name="id" id="rejectid">
+                    <input type="hidden" name="deadlineTime" id="rejectdeadlineTime">
                     <label>Reason for reject</label>
                     <textarea id="id" name="reason" cols="10" class="w-100"></textarea>
                     <input type="submit" class="btn btn-primary" value="Submit">
@@ -168,40 +170,43 @@
         <script src="${pageContext.request.contextPath}/resources/js/google-map.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
         <script>
-                                    window.onload = function () {
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open("GET", "home", true);
-                                        xhr.send();
-                                    };
-                                    $(document).ready(function () {
-                                        // Bắt sự kiện click trên cả trang
-                                        $(document).on('click', function (event) {
-                                            // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
-                                            if (!$(event.target).closest('.icon').length) {
-                                                // Nếu không, ẩn icon
-                                                $('.io').hide();
+                                            window.onload = function () {
+                                                var xhr = new XMLHttpRequest();
+                                                xhr.open("GET", "home", true);
+                                                xhr.send();
+                                            };
+                                            $(document).ready(function () {
+                                                // Bắt sự kiện click trên cả trang
+                                                $(document).on('click', function (event) {
+                                                    // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
+                                                    if (!$(event.target).closest('.icon').length) {
+                                                        // Nếu không, ẩn icon
+                                                        $('.io').hide();
+                                                    }
+                                                });
+
+                                                // Bắt sự kiện click trên icon
+                                                $('.icon').click(function () {
+                                                    $('.io').css('display', 'block');
+                                                });
+                                            });
+
+                                            function acceptForm(id, skill, userid, deadlineTime) {
+                                                $(".accept").css("display", "block");
+                                                $(".reject").css("display", "none");
+                                                $("#id1").val(id);
+                                                $("#skill").val(skill);
+                                                $("#userid").val(userid);
+                                                $("#acceptdeadlineTime").val(deadlineTime);
                                             }
-                                        });
 
-                                        // Bắt sự kiện click trên icon
-                                        $('.icon').click(function () {
-                                            $('.io').css('display', 'block');
-                                        });
-                                    });
-
-                                    function acceptForm(id, skill, userid) {
-                                        $(".accept").css("display", "block");
-                                        $(".reject").css("display", "none");
-                                        $(".id1").val(id);
-                                        $(".skill").val(skill);
-                                        $(".userid").val(userid);
-                                    }
-
-                                    function rejectForm(id) {
-                                        $(".reject").css("display", "block");
-                                        $(".accept").css("display", "none");
-                                        $("#id1").val(id);
-                                    }
+                                            function rejectForm(id, userid, deadlineTime) {
+                                                $(".reject").css("display", "block");
+                                                $(".accept").css("display", "none");
+                                                $("#rejectid").val(id);
+                                                $("#rejectuserid").val(userid);
+                                                $("#rejectdeadlineTime").val(deadlineTime);
+                                            }
         </script>
 
     </body>

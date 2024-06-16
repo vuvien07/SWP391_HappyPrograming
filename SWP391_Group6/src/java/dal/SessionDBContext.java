@@ -93,7 +93,8 @@ public class SessionDBContext extends DBContext<Session> {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
             String sql = """
-                         SELECT * FROM [dbo].[Session] s LEFT JOIN [dbo].[User]
+                         SELECT * FROM [dbo].[Session] s JOIN Slot sl ON sl.id = s.slotid 
+                         LEFT JOIN [dbo].[User]
                          u ON u.[userid] = s.[userid] LEFT JOIN [dbo].[Account] a 
                          ON a.[accid] = u.accid WHERE s.[menid] = ? AND s.[userid]
                          IS NULL AND s.[tempuserid] IS NULL
@@ -126,9 +127,10 @@ public class SessionDBContext extends DBContext<Session> {
         ArrayList<Session> sessions = new ArrayList<>();
         try {
             String sql = """
-                         SELECT * FROM [dbo].[Session] s LEFT JOIN [dbo].[User]
-                           u ON u.[userid] = s.[userid] LEFT JOIN [dbo].[Account] a 
-                          ON a.[accid] = u.accid JOIN [dbo].[Slot] sl ON sl.id = s.slotid WHERE s.[menid] = ?
+                       SELECT s.id, s.[date], s.skill, s.[status], sl.[from], sl.[to],
+                       s.slotid, s.menid, u.[Name]  FROM [dbo].[Session] s LEFT JOIN [dbo].[User]
+                      u ON u.[userid] = s.[userid] LEFT JOIN [dbo].[Account] a 
+                       ON a.[accid] = u.accid JOIN [dbo].[Slot] sl ON sl.id = s.slotid WHERE s.[menid] = ?
                          """;
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
@@ -149,6 +151,7 @@ public class SessionDBContext extends DBContext<Session> {
                 session.setMentor(mentor);
                 session.setSkill(rs.getString("skill"));
                 session.setUser(user);
+                session.setStatus(rs.getBoolean("status"));
                 sessions.add(session);
             }
         } catch (SQLException e) {
@@ -297,12 +300,51 @@ public class SessionDBContext extends DBContext<Session> {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, sesid);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 result.append(rs.getDate("date")).append(" ").append(rs.getTime("from"));
             }
         } catch (Exception e) {
         }
         return result.toString();
+    }
+
+    public ArrayList<String> listByRequestIdAndUserid(int requestid, int tempuserid) {
+        ArrayList<String> results = new ArrayList<>();
+        try {
+            String sql = "SELECT s.[date], s.slotid FROM [dbo].[Request] r JOIN [dbo].[Session] s ON r.id = s.requestid WHERE s.requestid = ?  AND s.tempuserid = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, requestid);
+            ps.setInt(2, tempuserid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(rs.getDate("date")).append(",Slot:").append(rs.getInt("slotid"));
+                results.add(sb.toString());
+            }
+        } catch (Exception e) {
+        }
+        return results;
+    }
+
+    public void checkScheduleById(int id) {
+        String sql = "UPDATE [dbo].[Session] SET [status] = 1 WHERE [id] = ?";
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e3) {
+            }
+        }
     }
 
 }

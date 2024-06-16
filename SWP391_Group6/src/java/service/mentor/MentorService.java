@@ -6,21 +6,26 @@ package service.mentor;
 
 import dal.CVDBContext;
 import dal.MentorDBContext;
+import dal.RequestDBContext;
 import dal.SessionDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import model.Account;
 import model.CV;
 import model.Mentor;
+import model.Request;
 import model.Session;
 import model.Slot;
+import service.NotificationService;
 import util.UserDataDetail;
 
 /**
@@ -29,45 +34,51 @@ import util.UserDataDetail;
  */
 public class MentorService {
 
-    private SessionDBContext sessionDAO;
+    private RequestDBContext requestDBContext;
+    private SessionDBContext sessionDBContext;
     private MentorDBContext mentorDAO;
     private CVDBContext cvDBContext;
 
     public MentorService() {
-        sessionDAO = new SessionDBContext();
+        sessionDBContext = new SessionDBContext();
         mentorDAO = new MentorDBContext();
         cvDBContext = new CVDBContext();
+        requestDBContext = new RequestDBContext();
     }
 
-    public void createSchedule(UserDataDetail userDataDetail, HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        Date freeDate = Date.valueOf((String) userDataDetail.getAttribute("freeDate"));
-        int slotid = Integer.parseInt((String) userDataDetail.getAttribute("freeSlot"));
-        int menid = Integer.parseInt((String) userDataDetail.getAttribute("menid"));
-        if (sessionDAO.isDuplicatedSession(freeDate, slotid, menid)) {
-            request.getSession().setAttribute("err", "Schedule is duplicated. Please try again!");
-        } else {
-            Account menAccount = (Account) userDataDetail.getAttribute("account");
-            Slot slot = new Slot();
-            slot.setId(Integer.parseInt((String) userDataDetail.getAttribute("freeSlot")));
-            Mentor mentor = mentorDAO.getByAccountId(menAccount.getId());
-            mentor.setId(mentor.getId());
-            Session session = new Session();
-            session.setDate(Date.valueOf((String) userDataDetail.getAttribute("freeDate")));
-            session.setSlot(slot);
-            session.setMentor(mentor);
-            session.setSkill((String) userDataDetail.getAttribute("skill"));
-            try {
-                sessionDAO.insert(session);
-            } catch (Exception e) {
-            } finally {
-                request.getSession().setAttribute("success", "Create schedule successful!");
-            }
+    public void createSchedule(UserDataDetail userDataDetail, HttpServletRequest request) throws SQLException, ParseException {
+        Account menAccount = (Account) userDataDetail.getAttribute("account");
+        Slot slot = new Slot();
+        slot.setId(Integer.parseInt((String) userDataDetail.getAttribute("freeSlot")));
+        Mentor mentor = mentorDAO.getByAccountId(menAccount.getId());
+        mentor.setId(mentor.getId());
+        
+        String freeDate = userDataDetail.getStringAttribute("freeDate");
+        String timeSlotFrom = userDataDetail.getStringAttribute("slotFrom");
+        
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        java.util.Date checkDate = sdf.parse((new StringBuilder().append(freeDate).append(" ").append(timeSlotFrom)).toString());
+        if(checkDate.getTime() < date.getTime()){
+            request.setAttribute("dateErr", "Schedule is before compared to current date! Please choose again");
+            return;
+        }
+        Session session = new Session();
+        session.setDate(Date.valueOf((String) userDataDetail.getAttribute("freeDate")));
+        session.setSlot(slot);
+        session.setMentor(mentor);
+        session.setSkill((String) userDataDetail.getAttribute("skill"));
+        try {
+            sessionDBContext.insert(session);
+        } catch (Exception e) {
+        } finally {
+            request.getSession().setAttribute("success", "Create schedule successful!");
         }
     }
 
     public void removeSchedule(int id, HttpServletRequest request) throws SQLException {
         try {
-            sessionDAO.removeEmptyScheduleById(id);
+            sessionDBContext.removeEmptyScheduleById(id);
         } catch (Exception e) {
         } finally {
             request.getSession().setAttribute("success", "Remove schedule successful!");
@@ -179,7 +190,73 @@ public class MentorService {
 
     }
 
-    public void noticeToUser() {
+    public void processRejectUserRequest(UserDataDetail userDataDetail) {
+        NotificationService notificationService = new NotificationService();
+        Account account = (Account) userDataDetail.getAttribute("account");
+        StringBuilder content = new StringBuilder();
+        String title = "Your request has been rejected by mentor " + account.getUsername();
+        String reason = userDataDetail.getStringAttribute("reason");
+        requestDBContext.rejectRequest(userDataDetail.getIntegerAttribute("id"));
+        Request userRequest = requestDBContext.getById(userDataDetail.getIntegerAttribute("id"));
+        content.append("Here is your request:<br>").append("Title:")
+                .append(userRequest.getTitle()).append("<br>").append("Request content:")
+                .append(userRequest.getContent().replaceAll("\n", "<br>"))
+                .append("Your selected session(s):<br>");
+        ArrayList<String> selectedSessions
+                = sessionDBContext.listByRequestIdAndUserid(userDataDetail.getIntegerAttribute("id"), userDataDetail.getIntegerAttribute("userid"));
+        for (String selectedSession : selectedSessions) {
+            content.append("-").append(selectedSession).append("<br>");
+        }
+        content.append("Reason for reject:<br>");
+        content.append(reason.replaceAll("\n", "<br>"));
+        notificationService.sendRequestNotificationForUser(userDataDetail, title, content.toString());
+    }
 
+    public void processAcceptRequest(UserDataDetail userDataDetail) {
+        NotificationService notificationService = new NotificationService();
+        Account account = (Account) userDataDetail.getAttribute("account");
+        StringBuilder content = new StringBuilder();
+        String title = "Your request has been accepted by mentor " + account.getUsername();
+        String reason = userDataDetail.getStringAttribute("reason");
+        String skill = userDataDetail.getStringAttribute("skill");
+        requestDBContext.acceptRequest(skill, userDataDetail.getIntegerAttribute("userId"), userDataDetail.getIntegerAttribute("requestId"));
+        Request userRequest = requestDBContext.getById(userDataDetail.getIntegerAttribute("requestId"));
+        content.append("Here is your request:<br>").append("Title:")
+                .append(userRequest.getTitle()).append("<br>").append("Request content:<br>")
+                .append(userRequest.getContent().replaceAll("\n", "<br>"))
+                .append("Your selected session(s):<br>");
+        ArrayList<String> selectedSessions
+                = sessionDBContext.listByRequestIdAndUserid(userDataDetail.getIntegerAttribute("requestId"), userDataDetail.getIntegerAttribute("userId"));
+        for (String selectedSession : selectedSessions) {
+            content.append("-").append(selectedSession).append("<br>");
+        }
+        content.append("Your selected skill:").append(skill).append("<br>");
+        content.append("Reason for accept:<br>");
+        content.append(reason.replaceAll("\n", "<br>"));
+        notificationService.sendRequestNotificationForUser(userDataDetail, title, content.toString());
+    }
+    
+     public void processUncheckUserRequest(UserDataDetail userDataDetail) {
+        NotificationService notificationService = new NotificationService();
+        Account account = (Account) userDataDetail.getAttribute("account");
+        StringBuilder content = new StringBuilder();
+        String title = "Your request has been cancelled because mentor " + account.getUsername() + " uncheck and deadline time exceeded!";
+        Request userRequest = requestDBContext.getById(userDataDetail.getIntegerAttribute("id"));
+        content.append("Here is your request:<br>").append("Title:")
+                .append(userRequest.getTitle()).append("<br>").append("Request content:")
+                .append(userRequest.getContent().replaceAll("\n", "<br>")).append("<br>")
+                .append("Your selected session(s):<br>");
+        ArrayList<String> selectedSessions
+                = sessionDBContext.listByRequestIdAndUserid(userDataDetail.getIntegerAttribute("id"), userDataDetail.getIntegerAttribute("userid"));
+        for (String selectedSession : selectedSessions) {
+            content.append("-").append(selectedSession).append("<br>");
+        }
+        content.append("Sorry for this incovinient!<br>");
+        requestDBContext.rejectRequest(userDataDetail.getIntegerAttribute("id"));
+        notificationService.sendRequestNotificationForUser(userDataDetail, title, content.toString());
+    }
+
+    public void checkSchedule(int id){
+        sessionDBContext.checkScheduleById(id);
     }
 }

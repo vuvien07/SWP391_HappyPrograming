@@ -40,18 +40,25 @@ public class UserRequestService {
     }
 
     public void processCreateRequest(UserDataDetail userDataDetail, HttpServletRequest request) throws ParseException, IOException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+        Date currDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String content = (String) userDataDetail.getAttribute("content");
+        String noticeContent = "";
         Account account = (Account) request.getSession().getAttribute("account");
         Request newRequest = new Request();
         newRequest.setTitle((String) userDataDetail.getAttribute("title"));
         String deadlineTime = (String) userDataDetail.getAttribute("deadlineTime");
-        Date date = sdf.parse(deadlineTime);
-        newRequest.setDeadlineTime((new StringBuilder().append(sdf.format(date).split("T")[0]).append(" ").append(sdf.format(date).split("T")[1])).toString());
+        Date date = sdf.parse(Util.parseDateTimeLocal(deadlineTime));
+        newRequest.setDeadlineTime((new StringBuilder().append(sdf.format(date).split(" ")[0]).append(" ").append(sdf.format(date).split(" ")[1])).toString());
         String[] skills = (String[]) userDataDetail.getAttribute("skills");
         if (skills.length > 1) {
             request.setAttribute("err", "You must choose no more than 1 skill");
+        } else if (date.getTime() < currDate.getTime()) {
+             request.setAttribute("err1", "Dealine time must be after compared to current time!");
         } else {
-            newRequest.setContent((String) userDataDetail.getAttribute("content"));
+            newRequest.setContent(content);
+            noticeContent += content;
+            noticeContent += "<br>Picked date(s):<br>";
             newRequest.setSkill(skills[0]);
             Mentor mm = (Mentor) request.getSession().getAttribute("mentor");
             Mentor mentor = new Mentor();
@@ -65,8 +72,24 @@ public class UserRequestService {
             ArrayList<String> schedules = new ArrayList<>();
             for (String selectedSchedule1 : selectedSchedules) {
                 String sche = sessionDAO.getTimeBySesid(Integer.parseInt(selectedSchedule1));
+                String[] sches = sche.split(" ");
+                noticeContent += "-" + sches[0];
+                switch (sches[1]) {
+                    case "07:30:00" ->
+                        noticeContent += ", Slot 1<br>";
+                    case "10:00:00" ->
+                        noticeContent += ", Slot 2<br>";
+                    case "12:50:00" ->
+                        noticeContent += ", Slot 3<br>";
+                    case "15:20:00" -> {
+                        noticeContent += ", Slot 4\n";
+                    }
+                }
                 schedules.add(sche);
             }
+
+            userDataDetail.putAttribute("noticeContent", noticeContent);
+
             Date minDate = Util.findMinDate(schedules);
             if (minDate.getTime() - date.getTime() >= 43200000) {
                 try {
@@ -79,9 +102,9 @@ public class UserRequestService {
                 }
                 request.setAttribute("success", "Create request successfully");
                 NotificationService notificationService = new NotificationService();
-                notificationService.sendRequestNotificationForMentor(request, (String) userDataDetail.getAttribute("content"));
+                notificationService.sendRequestNotificationForMentor(request, (String) userDataDetail.getAttribute("noticeContent"));
             } else {
-                request.setAttribute("errr", "Please choose the deadline schedule again! The diffrence between dealine and the minimum of your selected dates must be at least 12 hours. Visit <a href='book_mentor?menid="+mm.getId()+"'>here</a> to choose again");
+                request.setAttribute("errr", "Please choose the deadline schedule again! The diffrence between dealine and the minimum of your selected dates must be at least 12 hours. Visit <a href='book_mentor?menid=" + mm.getId() + "'>here</a> to choose again");
             }
         }
     }

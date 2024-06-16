@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import model.Account;
 import model.Mentor;
 import model.MentorNotification;
+import model.User;
 import model.UserNotification;
 import util.UserDataDetail;
 
@@ -49,5 +50,22 @@ public class NotificationService {
         Mentor mentor = (Mentor) request.getSession().getAttribute("mentor");
         mentorNotification.setMentor(mentor);
         notificationDBContext.createMentorNotification(mentorNotification);
+    }
+    
+    public void sendRequestNotificationForUser(UserDataDetail udd, String title, String content){
+        User user = (User)udd.getAttribute("user");
+        UserNotification userNotification = new UserNotification();
+        userNotification.setTitle(title);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String dateTime = (new StringBuilder().append(new java.sql.Date(System.currentTimeMillis())).append(" ").append(new java.sql.Time(System.currentTimeMillis()))).toString();
+        try {
+            userNotification.setCreatedAt(sdf.parse(dateTime));
+        } catch (ParseException ex) {
+            Logger.getLogger(RequestController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        userNotification.setContent(content);
+        userNotification.setIsRead(false);
+        userNotification.setUser(user);
+        notificationDBContext.createUserNotification(userNotification);
     }
 }

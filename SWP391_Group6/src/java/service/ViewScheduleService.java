@@ -29,7 +29,8 @@ public class ViewScheduleService {
 
     public void viewSchedule(HttpServletRequest request) {
         LocalDate localDate = LocalDate.now();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        Locale asiaLocale = new Locale("vi", "VN");
+        WeekFields weekFields = WeekFields.of(asiaLocale);
         Map<java.sql.Date, java.sql.Date> weeksOnYear = Util.getWeeksByYear(localDate.getYear());
         ArrayList<Slot> slots = slotDAO.listAll();
         ArrayList<java.sql.Date> dates = null;
@@ -53,10 +54,10 @@ public class ViewScheduleService {
         java.sql.Date from = java.sql.Date.valueOf(weeks[0]);
         java.sql.Date to = java.sql.Date.valueOf(weeks[1]);
         ArrayList<java.sql.Date> dates = Util.getDatesBetween(from, to);
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        Locale asiaLocale = new Locale("vi", "VN");
+        WeekFields weekFields = WeekFields.of(asiaLocale);
         request.getSession().setAttribute("dates", dates);
         request.setAttribute("changeWeek", from.toLocalDate().get(weekFields.weekOfYear()));
     }
-    
-    
+
 }

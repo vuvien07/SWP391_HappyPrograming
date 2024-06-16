@@ -7,17 +7,22 @@ package controller.mentor;
 import controller.authorization.BaseAuthController;
 import dal.MentorDBContext;
 import dal.SessionDBContext;
+import jakarta.mail.internet.MailDateFormat;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Mentor;
 import model.Session;
 import service.ViewScheduleService;
-
 
 /**
  *
@@ -64,16 +69,30 @@ public class ViewScheduleController extends BaseAuthController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
+        Date date = new Date();
         ViewScheduleService viewScheduleService = new ViewScheduleService();
         SessionDBContext sessionDBContext = new SessionDBContext();
         MentorDBContext mentorDBContext = new MentorDBContext();
         Account menAccount = (Account) request.getSession().getAttribute("account");
         Mentor mentor = mentorDBContext.getByAccountId(menAccount.getId());
-        if(!mentor.isStatus()){
+        if (!mentor.isStatus()) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "You cannot perform this function due to your CV checking is processing or rejected");
             return;
         }
         ArrayList<Session> sessions = sessionDBContext.listScheduleByMentorId(mentor.getId());
+        SessionDBContext ses = new SessionDBContext();
+        for (Session session : sessions) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            StringBuilder dateTime = new StringBuilder();
+            dateTime.append(session.getDate()).append(" ").append(session.getSlot().getFrom());
+            try {
+                if (date.getTime() > sdf.parse(dateTime.toString()).getTime() && session.getSkill() == null) {
+                    sessionDBContext.removeEmptyScheduleById(session.getId());
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(ViewScheduleController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         request.getSession().setAttribute("sessions", sessions);
         viewScheduleService.viewSchedule(request);
         request.getRequestDispatcher("WEB-INF/view/mentor/viewschedule.jsp").forward(request, response);

@@ -123,4 +123,26 @@ public class UserDBContext extends DBContext<User> {
         return null;
     }
 
+    
+    public User getByUserId(int userid) {
+        try {
+            String sql = "SELECT * FROM [User] u\n"
+                    + "WHERE u.userid = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, userid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("userid"));
+                user.setAva(rs.getString("ava"));
+                user.setName(rs.getString("Name"));
+                user.setDateOfBirth(rs.getDate("DateOfBirth"));
+                user.setGender(rs.getBoolean("Gender"));
+                user.setAddress(rs.getString("Address"));
+                return user;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
 }

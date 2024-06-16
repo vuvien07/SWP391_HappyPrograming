@@ -205,11 +205,12 @@
                             <c:forEach var="d" items="${sessionScope.dates}">
                                 <td>
                                     <c:forEach items="${sessionScope.sessions}" var="s">
-                                        <c:if test="${(r.id eq s.slot.id) and (s.date eq d)}">
+                                        <c:if test="${(r.id eq s.slot.id) and (s.date eq d) and (s.skill != null)}">
                                             Lecture:${sessionScope.account.username}<br>
                                             Skill:${s.skill}<br>
                                             Mentee:${s.user.name}<br>
-                                            <c:if test="${s.status eq false and s.user.name != null}">
+                                           <c:if test="${s.status eq false and s.user.name != null}">
+                                                <%--
                                                 <%
                                                  java.util.Date date = new java.util.Date();
                                                  SimpleDateFormat sss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -222,12 +223,15 @@
                                                  java.util.Date deadline1 = sss.parse(deadline);
                                                   if(date.getTime() >= ddd.getTime() && date.getTime() <= deadline1.getTime()){
                                                 %>
-                                                <a href="">Taking check</a>     
-                                                <%
-                                                    }
-                                                %>
+                                                --%>
+                                                <a href="check_schedule?sesid=${s.id}">Taking check</a>  
+                                                <%--
+                                               <%
+                                                   }
+                                               %>
+                                                --%>
                                             </c:if>
-                                            <c:if test="${s.status eq true and s.user.name != null}">
+                                            <c:if test="${s.status eq true}">
                                                 <p style="color: green">Checked</p>
                                             </c:if>
                                         </c:if>

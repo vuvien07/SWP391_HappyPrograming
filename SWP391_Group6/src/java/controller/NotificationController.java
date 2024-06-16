@@ -18,6 +18,7 @@ import model.Mentor;
 import model.MentorNotification;
 import model.User;
 import model.UserNotification;
+import service.PaginationService;
 
 /**
  *
@@ -60,21 +61,22 @@ public class NotificationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        PaginationService paginationService = new PaginationService();
         Account account = (Account) request.getSession().getAttribute("account");
         NotificationDBContext notificationDBContext = new NotificationDBContext();
         if(account.getRoleid() == 1){
            Mentor mentor = (Mentor) request.getSession().getAttribute("mentor");
             ArrayList<MentorNotification> notifications = notificationDBContext.listByMenId(mentor.getId());
-            int numUnread = notificationDBContext.countMentorUnreadNotification();
+            int numUnread = notificationDBContext.countMentorUnreadNotificationById(mentor.getId());
             request.setAttribute("numUnread", numUnread);
-            request.setAttribute("notifications", notifications);
+            paginationService.pagingList(request, (ArrayList<Object>)(ArrayList<?>)notifications, "notifications");
         }
         if(account.getRoleid() == 2){
             User user = (User) request.getSession().getAttribute("user");
             ArrayList<UserNotification> notifications = notificationDBContext.listByUserId(user.getId());
-            int numUnread = notificationDBContext.countUserUnreadNotification();
+            int numUnread = notificationDBContext.countUserUnreadNotificationByUserId(user.getId());
             request.setAttribute("numUnread", numUnread);
-            request.setAttribute("notifications", notifications);
+           paginationService.pagingList(request, (ArrayList<Object>)(ArrayList<?>)notifications, "notifications");
         }
         
         request.getRequestDispatcher("WEB-INF/view/notification.jsp").forward(request, response);

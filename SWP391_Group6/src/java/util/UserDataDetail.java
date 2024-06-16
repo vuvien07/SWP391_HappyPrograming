@@ -12,18 +12,35 @@ import java.util.Map;
  * @author Admin
  */
 public class UserDataDetail {
+
     private Map<String, Object> attributes;
 
     public UserDataDetail() {
-       attributes = new HashMap<>();
+        attributes = new HashMap<>();
     }
-    
-    public void putAttribute(String key, Object value){
+
+    public void putAttribute(String key, Object value) {
         attributes.put(key, value);
     }
-    
-    public Object getAttribute(String key){
+
+    public void putAttribute(String key, int value) {
+        attributes.put(key, value);
+    }
+
+    public void putAttribute(String key, String value) {
+        attributes.put(key, value);
+    }
+
+    public Object getAttribute(String key) {
         return attributes.get(key);
-    }  
-    
+    }
+
+    public int getIntegerAttribute(String key) {
+        return (int) attributes.get(key);
+    }
+
+    public String getStringAttribute(String key) {
+        return (String) attributes.get(key);
+    }
+
 }

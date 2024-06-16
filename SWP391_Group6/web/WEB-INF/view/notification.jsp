@@ -68,12 +68,13 @@
             <div class="container">
                 <h1 style=" font-family: Arial, Helvetica, sans-serif">Notification history</h1>
                 <div>
-                    <c:forEach items="${requestScope.notifications}" var="s">  
+                    <c:forEach items="${sessionScope.notifications}" var="s">  
                             <p <c:if test="${s.isRead eq false}">style="font-weight: 500"</c:if>>${s.createdAt}:<a href="view_notification?id=${s.id}">${s.title}</a></p>
                     </c:forEach>
                 </div>
             </div>
         </section>
+        <myTag:myPagination currentPage="${requestScope.page}" subject="notification" totalPages="${requestScope.num}"></myTag:myPagination>
 
         <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/jquery-migrate-3.0.1.min.js"></script>

@@ -66,6 +66,7 @@
         <jsp:include page="../component/header.jsp"/>
         <section class="ftco-section bg-light">
             <form action="request" method="post">
+                ${requestScope.err1}
                 ${requestScope.err}
                 ${requestScope.errr}
                 ${requestScope.success}

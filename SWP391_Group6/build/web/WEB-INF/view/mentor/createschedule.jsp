@@ -92,6 +92,7 @@
             <% request.getSession().removeAttribute("err"); %>
             <p class="text-center" style="color: green">${sessionScope.success}</p>
             <% request.getSession().removeAttribute("success"); %>
+            <p class="text-center" style="color: red">${requestScope.dateErr}</p>
             <!--            <form action="schedule" method="post">
                             <div class="container m-auto w-50">
                                 <h1 style=" font-family: Arial, Helvetica, sans-serif">Create Schedule</h1>
@@ -130,6 +131,7 @@
                 <input type="hidden" name="remove" id="remove"/>
                 <input type="hidden" name="sesid" id="sesid"/>
                 <input type="hidden" name="changeweek" id="changeweek"/>
+                <input type="hidden" name="timeFromSlot" id="timeFromSlot"/>
                 <table class="table-bordered">
                     <tr>
                         <td style="background-color: #00BFFF">
@@ -180,7 +182,7 @@
                                     </td>
                                 </c:if>
                                 <c:if test="${!hasSession}">
-                                    <td onclick="bookSchedule('${d}', ${r.id})">
+                                    <td onclick="bookSchedule('${d}', '${r.id}', '${r.from}')">
 
                                     </td>
                                 </c:if>
@@ -232,10 +234,11 @@
                                             });
                                         });
 
-                                        function bookSchedule(date, slot) {
+                                        function bookSchedule(date, slot, time) {
                                             if (window.confirm("Are u sure book with date " + date + ", slot" + slot)) {
                                                 $("#date").val(date);
                                                 $("#slotid").val(slot);
+                                                $("#timeFromSlot").val(time);
                                                 $("#timetableForm").submit();
                                             }
                                         }

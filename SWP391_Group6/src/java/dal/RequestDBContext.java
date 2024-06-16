@@ -15,7 +15,7 @@ import model.User;
  * @author Admin
  */
 public class RequestDBContext extends DBContext<Request> {
-    
+
     @Override
     public ArrayList<Request> listAll() {
         ArrayList<Request> requests = new ArrayList<>();
@@ -36,7 +36,7 @@ public class RequestDBContext extends DBContext<Request> {
         }
         return requests;
     }
-    
+
     @Override
     public void insert(Request entity) {
         try {
@@ -66,17 +66,17 @@ public class RequestDBContext extends DBContext<Request> {
             }
         }
     }
-    
+
     @Override
     public void update(Request entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void delete(Request entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     public ArrayList<Request> listByUserId(int id) {
         ArrayList<Request> requests = new ArrayList<>();
         try {
@@ -91,13 +91,14 @@ public class RequestDBContext extends DBContext<Request> {
                 request.setDeadlineTime(rs.getString("deadlineTime"));
                 request.setSkill(rs.getString("skills"));
                 request.setContent(rs.getString("contentRequest"));
+                request.setStatus(rs.getString("status"));
                 requests.add(request);
             }
         } catch (Exception e) {
         }
         return requests;
     }
-    
+
     public Request getById(int id) {
         try {
             String sql = "SELECT * FROM Request r WHERE r.id = ?";
@@ -105,6 +106,8 @@ public class RequestDBContext extends DBContext<Request> {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("userid"));
                 Mentor m = new Mentor();
                 m.setId(rs.getInt("menid"));
                 Request request = new Request();
@@ -114,13 +117,14 @@ public class RequestDBContext extends DBContext<Request> {
                 request.setSkill(rs.getString("skills"));
                 request.setContent(rs.getString("contentRequest"));
                 request.setMentor(m);
+                request.setUser(user);
                 return request;
             }
         } catch (Exception e) {
         }
         return null;
     }
-    
+
     public Request selectTopRequest() {
         try {
             String sql = "select top 1 * from [dbo].[Request] order by [id] desc";
@@ -142,7 +146,7 @@ public class RequestDBContext extends DBContext<Request> {
         }
         return null;
     }
-    
+
     public void updateRequestById(Request entity) {
         try {
             connection.setAutoCommit(false);
@@ -169,11 +173,11 @@ public class RequestDBContext extends DBContext<Request> {
             }
         }
     }
-    
+
     public ArrayList<Request> listByMentorId(int id) {
         ArrayList<Request> requests = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM Request r WHERE r.[status] = 'Processing' AND r.menid = ?";
+            String sql = "SELECT * FROM Request r WHERE r.menid = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -187,20 +191,29 @@ public class RequestDBContext extends DBContext<Request> {
                 request.setSkill(rs.getString("skills"));
                 request.setContent(rs.getString("contentRequest"));
                 request.setUser(user);
+                request.setStatus(rs.getString("status"));
                 requests.add(request);
             }
         } catch (Exception e) {
         }
         return requests;
     }
-    
-    public void updateStatusRequest(int id) {
+
+    public void rejectRequest(int id) {
         try {
             connection.setAutoCommit(false);
-            String sql = "UPDATE [dbo].[Request] SET [status] = 'Accept' WHERE [id] = ?";
+            String sql = "UPDATE [dbo].[Request] SET [status] = 'Cancel' WHERE [id] = ?";
+            String updateSessionSql = """
+                                      UPDATE [dbo].[Session]
+                                      SET [requestid] = NULL, [tempuserid] = NULL
+                                      WHERE [requestid] = ?;
+                                      """;
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
+            PreparedStatement updatePs = connection.prepareStatement(updateSessionSql);
+            updatePs.setInt(1, id);
             ps.executeUpdate();
+            updatePs.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
             try {
@@ -216,5 +229,37 @@ public class RequestDBContext extends DBContext<Request> {
             }
         }
     }
-    
+   
+    public void acceptRequest(String skill, int userid, int reqid) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "UPDATE [dbo].[Request] SET [status] = 'Cancel' WHERE [id] = ?";
+            String updateSessionSql = """
+                                      UPDATE [dbo].[Session]
+                                      SET [userid] = ?, [skill] = ?
+                                      WHERE [requestid] = ?;
+                                      """;
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, reqid);
+            PreparedStatement updatePs = connection.prepareStatement(updateSessionSql);
+            updatePs.setInt(1, userid);
+            updatePs.setString(2, skill);
+            updatePs.setInt(3, reqid);
+            ps.executeUpdate();
+            updatePs.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e3) {
+                e3.printStackTrace();
+            }
+        }
+    }
 }

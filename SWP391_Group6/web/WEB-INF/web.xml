@@ -156,6 +156,14 @@
         <servlet-name>TimeTableController</servlet-name>
         <servlet-class>controller.user.TimeTableController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteRequestController</servlet-name>
+        <servlet-class>controller.user.DeleteRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckScheduleController</servlet-name>
+        <servlet-class>controller.mentor.CheckScheduleController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -311,6 +319,14 @@
     <servlet-mapping>
         <servlet-name>TimeTableController</servlet-name>
         <url-pattern>/time_table</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteRequestController</servlet-name>
+        <url-pattern>/delete_request</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckScheduleController</servlet-name>
+        <url-pattern>/check_schedule</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home.jsp</welcome-file>

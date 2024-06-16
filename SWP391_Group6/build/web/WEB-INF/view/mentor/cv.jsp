@@ -58,7 +58,7 @@
                                 <div class="avatar">
                                     <input type="file" id="fileUpload" name="avatar" accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(event)">
                                     <img id="preview" class="preview-img" style="margin-left: 20%;border-radius: 50%; width: 200px; height: 200px; border: 1px solid black; margin-bottom: 10px"  src="${pageContext.request.contextPath}/assets/uploads/cv/${sessionScope.cv.avatar}">
-                                    <button type="button" class="img-upload" onclick="document.getElementById('fileUpload').click()">Click here to upload</button>
+                                    <button type="button" class="img-upload acceptEditImage" disabled onclick="document.getElementById('fileUpload').click()">Click here to upload</button>
                                     <br>
                                     <input type="hidden" name="image-initiate" value="${sessionScope.user.ava}">
                                 </div>
@@ -69,34 +69,34 @@
                         <div class="card-mb-4 mb-xl-0">
                             <div class="card-header">Introduction</div>
                             <div class="card-body box_info">
-                                 <textarea id="intro" name="intro" placeholder="Write your introduction here..." style="width: 100%"
-                                           required><c:out value="${sessionScope.cv.intro}"/></textarea><br>
+                                 <textarea id="intro" name="intro" readonly placeholder="Write your introduction here..." style="width: 100%"
+                                           class="acceptEdit" required><c:out value="${sessionScope.cv.intro}"/></textarea><br>
                             </div>
                         </div>
                         <div class="card-mb-4 mb-xl-0">
                             <div class="card-header">Achievement</div>
                             <div class="card-body box_info">
-                                 <textarea id="intro" name="achivement" placeholder="Write your achivement here..." style="width: 100%"
-                                           required><c:out value="${sessionScope.cv.achievement}"/></textarea><br>
+                                 <textarea id="intro" name="achivement" readonly placeholder="Write your achivement here..." style="width: 100%"
+                                           class="acceptEdit" required><c:out value="${sessionScope.cv.achievement}"/></textarea><br>
                             </div>
                         </div>
                         <div class="card-mb-4 mb-xl-0">
                             <div class="card-header">Experience</div>
                             <div class="card-body box_info">
-                                 <textarea id="intro" name="experience" placeholder="Write your experience here..." style="width: 100%"
-                                           required><c:out value="${sessionScope.cv.experience}"/></textarea><br>
+                                 <textarea id="intro" name="experience" readonly placeholder="Write your experience here..." style="width: 100%"
+                                           required class="acceptEdit"><c:out value="${sessionScope.cv.experience}"/></textarea><br>
                             </div>
                         </div>
                         <div class="card-mb-4 mb-xl-0">
                             <div class="card-header">Certificate</div>
                             <div class="card-body box_info">
-                                 <input type="text" name="cert" value="${sessionScope.cv.certificate}" placeholder="Put your certificate link here" style="width: 100%"/>
+                                 <input type="text" name="cert" readonly value="${sessionScope.cv.certificate}" placeholder="Put your certificate link here" style="width: 100%" class="acceptEdit"/>
                                 <p>Your cerificate link:<a href="${sessionScope.cv.certificate}" target="target">Link</a></p>
                             </div>
                         </div>
                         <div class="card-mb-4 mb-xl-0">
                             <div class="card-header">Skills </div>
-                            Select first skill: <select name="first_skill" class="mt-2 mb-1">
+                            Select first skill: <select name="first_skill" disabled class="mt-2 mb-1 acceptEditSkill">
                                 <option value="none">None</option>
                                 <c:forEach items="${sessionScope.skills}" var="s">
                                     <option value="${s.skillname}"
@@ -106,7 +106,7 @@
                                             >${s.skillname}</option>
                                 </c:forEach>
                             </select>
-                            <br>Select second skill: <select name="second_skill" class="mb-1">
+                            <br>Select second skill: <select name="second_skill" disabled class="acceptEditSkill">
                                 <option value="none">None</option>
                                 <c:forEach items="${sessionScope.skills}" var="s">
                                     <option value="${s.skillname}"
@@ -116,7 +116,7 @@
                                             >${s.skillname}</option>
                                 </c:forEach>
                             </select>
-                            <br>Select third skill:  <select name="third_skill">
+                            <br>Select third skill:  <select name="third_skill" disabled class="acceptEditSkill">
                                 <option value="none">None</option>
                                 <c:forEach items="${sessionScope.skills}" var="s">
                                     <option value="${s.skillname}"
@@ -132,11 +132,13 @@
                 <div class="mb-3" style="margin-left: 50%; margin-top: 5%">
                     <div class="btn-layer"></div>
                     <c:if test="${sessionScope.cv == null}">
-                        <input type="submit" class="btn-primary" style="border-style: none; padding: 5px 10px; border-radius: 10px" value="Create CV">
+                        <button type="button" class="btn-primary createCV" style="border-style: none; padding: 5px 10px; border-radius: 10px" onclick="acceptCreateCV()">Create CV</button>
+                         <input type="submit" class="btn-primary uploadCV" style="border-style: none; padding: 5px 10px; border-radius: 10px; display: none" value="Upload CV">
                     </c:if>
                     <c:if test="${sessionScope.cv != null}">
                         <input type="hidden" value="update" name="action"/>
-                        <input type="submit" class="btn-primary" style="border-style: none; padding: 5px 10px; border-radius: 10px" value="Update CV">
+                        <button type="button" class="btn-primary updateCV" style="border-style: none; padding: 5px 10px; border-radius: 10px" onclick="acceptUpdateCV()">Update CV</button>
+                        <input type="submit" class="btn-primary saveCV" style="border-style: none; padding: 5px 10px; border-radius: 10px; display: none" value="Save">
                     </c:if>
                 </div>
             </form>
@@ -157,6 +159,22 @@
                     output.src = reader.result;
                 };
                 reader.readAsDataURL(event.target.files[0]);
+            }
+            
+            function acceptCreateCV(){
+                $(".acceptEdit").attr("readonly", false);
+                $(".acceptEditSkill").attr("disabled", false);
+                $(".acceptEditImage").attr("disabled", false);
+                $(".uploadCV").css("display", "block");
+                $(".createCV").css("display", "none");
+            }
+            
+             function acceptUpdateCV(){
+                $(".acceptEdit").attr("readonly", false);
+                $(".acceptEditSkill").attr("disabled", false);
+                $(".acceptEditImage").attr("disabled", false);
+                $(".updateCV").css("display", "none");
+                $(".saveCV").css("display", "block");
             }
 
         </script>

@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Mentor;
 import model.MentorNotification;
+import model.User;
 import model.UserNotification;
 
 /**
@@ -63,16 +65,18 @@ public class NotificationDetailController extends HttpServlet {
         NotificationDBContext notificationDBContext = new NotificationDBContext();
         String id = request.getParameter("id");
         if (account.getRoleid() == 2) {
+            User user = (User) request.getSession().getAttribute("user");
             notificationDBContext.updateUserNotificationById(Integer.parseInt(id));
             UserNotification userNotification = notificationDBContext.getNotificationDetailById(Integer.parseInt(id));
-            int numUnread = notificationDBContext.countUserUnreadNotification();
+            int numUnread = notificationDBContext.countUserUnreadNotificationByUserId(user.getId());
             request.setAttribute("numUnread", numUnread);
             request.setAttribute("notification", userNotification);
         }
         if(account.getRoleid() == 1){
+            Mentor mentor = (Mentor) request.getSession().getAttribute("mentor");
             notificationDBContext.updateMentorNotificationById(Integer.parseInt(id));
             MentorNotification mentorNotification = notificationDBContext.getMentorNotificationDetailById(Integer.parseInt(id));
-            int numUnread = notificationDBContext.countMentorUnreadNotification();
+            int numUnread = notificationDBContext.countMentorUnreadNotificationById(mentor.getId());
             request.setAttribute("numUnread", numUnread);
             request.setAttribute("notification", mentorNotification);
         }

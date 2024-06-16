@@ -22,7 +22,7 @@ public class NotificationDBContext extends DBContext<Object> {
     public ArrayList<UserNotification> listByUserId(int userid) {
         ArrayList<UserNotification> notifications = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM [dbo].[User_Notification] WHERE [userid] = ?";
+            String sql = "SELECT * FROM [dbo].[User_Notification] WHERE [userid] = ? ORDER BY [createdAt] DESC";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, userid);
             ResultSet rs = ps.executeQuery();
@@ -49,7 +49,7 @@ public class NotificationDBContext extends DBContext<Object> {
     public ArrayList<MentorNotification> listByMenId(int menid) {
         ArrayList<MentorNotification> notifications = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM [dbo].[Mentor_Notification] WHERE [menid] = ?";
+            String sql = "SELECT * FROM [dbo].[Mentor_Notification] WHERE [menid] = ? ORDER BY [createdAt] DESC";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, menid);
             ResultSet rs = ps.executeQuery();
@@ -101,7 +101,7 @@ public class NotificationDBContext extends DBContext<Object> {
      public void createUserNotification(UserNotification userNotification) {
         try {
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO [dbo].[User_Notification]([title], [content], [createdAt], [isRead], [menid]) VALUES(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO [dbo].[User_Notification]([title], [content], [createdAt], [isRead], [userid]) VALUES(?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, userNotification.getTitle());
             ps.setString(2, userNotification.getContent());
@@ -243,11 +243,12 @@ public class NotificationDBContext extends DBContext<Object> {
         return null;
     }
 
-    public int countUserUnreadNotification() {
+    public int countUserUnreadNotificationByUserId(int id) {
         int num = 0;
         try {
-            String sql = "SELECT COUNT([isRead]) AS num FROM [dbo].[User_Notification] WHERE [isRead] = 0";
+            String sql = "SELECT COUNT([isRead]) AS num FROM [dbo].[User_Notification] WHERE [isRead] = 0 AND [userid] = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 num = rs.getInt("num");
@@ -257,11 +258,12 @@ public class NotificationDBContext extends DBContext<Object> {
         return num;
     }
 
-    public int countMentorUnreadNotification() {
+    public int countMentorUnreadNotificationById(int id) {
         int num = 0;
         try {
-            String sql = "SELECT COUNT([isRead]) AS num FROM [dbo].[Mentor_Notification] WHERE [isRead] = 0";
+            String sql = "SELECT COUNT([isRead]) AS num FROM [dbo].[Mentor_Notification] WHERE [isRead] = 0 AND [menid] = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 num = rs.getInt("num");

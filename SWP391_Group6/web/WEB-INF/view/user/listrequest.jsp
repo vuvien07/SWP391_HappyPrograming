@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="myTag" tagdir="/WEB-INF/tags/" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -117,26 +118,32 @@
                             <th>Deadline</th>
                             <th>Description</th>
                             <th>Selected skill</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach items="${requestScope.requests}" var="r">
-                            <tr>
-                                <td>${r.id}</td>
-                                <td>${r.title}</td>
-                                <td>${r.deadlineTime}</td>
-                                <td>${r.content}</td>
-                                <td>${r.skill}</td>
-                                <td><a class="btn btn-warning" href="update_request?id=${r.id}">Update</a>
-                                        <a class="btn btn-danger" onclick="">Delete</a></td>
-                            </tr>
+                            <c:if test="${!fn:contains(r.status, 'Cancel')}">
+                                <tr>
+                                    <td>${r.id}</td>
+                                    <td>${r.title}</td>
+                                    <td>${r.deadlineTime}</td>
+                                    <td>${r.content}</td>
+                                    <td>${r.skill}</td>
+                                    <td>${r.status}</td>
+                                    <td>
+                                        <c:if test="${fn:contains(r.status, 'Processing')}">
+                                            <a class="btn btn-danger" onclick="confirmDelete('${r.id}')">Delete</a></td>
+                                        </c:if>
+                                </tr>
+                            </c:if>
                         </c:forEach>
                     </tbody>
                 </table>
             </div>
         </section>
-                <%@include file="../component/footer.jsp" %>
+        <%@include file="../component/footer.jsp" %>
         <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/jquery-migrate-3.0.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/popper.min.js"></script>
@@ -154,26 +161,26 @@
         <script src="${pageContext.request.contextPath}/resources/js/google-map.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
         <script>
-                                window.onload = function () {
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open("GET", "home", true);
-                                    xhr.send();
-                                };
-                                $(document).ready(function () {
-                                    // Bắt sự kiện click trên cả trang
-                                    $(document).on('click', function (event) {
-                                        // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
-                                        if (!$(event.target).closest('.icon').length) {
-                                            // Nếu không, ẩn icon
-                                            $('.io').hide();
-                                        }
-                                    });
+            $(document).ready(function () {
+                // Bắt sự kiện click trên cả trang
+                $(document).on('click', function (event) {
+                    // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
+                    if (!$(event.target).closest('.icon').length) {
+                        // Nếu không, ẩn icon
+                        $('.io').hide();
+                    }
+                });
 
-                                    // Bắt sự kiện click trên icon
-                                    $('.icon').click(function () {
-                                        $('.io').css('display', 'block');
-                                    });
-                                });
+                // Bắt sự kiện click trên icon
+                $('.icon').click(function () {
+                    $('.io').css('display', 'block');
+                });
+            });
+            function confirmDelete(id){
+                if(window.confirm("Are you sure to delete request with id " + id)){
+                    window.location.href = "delete_request?id=" + id;
+                }
+            }
         </script>
 
     </body>

@@ -73,8 +73,5 @@ public class UserService {
         request.getRequestDispatcher("WEB-INF/view/user/profile.jsp").forward(request, response);
 
     }
-    
-    public void noticeTomentor(String msg){
-    }
 
 }

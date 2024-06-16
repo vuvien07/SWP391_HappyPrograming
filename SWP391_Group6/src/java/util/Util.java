@@ -12,18 +12,25 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import java.util.TreeMap;
 import model.Skill;
+import model.Slot;
 
 /**
  *
@@ -177,11 +184,11 @@ public class Util {
         return weeks;
     }
 
-    public static Date findMinDate(ArrayList<String> str) throws ParseException{
+    public static Date findMinDate(ArrayList<String> str) throws ParseException {
         Date minDate = null;
         SimpleDateFormat sss = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         for (String string : str) {
-             minDate = sss.parse(string);
+            minDate = sss.parse(string);
             if (sss.parse(string).getTime() > minDate.getTime()) {
                 minDate = sss.parse(string);
             }
@@ -190,8 +197,6 @@ public class Util {
     }
 
     public static void main(String[] args) throws ParseException {
-        Date date = new Date();
-        SimpleDateFormat sss = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 //        Date startTime = sss.parse("2024-06-10 7:00:00");
 //        Date endTime = sss.parse("2024-06-10 23:00:00");
 //        if (date.getTime() >= startTime.getTime() && date.getTime() <= endTime.getTime()) {
@@ -199,15 +204,44 @@ public class Util {
 //        } else {
 //            System.out.println("khong cho phep hoat dong");
 //        }
-        String dates[] = {"2024-06-05 12:00:45", "2024-06-05 11:12:00", "2023-06-09 14:00:00"};
-        Date minDate = null;
-        for (String date1 : dates) {
-            minDate = sss.parse(date1);
-            if (sss.parse(date1).getTime() > minDate.getTime()) {
-                minDate = sss.parse(date1);
+//        String dates[] = {"2024-06-05 12:00:45", "2024-06-05 11:12:00", "2023-06-09 14:00:00"};
+//        Date minDate = null;
+//        for (String date1 : dates) {
+//            minDate = sss.parse(date1);
+//            if (sss.parse(date1).getTime() > minDate.getTime()) {
+//                minDate = sss.parse(date1);
+//            }
+//        }
+ LocalDate localDate = LocalDate.now();
+ Locale vietLocale = new Locale("vi", "VN");
+        WeekFields weekFields = WeekFields.of(vietLocale);
+        Map<java.sql.Date, java.sql.Date> weeksOnYear = Util.getWeeksByYear(localDate.getYear());
+        ArrayList<java.sql.Date> dates = null;
+        Set<java.sql.Date> keySet = weeksOnYear.keySet();
+        System.out.println(keySet);
+        for (java.sql.Date object : keySet) {
+            if (localDate.get(weekFields.weekOfYear()) == object.toLocalDate().get(weekFields.weekOfYear())){
+                dates = Util.getDatesBetween(object, weeksOnYear.get(object));
+                System.out.println(dates);
+                break;
             }
+        } 
+        java.sql.Date date = java.sql.Date.valueOf("2024-06-16");
+        System.out.println(date.toLocalDate().get(weekFields.weekOfWeekBasedYear()));
+        System.out.println(localDate.get(weekFields.weekOfYear()));
+    }
+
+    public static String parseDateTimeLocal(String input) {
+        String result = "";
+        DateTimeFormatter inputt = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        DateTimeFormatter output = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        try {
+            LocalDateTime ldt = LocalDateTime.parse(input, inputt);
+            result = ldt.format(output);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        System.out.println(minDate);
+        return result;
     }
 
     public static boolean checkValidTimeInDay() throws ParseException {
