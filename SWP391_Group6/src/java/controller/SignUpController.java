@@ -98,17 +98,14 @@ public class SignUpController extends HttpServlet {
                 userDataDetail.putAttribute("gender", gender);
                 userDataDetail.putAttribute("role", role);
                 userDataDetail.putAttribute("email", email);
+                request.getSession().setAttribute("userDataDetail", userDataDetail);
                 sus.processSendEmail(request, response, userDataDetail);
             } else {
-                if (sus.isVerifyEmail(request, response)) {
-                    UserDataDetail userDataDetail1 = (UserDataDetail) session.getAttribute("userDataDetail");
-                    sus.registerUser(userDataDetail1);
-                    session.invalidate();
-                    request.setAttribute("success", "Sign up sucessfully! You can login to our system");
-                    request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
-                } else {
-                    request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
-                }
+                UserDataDetail userDataDetail1 = (UserDataDetail) session.getAttribute("userDataDetail");
+                sus.registerUser(userDataDetail1);
+                session.invalidate();
+                request.setAttribute("success", "Sign up sucessfully! You can login to our system");
+                request.getRequestDispatcher("WEB-INF/view/user/login.jsp").forward(request, response);
             }
         } catch (ServletException | IOException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occured. Please try again later!");

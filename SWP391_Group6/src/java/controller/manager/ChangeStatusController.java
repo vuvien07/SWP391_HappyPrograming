@@ -76,7 +76,6 @@ public class ChangeStatusController extends BaseAuthController {
         }
         mentorDBContext.changeStatus(mentorId);
 
-        // Redirect lại về trang quản lý mentor
         response.sendRedirect("manage_cv");
     }
 

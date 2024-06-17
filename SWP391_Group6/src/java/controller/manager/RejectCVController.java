@@ -63,7 +63,6 @@ public class RejectCVController extends BaseAuthController {
         int mentorId = Integer.parseInt(mentorIdStr);
         MentorDBContext mentorDBContext = new MentorDBContext();
         mentorDBContext.rejectCV(mentorId);
-        // Redirect lại về trang quản lý CV
         response.sendRedirect("manage_cv");
     }
 

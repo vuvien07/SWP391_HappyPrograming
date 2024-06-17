@@ -11,11 +11,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="font/flaticon.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style_1.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/signup.css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style_1.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/signup.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -33,7 +33,7 @@
                         <div style="display: flex; margin-bottom: 10%;">
                             <div style="margin-right: 10px;width: 49%">
                                 <div class="field">
-                                    <input type="text" name="name" placeholder="Full Name" required>
+                                    <input type="text" class="uiui" name="name" placeholder="Full Name" required>
                                 </div>
                                 <div class="name">
 
@@ -137,7 +137,8 @@
                     $(".name").empty();
                 }
                 if (username.length < 6 || username.length > 20) {
-                    $(".username").html('<p style="color:red">Username must be between 6 and 20 characters and cannot contain spaces</p>');
+//                    $(".username").html('<p style="color:red">Username must be between 6 and 20 characters and cannot contain spaces</p>');
+                    $(".uiui").attr("title", "nhu cut");
                     check = false;
                 } else {
                     $(".username").empty();

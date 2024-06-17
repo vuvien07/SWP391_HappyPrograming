@@ -46,10 +46,11 @@ public class SignUpService {
         Util.sendEmail((String) userDataDetail.getAttribute("email"), "Your passcode confirm is: " + pass);
         request.getSession().setAttribute("userDataDetail", userDataDetail);
         request.getSession().setAttribute("passcode", pass);
+        request.getSession().setAttribute("email", email);
         request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
     }
 
-    public boolean isVerifyEmail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public boolean isVerifyEmail(HttpServletRequest request) throws ServletException, IOException {
         String passcode = (String) request.getSession().getAttribute("passcode");
         String passconfirm = request.getParameter("passconfirm");
         if (!passconfirm.equals(passcode)) {

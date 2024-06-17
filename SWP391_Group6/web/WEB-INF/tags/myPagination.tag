@@ -33,7 +33,7 @@
     </c:choose>
 
 
-    <ul class="pagination" style="padding-left: 420px;">
+    <ul class="pagination" style="padding-left: 300px;">
         <c:if test="${currentPage != 1}">
             <li class="page-item">
                 <a class="page-link" href="${subject}?page=1">First</a>

@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.SignUpService;
 import util.UserDataDetail;
 import util.Util;
 
@@ -86,7 +87,7 @@ public class VerifyAccount extends HttpServlet {
                 request.setAttribute("err", "passcode doesn't match!");
                 request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
             } else {
-                request.getSession().setAttribute("status", "confirm");
+                request.setAttribute("status", "confirm");
                 request.getRequestDispatcher("register").forward(request, response);
             }
         } catch (ServletException | IOException e) {
@@ -103,5 +104,5 @@ public class VerifyAccount extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
 }

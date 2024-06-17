@@ -14,9 +14,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="font/flaticon.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style_1.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/signup.css"/>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style_1.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/signup.css"/>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
         <style>
             .profile-img {
                 width: 20%;

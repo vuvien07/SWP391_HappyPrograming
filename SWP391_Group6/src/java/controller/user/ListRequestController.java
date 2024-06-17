@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import model.Account;
 import model.Request;
 import model.User;
+import service.PaginationService;
 
 /**
  *
@@ -61,12 +62,14 @@ public class ListRequestController extends BaseAuthController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account)
     throws ServletException, IOException {
+        PaginationService paginationService = new PaginationService();
         Account account1 = (Account) request.getSession().getAttribute("account");
         UserDBContext userDAO = new UserDBContext();
         RequestDBContext requestDAO = new RequestDBContext();
         User user = userDAO.getUserById(account1.getId());
         ArrayList<Request> requests = requestDAO.listByUserId(user.getId());
-        request.setAttribute("requests", requests);
+//        request.setAttribute("requests", requests);
+        paginationService.pagingList(request, (ArrayList<Object>)(ArrayList<?>)requests, "requests");
         request.getRequestDispatcher("WEB-INF/view/user/listrequest.jsp").forward(request, response);
     } 
 

@@ -10,15 +10,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css"/>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
         <title>JSP Page</title>
     </head>
     <body>
         <div class="wrapper" style="width: 400px">
             <div class="title-text">
                 <div class="title login">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/assets/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
                     Reset password form
                     <p style="color: red; font-weight: lighter; font-size: 15px">${requestScope.err}</p>
                 </div>

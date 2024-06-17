@@ -18,20 +18,20 @@
 
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/${pageContext.request.contextPath}/assets/css/font-awesome.min.css">
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/animate.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/animate.css">
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.theme.default.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/magnific-popup.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/magnific-popup.css">
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap-datepicker.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery.timepicker.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-datepicker.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jquery.timepicker.css">
 
 
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flaticon.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/flaticon.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -123,64 +123,66 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${requestScope.requests}" var="r">
-                            <c:if test="${!fn:contains(r.status, 'Cancel')}">
-                                <tr>
-                                    <td>${r.id}</td>
-                                    <td>${r.title}</td>
-                                    <td>${r.deadlineTime}</td>
-                                    <td>${r.content}</td>
-                                    <td>${r.skill}</td>
-                                    <td>${r.status}</td>
-                                    <td>
-                                        <c:if test="${fn:contains(r.status, 'Processing')}">
-                                            <a class="btn btn-danger" onclick="confirmDelete('${r.id}')">Delete</a></td>
-                                        </c:if>
-                                </tr>
-                            </c:if>
+                        <c:forEach items="${sessionScope.requests}" var="r">
+                            <tr>
+                                <td>${r.id}</td>
+                                <td>${r.title}</td>
+                                <td>${r.deadlineTime}</td>
+                                <td>${r.content}</td>
+                                <td>${r.skill}</td>
+                                <td>${r.status}</td>
+                                <td>
+                                    <c:if test="${fn:contains(r.status, 'Processing')}">
+                                        <a class="btn btn-danger" onclick="confirmDelete('${r.id}')">Delete</a>
+                                    </c:if>
+                                    <a class="btn btn-outline-secondary" onclick="">View</a>
+                                </td>
+                            </tr>
+
                         </c:forEach>
                     </tbody>
                 </table>
+                <myTag:myPagination currentPage="${requestScope.page}" subject="list_request" totalPages="${requestScope.num}"/>
             </div>
         </section>
         <%@include file="../component/footer.jsp" %>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery-migrate-3.0.1.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/popper.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.easing.1.3.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.waypoints.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.stellar.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.magnific-popup.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/jquery.animateNumber.min.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/bootstrap-datepicker.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/scrollax.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-migrate-3.0.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/popper.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.easing.1.3.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.waypoints.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.stellar.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/owl.carousel.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.magnific-popup.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery.animateNumber.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap-datepicker.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/scrollax.min.js"></script>
         <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/google-map.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/google-map.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
         <script>
-            $(document).ready(function () {
-                // Bắt sự kiện click trên cả trang
-                $(document).on('click', function (event) {
-                    // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
-                    if (!$(event.target).closest('.icon').length) {
-                        // Nếu không, ẩn icon
-                        $('.io').hide();
-                    }
-                });
+                                        $(document).ready(function () {
+                                            // Bắt sự kiện click trên cả trang
+                                            $(document).on('click', function (event) {
+                                                // Kiểm tra xem sự kiện click có xảy ra trên icon hay không
+                                                if (!$(event.target).closest('.icon').length) {
+                                                    // Nếu không, ẩn icon
+                                                    $('.io').hide();
+                                                }
+                                            });
 
-                // Bắt sự kiện click trên icon
-                $('.icon').click(function () {
-                    $('.io').css('display', 'block');
-                });
-            });
-            function confirmDelete(id){
-                if(window.confirm("Are you sure to delete request with id " + id)){
-                    window.location.href = "delete_request?id=" + id;
-                }
-            }
+                                            // Bắt sự kiện click trên icon
+                                            $('.icon').click(function () {
+                                                $('.io').css('display', 'block');
+                                            });
+                                        });
+                                        function confirmDelete(id) {
+                                            if (window.confirm("Are you sure to delete request with id " + id)) {
+                                                window.location.href = "delete_request?id=" + id;
+                                            }
+                                        }
         </script>
 
     </body>

@@ -102,9 +102,9 @@
                 </div>
             </div>
         </div>
-        <script src="${pageContext.request.contextPath}/resources/js/main_2.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/clickevents.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/calender.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/main_2.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/clickevents.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/calender.js"></script>
 
     </body>
 </html>
