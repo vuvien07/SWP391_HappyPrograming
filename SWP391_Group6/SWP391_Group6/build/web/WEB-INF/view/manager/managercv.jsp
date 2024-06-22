@@ -60,8 +60,8 @@
         <link rel="stylesheet" type="text/css" href="https://mdbootstrap.com/wp-content/themes/mdbootstrap4/css/mdb-plugins-gathered.min.css">
 
 
-        <jsp:include page="../manager/leftdb.jsp"></jsp:include>
-        <jsp:include page="../manager/headermn.jsp"></jsp:include>
+        <jsp:include page="../admin/LeftDashBoard.jsp"></jsp:include>
+        <jsp:include page="../admin/header.jsp"></jsp:include>
         </head>
         <body>
             <main>

@@ -1,4 +1,8 @@
-
+<%-- 
+    Document   : LeftDashBoard
+    Created on : Jun 3, 2024, 12:07:54 AM
+    Author     : Admin
+--%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,7 +16,7 @@
             <a href="admin" class="list-group-item list-group-item-action" aria-current="true" style="margin-top: 10px;">
                 <span style="font-size: 16px; font-weight: 600">Main dashboard</span>
             </a>
-            <a href="manage_cv" class="list-group-item list-group-item-action" style="margin-top: 10px">
+            <a href="skills" class="list-group-item list-group-item-action" style="margin-top: 10px">
                 <span style="font-size: 16px; font-weight: 600">Skills</span>
             </a>
 <!--            <a href="managerAccount" class="list-group-item list-group-item-action" style="margin-top: 10px">

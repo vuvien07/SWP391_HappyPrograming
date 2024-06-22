@@ -120,7 +120,7 @@
                                             <td class="text_page">${s.skillname}</td>
                                             <td class="text_page">${s.status ? "Active" : "Inactive"}</td>
                                             <td class="text_page">${s.description}</td>
-                                            <td class="text_page"><img src="${pageContext.request.contextPath}/resources/uploads/skill/${s.ava}" alt="${s.skillname}" width="50" height="50"/></td>
+                                            <td class="text_page"><img src="${pageContext.request.contextPath}/assets/uploads/skill/${s.ava}" alt="${s.skillname}" width="50" height="50"/></td>
                                             <td class="text_page" style="padding: 10px 2px 14px; text-align: center;">
                                                 <a href="updateskill?sid=${s.id}"><button type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
                                                 <a href="hideskill?sid=${s.id}">

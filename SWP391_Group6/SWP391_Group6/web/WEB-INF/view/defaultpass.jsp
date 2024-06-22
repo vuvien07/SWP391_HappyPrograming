@@ -16,11 +16,10 @@
     </head>
     <body>
         <div class="wrapper" style="width: 400px">
-            <a href="login" style="color: #1a75ff;text-decoration: none">Back to login</a>
             <div class="title-text">
                 <div class="title login">
-                   
-                    <p style="font-size: 16px;">Enter your default pass which sent to your email</p>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
+                    <p style="color: green; font-weight: lighter; font-size: 15px">Enter your default pass which sent to your email</p>
                     <p style="color: red; font-weight: lighter; font-size: 15px">${requestScope.err}</p>
                 </div>
             </div>

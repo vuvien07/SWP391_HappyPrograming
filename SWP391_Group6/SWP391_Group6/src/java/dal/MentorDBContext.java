@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import model.Account;
 import model.Mentor;
 import model.Skill;
-import model.User;
 
 /**
  *
@@ -121,7 +120,6 @@ public class MentorDBContext extends DBContext<Mentor> {
                 mentor.setDateOfBirth(rs.getDate("dateofbirth"));
                 mentor.setAccount(account);
                 mentor.setStatus(rs.getBoolean("menstatus"));
-                mentor.setAva(rs.getString("ava"));
                 return mentor;
             }
         } catch (SQLException e) {
@@ -310,32 +308,6 @@ public class MentorDBContext extends DBContext<Mentor> {
                 updateMentor.executeUpdate();
                 deleteCVSql.executeUpdate();
             }
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-            }
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e3) {
-            }
-        }
-    }
-    
-    public void updateById(Mentor entity, int id){
-        try {
-            connection.setAutoCommit(false);
-            String sql = "UPDATE [Mentor] SET ava = ?, [name] = ?, dateofbirth = ?, gender = ?, [address] = ? WHERE id = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, entity.getAva());
-            ps.setString(2, entity.getName());
-            ps.setDate(3, (Date) entity.getDateOfBirth());
-            ps.setBoolean(4, entity.isGender());
-            ps.setString(5, entity.getAddress());
-            ps.setInt(6, id);
-            ps.executeUpdate();
-            connection.commit();
         } catch (SQLException e) {
             try {
                 connection.rollback();

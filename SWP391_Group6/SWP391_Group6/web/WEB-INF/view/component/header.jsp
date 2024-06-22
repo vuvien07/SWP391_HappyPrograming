@@ -75,7 +75,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a style="font-size: 20px" class="navbar-brand" href="home"><span>Happy</span>Programing</a>
+                <a class="navbar-brand" href="https://www.google.com/"><span>Happy</span>Programing</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                         aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="oi oi-menu"></span> Menu
@@ -94,79 +94,35 @@
                                     <c:if test="${sessionScope.account == null}">
                             <li class="nav-item"><a href="login" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Login</a></li>
                             </c:if>
-
-
-
-                        <c:if test="${sessionScope.account.roleid == 4}">
-                            <li class="nav-item"><a href="manager" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
-                            <img src="${pageContext.request.contextPath}/resources/uploads/${sessionScope.user.ava}" class="user_img" style="width: 50px; height: 50px; border-radius: 50%; margin: 10px -13px 0 23px;" alt="alt"/>
+                            <c:if test="${sessionScope.account != null}">
                             <!--                                <li class="nav-item"><a href="profile" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Profile</a></li>
                                                             <li class="nav-item"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Log out</a></li>-->
-
                         </c:if>
-
-
-
                         <c:if test="${sessionScope.account.roleid == 3}">
                             <li class="nav-item"><a href="admin" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
-                            <img src="resources/images/_TUN2441.jpg" class="user_img" style="width: 50px; height: 50px; border-radius: 50%; margin: 10px -13px 0 23px;" alt="alt"/>
-                            <!--                                <li class="nav-item"><a href="profile" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Profile</a></li>
-                                                            <li class="nav-item"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Log out</a></li>-->
-
-
-                        </c:if>
-
-
-
-
-
-
-
-                        <c:if test="${sessionScope.account.roleid == 2}">
-                            <img src="${pageContext.request.contextPath}/resources/uploads/${sessionScope.user.ava}" class="user_img" style="width: 50px; height: 50px; border-radius: 50%; margin: 10px -13px 0 23px;" alt="alt"/>
-                            <!--                                <li class="nav-item"><a href="profile" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Profile</a></li>
-                                                            <li class="nav-item"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Log out</a></li>-->
-                        </c:if>
-
-
-
-                        <c:if test="${sessionScope.account.roleid == 1}">
-                            <img src="${pageContext.request.contextPath}/resources/uploads/${sessionScope.mentor.ava}" class="user_img" style="width: 50px; height: 50px; border-radius: 50%;margin: 10px -13px 0 23px;" alt="alt"/>
-                            <!--                                <li class="nav-item"><a href="profile" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Profile</a></li>
-                                                            <li class="nav-item"><a href="logout" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Log out</a></li>-->
-                        </c:if>
-
-
-
-
-
-
-
+                            </c:if>
+                            <c:if test="${sessionScope.account.roleid == 4}">
+                            <li class="nav-item"><a href="manage_cv" class="nav-link " style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
+                            </c:if>
                     </ul>
                     <c:if test="${sessionScope.account != null}">
-                        <i style="color:black;" class="bi bi-chevron-compact-down icon"></i>
-                        <div class="io list-group position-absolute" id="dynamicMenu" style="display: none; margin-left: 563px; margin-top: 200px">
-                            <a href="" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4)"><h2><i class="bi bi-person-fill"></i>${sessionScope.account.username}</h2></a>
-                            <c:if test="${sessionScope.account.roleid == 4}">
-                                <a href="manager_profile" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a>
-                                
-                            </c:if>
-                                
-                               
-
-                            <c:if test="${sessionScope.account.roleid == 2}">
-                                <a href="profile" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a>
-                                <a href="list_request" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> List request</a>
-                                <a href="time_table" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a>
-                            </c:if>
-                            <c:if test="${sessionScope.account.roleid == 1}">
-                                <a href="mentor_profile" class="list-group-item" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a>
-                                <a href="schedule" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>Create schedule</a>
-                                <a href="view_schedule" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a>
-                                <a href="mentee_request" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> View mentee request</a>
-                            </c:if>
-                            <a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-box-arrow-left"></i> Log out</a>
-                        </div>
+                        <img src="assets/images/about-1.jpg" class="user_img" style="width: 60px; height: 60px; border-radius: 50%" alt="alt"/>
+                        <i class="bi bi-chevron-compact-down icon"></i>
+                            <div class="io list-group position-absolute end-0 top-50 mt-md-5" id="dynamicMenu" style="display: none">
+                                <a href="" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4)"><h2><i class="bi bi-person-fill"></i>${sessionScope.account.username}</h2></a>
+                                     <c:if test="${sessionScope.account.roleid == 2}">
+                                    <a href="profile" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a>
+                                    <a href="list_request" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> List request</a>
+                                    <a href="time_table" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.account.roleid == 1}">
+                                    <a href="mentor_profile" class="list-group-item" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>View profile</a>
+                                    <a href="schedule" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-person-fill"></i>Create schedule</a>
+                                    <a href="view_schedule" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i>View schedule</a>
+                                    <a href="mentee_request" class="list-group-item list-group-item-action" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-card-list"></i> View mentee request</a>
+                                    </c:if>
+                                <a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><i class="bi bi-box-arrow-left"></i> Log out</a>
+                            </div>
                     </c:if>
                 </div>
 

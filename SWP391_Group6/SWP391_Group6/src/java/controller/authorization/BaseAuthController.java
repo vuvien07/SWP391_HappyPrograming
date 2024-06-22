@@ -56,6 +56,7 @@ public abstract class BaseAuthController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             if (isAuthenticated(req)) {
+                req.getSession().setMaxInactiveInterval(10000);
                 doGet(req, resp, getAuthentication(req));
             } else {
                 printError(resp);
@@ -69,6 +70,7 @@ public abstract class BaseAuthController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             if (isAuthenticated(req)) {
+                req.getSession().setMaxInactiveInterval(10000);
                 doPost(req, resp, getAuthentication(req));
             } else {
                 printError(resp);

@@ -56,9 +56,9 @@
                 <c:if test="${sessionScope.account == null}">
                     <li class="nav-item"><a href="login" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Login</a></li>
                 </c:if>
-               
+                <li class="nav-item active"><a href="dashboard" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Dashboard</a></li>
                 <c:if test="${sessionScope.account != null}">
-                   
+                    <li class="nav-item"><a href="profile" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Profile</a></li>
                     <li class="nav-item"><a href="logout" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);">Log out</a></li>
                 </c:if>
             </ul>

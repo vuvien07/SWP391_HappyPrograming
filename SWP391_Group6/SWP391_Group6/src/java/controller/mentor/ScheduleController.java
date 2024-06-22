@@ -7,6 +7,7 @@ package controller.mentor;
 import controller.authorization.BaseAuthController;
 import dal.MentorDBContext;
 import dal.SessionDBContext;
+import dal.SkillDBContext;
 import dal.SlotDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,13 +15,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
 import model.Mentor;
 import model.Session;
+import model.Skill;
 import model.Slot;
 import service.ViewScheduleService;
 import service.mentor.MentorService;
@@ -102,7 +103,6 @@ public class ScheduleController extends BaseAuthController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account)
             throws ServletException, IOException {
-        ViewScheduleService viewScheduleService = new ViewScheduleService();
         MentorService mentorService = new MentorService();
         UserDataDetail udd = new UserDataDetail();
         Account menAccount = (Account) request.getSession().getAttribute("account");
@@ -111,36 +111,27 @@ public class ScheduleController extends BaseAuthController {
         String menid = request.getParameter("menid");
         String action = request.getParameter("remove");
         String changeWeek = request.getParameter("changeweek");
-        String timeFromSlot = request.getParameter("timeFromSlot");
-
+        
         udd.putAttribute("freeDate", freeDate);
         udd.putAttribute("account", menAccount);
         udd.putAttribute("freeSlot", slot);
         udd.putAttribute("menid", menid);
-        udd.putAttribute("slotFrom", timeFromSlot);
         try {
-            if (!changeWeek.equals("")) {
+            if(!changeWeek.equals("")){
+                ViewScheduleService viewScheduleService = new ViewScheduleService();
                 viewScheduleService.viewScheduleByChange(request);
                 request.getRequestDispatcher("WEB-INF/view/mentor/createschedule.jsp").forward(request, response);
                 return;
             }
-            switch (action) {
-                case "" ->
-                    mentorService.createSchedule(udd, request);
-                default -> {
-                    String sesid = request.getParameter("sesid");
-                    mentorService.removeSchedule(Integer.parseInt(sesid), request);
-                }
+            if (action.equals("")) {
+                mentorService.createSchedule(udd, request, response);
+            } else {
+                String sesid = request.getParameter("sesid");
+                mentorService.removeSchedule(Integer.parseInt(sesid), request);
             }
-            SessionDBContext sessionDBContext = new SessionDBContext();
-            MentorDBContext menDBContext = new MentorDBContext();
-            Mentor mentor = menDBContext.getByAccountId(menAccount.getId());
-            viewScheduleService.viewScheduleByChange(request);
-            ArrayList<Session> sessions = sessionDBContext.listByMentorId(mentor.getId());
-            request.getSession().setAttribute("sessions", sessions);
-            request.getRequestDispatcher("WEB-INF/view/mentor/createschedule.jsp").forward(request, response);
-        } catch (SQLException | ParseException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        response.sendRedirect("schedule");
     }
 }

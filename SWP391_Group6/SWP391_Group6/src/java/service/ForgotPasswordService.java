@@ -57,12 +57,12 @@ public class ForgotPasswordService {
                 request.getRequestDispatcher("WEB-INF/view/forgotpassword.jsp").forward(request, response);
                 return;
             }
-            String defaultPass = Util.generatePassword(Message.GENERATION_PASSWORD, 6);
-            String text = "Your default password is: " + defaultPass + " Default password has been set in the session and session timeout is set to 1 minute.";
+            String defaultPass = Util.generatePassword(Message.GENERATION_PASSWORD, 8);
+            String text = "Your default password is: " + defaultPass + ".Default password has been set in the session and session timeout is set to 1 minute.";
             Util.sendEmail(email, text);
             userDataDetail.putAttribute("defaultPass", defaultPass);
             session.setAttribute("userDataDetail", userDataDetail);
-         
+            session.setMaxInactiveInterval(60);
             request.getRequestDispatcher("WEB-INF/view/defaultpass.jsp").forward(request, response);
         }
     }

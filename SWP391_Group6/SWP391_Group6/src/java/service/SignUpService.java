@@ -37,16 +37,15 @@ public class SignUpService {
     public void processSendEmail(HttpServletRequest request, HttpServletResponse response, UserDataDetail userDataDetail) throws ServletException, IOException {
         String username = (String) userDataDetail.getAttribute("username");
         String email = (String) userDataDetail.getAttribute("email");
-//        if (accountDAO.checkAccountExist(username, email)) {
-//            request.setAttribute("err", "Username or email are existed. Please try again!");
-//            request.getRequestDispatcher("WEB-INF/view/user/signup.jsp").forward(request, response);
-//            return;
-//        }
+        if (accountDAO.checkAccountExist(username, email)) {
+            request.setAttribute("err", "Username or email are existed. Please try again!");
+            request.getRequestDispatcher("WEB-INF/view/user/signup.jsp").forward(request, response);
+            return;
+        }
         String pass = Util.generatePassword("0123456789", 6);
         Util.sendEmail((String) userDataDetail.getAttribute("email"), "Your passcode confirm is: " + pass);
         request.getSession().setAttribute("userDataDetail", userDataDetail);
         request.getSession().setAttribute("passcode", pass);
-        request.getSession().setAttribute("email", email);
         request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
     }
 

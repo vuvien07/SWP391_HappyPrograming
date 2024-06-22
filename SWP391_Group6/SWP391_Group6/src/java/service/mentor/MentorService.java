@@ -4,7 +4,6 @@
  */
 package service.mentor;
 
-import dal.AccountDBContext;
 import dal.CVDBContext;
 import dal.MentorDBContext;
 import dal.SessionDBContext;
@@ -17,14 +16,11 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import model.Account;
 import model.CV;
 import model.Mentor;
 import model.Session;
 import model.Slot;
-import model.User;
 import util.UserDataDetail;
 
 /**
@@ -36,45 +32,38 @@ public class MentorService {
     private SessionDBContext sessionDAO;
     private MentorDBContext mentorDAO;
     private CVDBContext cvDBContext;
-    private AccountDBContext accountDBContext;
 
     public MentorService() {
         sessionDAO = new SessionDBContext();
         mentorDAO = new MentorDBContext();
         cvDBContext = new CVDBContext();
-        accountDBContext = new AccountDBContext();
     }
 
-   public void createSchedule(UserDataDetail userDataDetail, HttpServletRequest request) throws SQLException, ParseException {
-        Account menAccount = (Account) userDataDetail.getAttribute("account");
-        Slot slot = new Slot();
-        slot.setId(Integer.parseInt((String) userDataDetail.getAttribute("freeSlot")));
-        Mentor mentor = mentorDAO.getByAccountId(menAccount.getId());
-        mentor.setId(mentor.getId());
-        
-        String freeDate = userDataDetail.getStringAttribute("freeDate");
-        String timeSlotFrom = userDataDetail.getStringAttribute("slotFrom");
-        
-        java.util.Date date = new java.util.Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        java.util.Date checkDate = sdf.parse((new StringBuilder().append(freeDate).append(" ").append(timeSlotFrom)).toString());
-        if(checkDate.getTime() < date.getTime()){
-            request.setAttribute("dateErr", "Schedule is before compared to current date! Please choose again");
-            return;
-        }
-        Session session = new Session();
-        session.setDate(Date.valueOf((String) userDataDetail.getAttribute("freeDate")));
-        session.setSlot(slot);
-        session.setMentor(mentor);
-        session.setSkill((String) userDataDetail.getAttribute("skill"));
-        try {
-            sessionDAO.insert(session);
-        } catch (Exception e) {
-        } finally {
-            request.getSession().setAttribute("success", "Create schedule successful!");
+    public void createSchedule(UserDataDetail userDataDetail, HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        Date freeDate = Date.valueOf((String) userDataDetail.getAttribute("freeDate"));
+        int slotid = Integer.parseInt((String) userDataDetail.getAttribute("freeSlot"));
+        int menid = Integer.parseInt((String) userDataDetail.getAttribute("menid"));
+        if (sessionDAO.isDuplicatedSession(freeDate, slotid, menid)) {
+            request.getSession().setAttribute("err", "Schedule is duplicated. Please try again!");
+        } else {
+            Account menAccount = (Account) userDataDetail.getAttribute("account");
+            Slot slot = new Slot();
+            slot.setId(Integer.parseInt((String) userDataDetail.getAttribute("freeSlot")));
+            Mentor mentor = mentorDAO.getByAccountId(menAccount.getId());
+            mentor.setId(mentor.getId());
+            Session session = new Session();
+            session.setDate(Date.valueOf((String) userDataDetail.getAttribute("freeDate")));
+            session.setSlot(slot);
+            session.setMentor(mentor);
+            session.setSkill((String) userDataDetail.getAttribute("skill"));
+            try {
+                sessionDAO.insert(session);
+            } catch (Exception e) {
+            } finally {
+                request.getSession().setAttribute("success", "Create schedule successful!");
+            }
         }
     }
-
 
     public void removeSchedule(int id, HttpServletRequest request) throws SQLException {
         try {
@@ -157,7 +146,7 @@ public class MentorService {
                 String fileName = Paths.get(fPart.getSubmittedFileName()).getFileName().toString();
                 String fileType = fPart.getContentType();
                 if (fileType.equals("image/jpeg") || fileType.equals("image/png")) {
-                    String uploadDir = request.getServletContext().getRealPath("/resources/uploads");
+                    String uploadDir = request.getServletContext().getRealPath("/assets/uploads/cv");
                     File uploadDirFile = new File(uploadDir);
                     if (!uploadDirFile.exists()) {
                         uploadDirFile.mkdirs();
@@ -187,44 +176,6 @@ public class MentorService {
             }
             request.getSession().setAttribute("update_success", "Update CV successfully!");
         }
-
-    }
-    
-     public void updateProfile(HttpServletRequest request, HttpServletResponse response, UserDataDetail userDataDetail) throws ServletException, IOException {
-        Part fPart = request.getPart("avatar");
-        Account updateAcc = new Account();
-        updateAcc.setUsername((String) userDataDetail.getAttribute("username"));
-        Account account = (Account) userDataDetail.getAttribute("account");
-        accountDBContext.updateById(updateAcc, account.getId());
-        Mentor user = (Mentor) userDataDetail.getAttribute("mentor");
-        Mentor updateUser = new Mentor();
-        if (fPart != null) {
-            String fileName = Paths.get(fPart.getSubmittedFileName()).getFileName().toString();
-            String fileType = fPart.getContentType();
-            if (fileType.equals("image/jpeg") || fileType.equals("image/png") || fileType.equals("images/jpg")) {
-                String uploadDir = request.getServletContext().getRealPath("/resources/uploads");
-                File uploadDirFile = new File(uploadDir);
-                if (!uploadDirFile.exists()) {
-                    uploadDirFile.mkdirs();
-                }
-                String filePath = uploadDir + "\\" + fileName;
-                fPart.write(filePath);
-                updateUser.setAva(fileName);
-            } else {
-                String image = request.getParameter("image-initiate");
-                updateUser.setAva(image);
-            }
-        }
-
-        updateUser.setName((String) userDataDetail.getAttribute("fullname"));
-        updateUser.setGender(((String)userDataDetail.getAttribute("gender")).equals("Male"));
-        updateUser.setDateOfBirth(java.sql.Date.valueOf((String) userDataDetail.getAttribute("dob")));
-        updateUser.setAddress((String) userDataDetail.getAttribute("address"));
-        updateUser.setAccount(account);
-        mentorDAO.updateById(updateUser, user.getId());
-        request.getSession().setAttribute("mentor", updateUser);
-        request.setAttribute("success", "Update successfully!");
-        request.getRequestDispatcher("WEB-INF/view/mentor/profile_mentor.jsp").forward(request, response);
 
     }
 

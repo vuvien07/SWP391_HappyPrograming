@@ -14,57 +14,17 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style_1.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/signup.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-        <style>
-
-            .form-inner form .field select {
-                height: 100%;
-                width: 100%;
-                outline: none;
-                padding-left: 15px;
-                border-radius: 15px;
-                border: 1px solid lightgrey;
-                border-bottom-width: 2px;
-                font-size: 17px;
-                transition: all 0.3s ease;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-            }
-
-
-            .field select {
-                background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="none" stroke="%23999" stroke-width="1" d="M1 1l4 4 4-4"/></svg>') no-repeat right 10px center;
-                background-size:10px 10px;
-            }
-
-            .field {
-                position: relative;
-                display: flex;
-                align-items: center;
-            }
-
-
-
-            .field i {
-                position: absolute;
-                right: 10px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        </style>
     </head>
     <body>
         <div class="wrapper">
-            <a href="home" style="color: #1a75ff;text-decoration: none">Home</a>
+            <a href="home" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);text-decoration: none">Home</a>
             <div class="title-text">
                 <div class="title login">
                     <i class="bi bi-person-fill"></i><br>
                     <p style="color: black">Sign up form</p>
-<!--                    <p style="color: red; font-weight: lighter; font-size: 15px" class="errorMessage">${requestScope.err}</p>-->
+                    <p style="color: red; font-weight: lighter; font-size: 15px" class="errorMessage">${requestScope.err}</p>
                 </div>
             </div>
             <div class="form-container">
@@ -85,46 +45,43 @@
 
                                 </div>
                                 <div class="field">
+                                    <input type="password" name="pass"  placeholder="Password" required>
+                                </div>
+                                <div class="pass">
+
+                                </div>
+                                <div style="margin-top:8%">
+                                    <label>Gender:
+                                    </label><br>
+                                    <select name="gender" style="width: 100%">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select><br><br>
+
+                                    <label>Role:
+                                    </label><br>
+                                    <select name="role" style="width: 100%">
+                                        <option value="Mentee">Mentee</option>
+                                        <option value="Mentor">Mentor</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div style="margin-left: 10px; width: 49%">
+                                <div class="field">
+                                    <input type="password" name="re-pass" placeholder="Confirm password" 
+                                           required>
+                                </div>
+                                <div class="repass">
+
+                                </div>
+                                <div class="field">
                                     <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Enter a valid email address" placeholder="Email" required>
                                 </div>
                                 <div class="email">
 
                                 </div>
-
-                                <div class="field">
-
-                                    <select name="gender" id="gender" style="width: 100%;">
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-
-                                <div class="field">
-
-                                    <select name="role" id="role" style="width: 100%;">
-                                        <option value="Mentee">Mentee</option>
-                                        <option value="Mentor">Mentor</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div style="margin-left: 60px; width: 49%">
-                                <div class="field">
-                                    <input id="passw" type="password" name="pass"  placeholder="Password" required>
-                                    <i id="iconsee" onclick="changeIcon(this)" class="fa-solid fa-eye-slash"></i>
-                                </div>
-                                <div class="pass">
-
-                                </div>
-                                <div class="field">
-                                    <input id="rpassw" type="password" name="re-pass" placeholder="Confirm password" 
-                                           required>
-                                    <i id="iconsee" onclick="changeIconRp(this)" class="fa-solid fa-eye-slash"></i>
-                                </div>
-                                <div class="repass">
-
-                                </div>
-
                                 <div class="field">
                                     <input type="text" name="phone" placeholder="Phone" required>
                                 </div>
@@ -132,7 +89,7 @@
 
                                 </div>
                                 <div class="field">
-
+                                    <label style="min-width: 100px;">Date of birth:</label>
                                     <input type="date" name="dob" required>
                                 </div><br>
                                 <div class="dob"></div>
@@ -145,7 +102,7 @@
 
                         </div>
                         <div class="field btn">
-                            <label style="margin-left: 20%">Already have an account?Sign in  <a href="login" style="color: #1a75ff;text-decoration: none">here</a></label>
+                            <label style="margin-left: 20%">Already have an account?Sign in <a href="login">here</a></label>
                         </div>
                         <div class="field btn">
                             <div class="btn-layer"></div>
@@ -156,29 +113,12 @@
             </div>
         </div>
         <script>
-            function changeIcon(obj) {
-                var inputP = document.querySelector("#passw");
-                console.log(inputP)
-                if (obj.className == 'fa-solid fa-eye-slash') {
-                    obj.className = 'fa-solid fa-eye';
-                    inputP.type = 'text';
-                } else {
-                    obj.className = 'fa-solid fa-eye-slash';
-                    inputP.type = 'password';
-                }
-            }
-            function changeIconRp(obj) {
-                var inputP = document.querySelector("#rpassw");
-                console.log(inputP)
-                if (obj.className == 'fa-solid fa-eye-slash') {
-                    obj.className = 'fa-solid fa-eye';
-                    inputP.type = 'text';
-                } else {
-                    obj.className = 'fa-solid fa-eye-slash';
-                    inputP.type = 'password';
-                }
-            }
-
+            $(document).ready(function () {
+                // Ẩn phần tử container trước
+                $(".wrapper").hide();
+                // Áp dụng hiệu ứng kết hợp fadeIn và slideDown trong 2000ms (2 giây)
+                $(".wrapper").slideDown(500).fadeIn({duration: 250, queue: false});
+            });
             function submitForm() {
                 let check = true;
                 var name = $('[name="name"]').val();
@@ -187,87 +127,39 @@
                 var repass = $('[name="re-pass"]').val();
                 var phone = $('[name="phone"]').val();
                 var add = $('[name="add"]').val();
-                var gender = $('[name="gender"]').val();
+                var gender = $('[name="name"]').val();
                 var dob = $('[name="dob"]').val();
-                var email = $('[name="email"]').val();
-
-
-                function isValidNameFormat(name) {
-                    // Regex to check if each word starts with a capital letter and words are separated by a single space
-                    const nameFormat = /^[A-ZÀ-Ỹ][a-zà-ỹ]*([ ][A-ZÀ-Ỹ][a-zà-ỹ]*)*$/;
-                    return nameFormat.test(name);
-                }
-
-// Function to validate the name
-                function validateName(name) {
-                    let check = true;
-
-                    // Check if name is between 1-50 characters and contains only letters and spaces
-                    if (!name.match(/^[A-Za-zÀ-ỹ ]{1,50}$/)) {
-                        $(".name").html('<p style="color:red; font-size: 12px;">Name must be between 1-50 characters and contain only letters and spaces.</p>');
-                        check = false;
-                    }
-                    // Check if name has leading or trailing spaces
-                    else if (name !== name.trim()) {
-                        $(".name").html('<p style="color:red; font-size: 12px;">Name cannot contain leading or trailing spaces.</p>');
-                        check = false;
-                    }
-                    // Check if each word in the name starts with a capital letter
-                    else if (!isValidNameFormat(name)) {
-                        $(".name").html('<p style="color:red; font-size: 12px;">Each word in the name must start with a capital letter and be separated by a single space.</p>');
-                        check = false;
-                    }
-                    // Clear the error message if the name is valid
-                    else {
-                        $(".name").empty();
-                    }
-
-                    return check;
-                }
-                // Kiểm tra username
-                if (username.length < 6 || username.length > 20) {
-                    $(".username").html('<p style="color:red; font-size: 12px;">Username must be between 6-20 characters.</p>');
+                var email1 = $('[name="email"]').val();
+                if (!name.match("[A-Za-z ]{1,50}")) {
+                    $(".name").html('<p style="color:red">Name must be between 1 and 50 characters and contain only letters and spaces</p>');
                     check = false;
-                } else if (username !== username.trim()) {
-                    $(".username").html('<p style="color:red; font-size: 12px;">Username cannot contain leading or trailing spaces.</p>');
+                } else {
+                    $(".name").empty();
+                }
+                if (username.length < 6 || username.length > 20) {
+                    $(".username").html('<p style="color:red">Username must be between 6 and 20 characters and cannot contain spaces</p>');
                     check = false;
                 } else {
                     $(".username").empty();
                 }
-
-
-                // Kiểm tra pass
-                if (pass.length < 6 || pass.length > 20) {
-                    $(".pass").html('<p style="color:red; font-size: 12px;">Password must be 6-20 characters long.</p>');
-                    check = false;
-                } else if (pass !== pass.trim()) {
-                    $(".pass").html('<p style="color:red; font-size: 12px;">Password cannot contain leading or trailing spaces.</p>');
+                if (pass.length < 8 || pass.length > 20) {
+                    $(".pass").html('<p style="color:red">Password must be 8-20 characters long and cannot contain spaces</p>');
                     check = false;
                 } else {
                     $(".pass").empty();
                 }
-
-                //Re - pass
                 if (pass !== repass) {
-                    $(".repass").html('<p style="color:red; font-size: 12px;">Password does not match</p>');
+                    $(".repass").html('<p style="color:red">Password does not match</p>');
                     check = false;
                 } else {
                     $(".repass").empty();
                 }
-
-
-                // Kiểm tra phone
-                if (!phone.match(/^[0-9]{8,14}$/)) {
-                    $(".phone").html('<p style="color:red; font-size: 12px;">Phone number must be 8-14 digits.</p>');
-                    check = false;
-                } else if (phone !== phone.trim()) {
-                    $(".phone").html('<p style="color:red; font-size: 12px;">Phone number cannot contain leading or trailing spaces.</p>');
+                if (!phone.match("^[0-9]{10}$")) {
+                    $(".phone").html('<p style="color:red">Phone must be 10 digits</p>');
                     check = false;
                 } else {
                     $(".phone").empty();
                 }
-
-
                 var currentDate = new Date();
 
                 // Chuyển đổi ngày cụ thể thành đối tượng Date
@@ -286,51 +178,12 @@
                 if (targetYear > currentYear ||
                         (targetYear === currentYear && targetMonth > currentMonth) ||
                         (targetYear === currentYear && targetMonth === currentMonth && targetDay > currentDay)) {
-                    $(".dob").html('<p style="color:red; font-size: 12px;">Date of birth is the future date compared to current date</p>');
+                    $(".dob").html('<p style="color:red">Date of birth is the future date compared to current date</p>');
                     check = false;
-                } else {
-                    // Tính tuổi
-                    var age = currentYear - targetYear;
-                    if (currentMonth < targetMonth || (currentMonth === targetMonth && currentDay < targetDay)) {
-                        age--;
-                    }
-
-                    // Kiểm tra tuổi
-                    if (age < 18) {
-                        $(".dob").html('<p style="color:red; font-size: 12px; q">You must be at least 18 years old to register</p>');
-                        check = false;
-                    } else {
-                        $(".dob").empty();
-                    }
+                }else{
+                    $(".dob").empty();
                 }
-
-                if (check) {
-                    $.ajax({
-                        url: 'checkuser',
-                        type: 'POST',
-                        data: {username: username, email: email},
-                        dataType: 'json',
-                        async: false,
-                        success: function (response) {
-                            if (response.usernameExists) {
-                                $(".username").html('<p style="color:red; font-size: 12px;">Username already exists. Please choose another one.</p>');
-                                check = false;
-                            } else {
-                                $(".username").empty();
-                            }
-
-                            if (response.emailExists) {
-                                $(".email").html('<p style="color:red; font-size: 12px;">Email already exists. Please choose another one.</p>');
-                                check = false;
-                            } else {
-                                $(".email").empty();
-                            }
-                        }
-                    });
-                }
-
                 return check;
-
             }
         </script>
     </body>

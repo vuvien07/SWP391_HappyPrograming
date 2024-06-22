@@ -12,16 +12,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
         <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <title>Forgot password</title>
+        <title>JSP Page</title>
     </head>
     <body>
         <div class="wrapper" style="width: 400px">
-            <a href="login" style="color: #1a75ff;text-decoration: none">Back to login</a>
             <div class="title-text">
                 <div class="title login">
-                    <i class="bi bi-person-fill"></i><br>
+                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
                     Forgot Form
                     <p style="color: red; font-weight: lighter; font-size: 15px">${requestScope.err}</p>
                 </div>

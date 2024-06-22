@@ -77,7 +77,8 @@
             th {
                 background-color: #f2f2f2;
             }
-td {
+
+            td {
                 background-color: #fff;
             }
 
@@ -91,7 +92,6 @@ td {
             <% request.getSession().removeAttribute("err"); %>
             <p class="text-center" style="color: green">${sessionScope.success}</p>
             <% request.getSession().removeAttribute("success"); %>
-            <p class="text-center" style="color: red">${requestScope.dateErr}</p>
             <!--            <form action="schedule" method="post">
                             <div class="container m-auto w-50">
                                 <h1 style=" font-family: Arial, Helvetica, sans-serif">Create Schedule</h1>
@@ -130,13 +130,12 @@ td {
                 <input type="hidden" name="remove" id="remove"/>
                 <input type="hidden" name="sesid" id="sesid"/>
                 <input type="hidden" name="changeweek" id="changeweek"/>
-                <input type="hidden" name="timeFromSlot" id="timeFromSlot"/>
                 <table class="table-bordered">
                     <tr>
                         <td style="background-color: #00BFFF">
                             Select week:
                             <select name="weeks" onchange="submitForm()">
-<c:set var="weekField" value="1"/>
+                                <c:set var="weekField" value="1"/>
                                 <c:forEach var="entry" items="${sessionScope.weeks_on_year}">
                                     <c:set var="key" value="${entry.key}"/>
                                     <c:set var="value" value="${entry.value}"/>                                                      
@@ -161,13 +160,13 @@ td {
                     </tr>
                     <c:forEach items="${sessionScope.slots}" var="r">
                         <tr>
-                            <td>Slot ${r.id}(${r.from}-${r.to})</td>
+                            <td>Slot ${r.id}</td>
                             <c:forEach var="d" items="${sessionScope.dates}">
                                 <c:set var="hasSession" value="false" />
                                 <c:forEach items="${sessionScope.sessions}" var="s">
                                     <c:if test="${(r.id eq s.slot.id) and (s.date eq d)}">
                                         <c:set var="hasSession" value="true" />
-</c:if>
+                                    </c:if>
                                 </c:forEach>
                                 <c:if test="${hasSession}">
                                     <td>
@@ -181,7 +180,7 @@ td {
                                     </td>
                                 </c:if>
                                 <c:if test="${!hasSession}">
-                                    <td onclick="bookSchedule('${d}', '${r.id}', '${r.from}')">
+                                    <td onclick="bookSchedule('${d}', ${r.id})">
 
                                     </td>
                                 </c:if>
@@ -215,7 +214,7 @@ td {
                                         window.onload = function () {
                                             var xhr = new XMLHttpRequest();
                                             xhr.open("GET", "home", true);
-xhr.send();
+                                            xhr.send();
                                         };
                                         $(document).ready(function () {
                                             // Bắt sự kiện click trên cả trang
@@ -233,11 +232,10 @@ xhr.send();
                                             });
                                         });
 
-                                        function bookSchedule(date, slot, time) {
+                                        function bookSchedule(date, slot) {
                                             if (window.confirm("Are u sure book with date " + date + ", slot" + slot)) {
                                                 $("#date").val(date);
                                                 $("#slotid").val(slot);
-                                                $("#timeFromSlot").val(time);
                                                 $("#timetableForm").submit();
                                             }
                                         }

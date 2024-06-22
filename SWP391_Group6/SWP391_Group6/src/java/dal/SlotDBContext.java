@@ -25,8 +25,6 @@ public class SlotDBContext extends DBContext<Slot> {
             while (rs.next()) {
                Slot slot = new Slot();
                slot.setId(rs.getInt("id"));
-               slot.setFrom(rs.getTime("from"));
-               slot.setTo(rs.getTime("to"));
                slots.add(slot);
             }
         } catch (Exception e) {

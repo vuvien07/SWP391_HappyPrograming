@@ -157,16 +157,8 @@
         <servlet-class>controller.user.TimeTableController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CheckUserController</servlet-name>
-        <servlet-class>controller.CheckUserController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AdminProfileController</servlet-name>
-        <servlet-class>AdminProfileController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DashBoardMnController</servlet-name>
-        <servlet-class>controller.manager.DashBoardMnController</servlet-class>
+        <servlet-name>feedback</servlet-name>
+        <servlet-class>controller.feedback</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -325,16 +317,8 @@
         <url-pattern>/time_table</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CheckUserController</servlet-name>
-        <url-pattern>/checkuser</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminProfileController</servlet-name>
-        <url-pattern>/admin_profile</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DashBoardMnController</servlet-name>
-        <url-pattern>/manager</url-pattern>
+        <servlet-name>feedback</servlet-name>
+        <url-pattern>/feedback</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home.jsp</welcome-file>

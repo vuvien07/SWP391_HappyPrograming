@@ -74,7 +74,7 @@ public class SignUpController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String status = (String) request.getSession().getAttribute("status");
+        String status = request.getParameter("status");
         SignUpService sus = new SignUpService();
         UserDataDetail userDataDetail = new UserDataDetail();
         try {

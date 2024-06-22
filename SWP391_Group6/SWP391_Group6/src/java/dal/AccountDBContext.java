@@ -122,35 +122,6 @@ public class AccountDBContext extends DBContext<Account> {
         }
         return false;
     }
-    
-        public boolean checkUserNameExist(String username) {
-        try {
-            String sql = "SELECT * FROM Account a WHERE a.username = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-        }
-        return false;
-    }
-
-    public boolean checkEmailExist(String email) {
-        try {
-            String sql = "SELECT * FROM Account a WHERE a.email = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-        } catch (SQLException e) {
-        }
-        return false;
-    }
-
 
     public Account getAccount(String username, String password) {
         try {

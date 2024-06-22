@@ -1,10 +1,15 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package service.user;
 
 import dal.AccountDBContext;
 import dal.NotificationDBContext;
 import dal.UserDBContext;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
@@ -15,7 +20,10 @@ import model.Account;
 import model.User;
 import util.UserDataDetail;
 
-
+/**
+ *
+ * @author Admin
+ */
 public class UserService {
 
     private AccountDBContext accountDAO;
@@ -39,8 +47,8 @@ public class UserService {
         if (fPart != null) {
             String fileName = Paths.get(fPart.getSubmittedFileName()).getFileName().toString();
             String fileType = fPart.getContentType();
-            if (fileType.equals("image/jpeg") || fileType.equals("image/png") || fileType.equals("images/jpg")) {
-                String uploadDir = request.getServletContext().getRealPath("/resources/uploads");
+            if (fileType.equals("image/jpeg") || fileType.equals("image/png")) {
+                String uploadDir = request.getServletContext().getRealPath("/assets/uploads");
                 File uploadDirFile = new File(uploadDir);
                 if (!uploadDirFile.exists()) {
                     uploadDirFile.mkdirs();
