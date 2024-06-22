@@ -16,17 +16,18 @@
     </head>
     <body>
         <div class="wrapper" style="width: 400px">
+            <a href="login" style="color: #1a75ff;text-decoration: none">Back to login</a>
             <div class="title-text">
                 <div class="title login">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
-                    <p style="color: green; font-weight: lighter; font-size: 15px">Enter your default pass which sent to your email</p>
+                   
+                    <p style="font-size: 16px;">Enter your default pass which sent to your email</p>
                     <p style="color: red; font-weight: lighter; font-size: 15px">${requestScope.err}</p>
                 </div>
             </div>
             <div class="form-container">
                 <p style="color: red">${requestScope.error}</p>
                 <div class="form-inner">
-                    <form action="defaultpass" class="login" method="post">
+                    <form action="forgot" class="login" method="post">
                         <div class="field">
                             <input type="text" name="de-pass"  placeholder="Default pass" required>
                         </div>
@@ -34,6 +35,7 @@
                             <div class="btn-layer"></div>
                             <input type="submit" value="Enter">
                         </div>
+                        <input type="hidden" name="status" value="Progress">
                     </form>
                 </div>
             </div>

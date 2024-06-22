@@ -16,9 +16,11 @@
     </head>
     <body>
         <div class="wrapper" style="width: 400px">
+            <a href="login" style="color: #1a75ff;text-decoration: none">Back to login</a>
             <div class="title-text">
                 <div class="title login">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
+
+                    <br>
                     Reset password form
                     <p style="color: red; font-weight: lighter; font-size: 15px">${requestScope.err}</p>
                 </div>
@@ -26,41 +28,80 @@
             <div class="form-container">
                 <p style="color: red">${requestScope.error}</p>
                 <div class="form-inner">
-                    <form action="resetpass" class="login" method="post" onsubmit="return submitForm()">
+                    <form action="forgot" class="login" method="post" onsubmit="return submitForm()">
                         <div class="field">
-                            <input type="password" name="pass" pattern="^\S{8}$" 
-                                           title="Password must be 8 characters long and cannot contain spaces" placeholder="Password" required>
+                            <input id="passw" type="password" name="pass" placeholder="Password" required>
+                             <i id="iconsee" onclick="changeIcon(this)" class="fa-solid fa-eye-slash"></i>
+                        </div>
+                        <div class="pass">
+
                         </div>
                         <div class="field">
-                            <input type="password" name="re-pass" pattern="^\S{8}$" 
-                                           title="Password must be 8 characters long and cannot contain spaces" placeholder="Confirm password" required>
+                            <input id="rpassw" type="password" name="re-pass" placeholder="Confirm password" required>
+                              <i id="iconsee" onclick="changeIconRp(this)" class="fa-solid fa-eye-slash"></i>
+                        </div>
+                        <div class="repass">
+
                         </div>
                         <div class="field btn">
                             <div class="btn-layer"></div>
                             <input type="submit" value="Enter">
                         </div>
+                        <input type="hidden" name="status" value="Done">
                     </form>
                 </div>
             </div>
         </div>
         <script>
-            $(document).ready(function () {
-                // Ẩn phần tử container trước
-                $(".wrapper").hide();
-                // Áp dụng hiệu ứng kết hợp fadeIn và slideDown trong 2000ms (2 giây)
-                $(".wrapper").slideDown(500).fadeIn({duration: 500, queue: true});
-            });
-            function submitForm(){
+              function changeIcon(obj) {
+                var inputP = document.querySelector("#passw");
+                console.log(inputP)
+                if (obj.className == 'fa-solid fa-eye-slash') {
+                    obj.className = 'fa-solid fa-eye';
+                    inputP.type = 'text';
+                } else {
+                    obj.className = 'fa-solid fa-eye-slash';
+                    inputP.type = 'password';
+                }
+            }
+            function changeIconRp(obj) {
+                var inputP = document.querySelector("#rpassw");
+                console.log(inputP)
+                if (obj.className == 'fa-solid fa-eye-slash') {
+                    obj.className = 'fa-solid fa-eye';
+                    inputP.type = 'text';
+                } else {
+                    obj.className = 'fa-solid fa-eye-slash';
+                    inputP.type = 'password';
+                }
+            }
+
+            function submitForm() {
                 let check = true;
+
                 var pass = $('[name="pass"]').val();
                 var repass = $('[name="re-pass"]').val();
-                 if (pass !== repass) {
-                    window.alert("Password and confirm password does not match!");
+
+                // Kiểm tra pass
+                if (pass.length < 6 || pass.length > 20) {
+                    $(".pass").html('<p style="color:red; font-size: 12px;">Password must be 6-20 characters long.</p>');
                     check = false;
+                } else if (pass !== pass.trim()) {
+                    $(".pass").html('<p style="color:red; font-size: 12px;">Password cannot contain leading or trailing spaces.</p>');
+                    check = false;
+                } else {
+                    $(".pass").empty();
+                }
+
+                if (pass !== repass) {
+                    $(".repass").html('<p style="color:red; font-size: 12px;">Password does not match</p>');
+                    check = false;
+                } else {
+                    $(".repass").empty();
                 }
                 return check;
             }
-         
+
         </script>
     </body>
 </html>

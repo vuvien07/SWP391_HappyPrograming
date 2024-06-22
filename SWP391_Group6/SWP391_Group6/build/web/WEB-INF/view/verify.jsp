@@ -1,8 +1,4 @@
-<%-- 
-    Document   : verify.jsp
-    Created on : May 14, 2024, 10:42:12 PM
-    Author     : Admin
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,6 +16,7 @@
     </head>
     <body>
         <section class="wrapper">
+             <a href="login" style="color: #1a75ff;text-decoration: none">Back to login</a>
             <p style="color: red">${requestScope.err}</p>
             <header style="text-align: center">A password confirm was sent to email ${sessionScope.email}.Please check your mail</header>
             <form action="verify" method="post">

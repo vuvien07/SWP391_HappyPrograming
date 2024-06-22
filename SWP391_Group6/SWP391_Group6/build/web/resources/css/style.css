@@ -4177,7 +4177,7 @@ input[type="button"].btn-block {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding-left: 0;
+  padding-left: 389px;
   list-style: none;
   border-radius: 0.25rem; }
 
@@ -9262,7 +9262,7 @@ textarea.form-control {
   font-weight: 600; }
 
 .ftco-section {
-  padding: 7em 0;
+  padding: 5em 0;
   position: relative;
   width: 100%; }
   @media (max-width: 767.98px) {

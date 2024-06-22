@@ -4,13 +4,19 @@
  */
 package service;
 
-import dao.AccountDAO;
-import dao.MentorDAO;
-import dao.UserDAO;
+import dal.AccountDBContext;
+import dal.MentorDBContext;
+import dal.UserDBContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.LocalDate;
 import model.Account;
 import model.Mentor;
 import model.User;
 import util.UserDataDetail;
+import util.Util;
 
 /**
  *
@@ -18,26 +24,40 @@ import util.UserDataDetail;
  */
 public class SignUpService {
 
-    private AccountDAO accountDAO;
-    private UserDAO userDAO;
-    private MentorDAO mentorDAO;
+    private AccountDBContext accountDAO;
+    private UserDBContext userDAO;
+    private MentorDBContext mentorDAO;
 
     public SignUpService() {
-        accountDAO = new AccountDAO();
-        userDAO = new UserDAO();
-        mentorDAO = new MentorDAO();
+        accountDAO = new AccountDBContext();
+        userDAO = new UserDBContext();
+        mentorDAO = new MentorDBContext();
     }
 
-    public AccountDAO getAccountDAO() {
-        return accountDAO;
+    public void processSendEmail(HttpServletRequest request, HttpServletResponse response, UserDataDetail userDataDetail) throws ServletException, IOException {
+        String username = (String) userDataDetail.getAttribute("username");
+        String email = (String) userDataDetail.getAttribute("email");
+//        if (accountDAO.checkAccountExist(username, email)) {
+//            request.setAttribute("err", "Username or email are existed. Please try again!");
+//            request.getRequestDispatcher("WEB-INF/view/user/signup.jsp").forward(request, response);
+//            return;
+//        }
+        String pass = Util.generatePassword("0123456789", 6);
+        Util.sendEmail((String) userDataDetail.getAttribute("email"), "Your passcode confirm is: " + pass);
+        request.getSession().setAttribute("userDataDetail", userDataDetail);
+        request.getSession().setAttribute("passcode", pass);
+        request.getSession().setAttribute("email", email);
+        request.getRequestDispatcher("WEB-INF/view/verify.jsp").forward(request, response);
     }
 
-    public UserDAO getUserDAO() {
-        return userDAO;
-    }
-
-    public MentorDAO getMentorDAO() {
-        return mentorDAO;
+    public boolean isVerifyEmail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String passcode = (String) request.getSession().getAttribute("passcode");
+        String passconfirm = request.getParameter("passconfirm");
+        if (!passconfirm.equals(passcode)) {
+            request.setAttribute("err", "passcode doesn't match!");
+            return false;
+        }
+        return true;
     }
 
     public void registerUser(UserDataDetail userDataDetail) {
@@ -77,4 +97,5 @@ public class SignUpService {
             }
         }
     }
+
 }

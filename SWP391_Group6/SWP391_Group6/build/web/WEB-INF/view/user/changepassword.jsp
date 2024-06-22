@@ -13,12 +13,15 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
         <script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
         <title>JSP Page</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xO/6v5UxY+adJ+0SQ3Kyq4lQtW9BpJr1t/5io2RcUEx5ZVvAnSV/cuotfYKw1dVMzXf8lsabB3a4QlhnBfK+0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
         <div class="wrapper" style="width: 400px">
+            <a href="home" class="nav-link" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4);text-decoration: none">Home</a>
             <div class="title-text">
                 <div class="title login">
-                    <a href="home.jsp"><img src="${pageContext.request.contextPath}/resources/images/login.jpg" style="width: 20%; border-radius: 50%"><br></a>
+                    <i class="bi bi-person-fill"></i><br>
                     <p style="color: #000000; font-weight: lighter; font-size: 20px">Please enter your user name and password</p>
                 </div>
             </div>
@@ -53,11 +56,11 @@
                 // Áp dụng hiệu ứng kết hợp fadeIn và slideDown trong 2000ms (2 giây)
                 $(".wrapper").slideDown(500).fadeIn({duration: 500, queue: true});
             });
-            function submitForm(){
+            function submitForm() {
                 let check = true;
                 var pass = $('[name="pass"]').val();
                 var repass = $('[name="re-pass"]').val();
-                 if (pass !== repass) {
+                if (pass !== repass) {
                     window.alert("Password and confirm password does not match!");
                     check = false;
                 }
